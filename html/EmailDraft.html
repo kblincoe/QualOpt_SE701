@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Draft Email</title>
+    <script src="scripts/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<form name="emaildraft" id="emaildraft" action="http://localhost:8080/QualOptServer/services/user/email" method="post" accept-charset="utf-8">
+    <div>
+        <h1 class="titleText">
+            Draft Email
+        </h1>
+    </div>
+
+    <div class="container">
+        <label><b>Sender Email</b></label>
+        <input type="text" id="senderemail" placeholder="Enter sender email" name="senderemail" required>
+
+        <label><b>Email Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+
+        <label><b>Survey Link</b></label>
+        <input type="text" id="surveylink" placeholder="Enter survey link" name="surveylink" required>
+
+        <label><b>Email Subject</b></label>
+        <input type="text" id="subject" placeholder="Enter email subject" name="subject" required>
+
+        <label><b>Email Body</b><br></label>
+        <textarea class="textBox" id="emailbody" rows="5" placeholder="Enter Email Here" name="emailbody" required></textarea>
+
+        <button type="submit" name="submit" value="Submit">Send Email</button>
+
+    </div>
+    <div class="container">
+        <button type="button" class="signupbtn" id="filters">Filters</button>
+    </div>
+</form>
+<script src="scripts/email.js"></script>
+</body>
+</html>

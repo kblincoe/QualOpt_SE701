@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="scripts/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <form name="signup" id="signup" action="http://localhost:8080/QualOptServer/services/user/newuser" method="post" accept-charset="utf-8">
+        <div>
+            <h1 class="titleText">
+                QualOpt Sign Up
+            </h1>
+        </div>
+
+        <div class="container">
+            <label><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" name="email" required>
+
+            <label><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+
+            <label><b>Profession</b></label>
+            <input type="text" placeholder="Enter Occupation" name="profession" required>
+
+            <label><b>Institute/Workplace</b></label>
+            <input type="text" placeholder="Enter Workplace" name="institute" required>
+
+            <label><b>Mail Server</b></label>
+            <input type="text" placeholder="Enter Mail Server Address" name="mailserver" required>
+
+            <button type="submit" name="submit" value="Submit">Sign Up</button>
+
+        </div>
+    </form>
+    <script src="scripts/signup.js"></script>
+</body>
+</html>
