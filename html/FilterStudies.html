@@ -2,13 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Filter Participants</title>
+        <title>Filter Studies</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
               integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     </head>
     <body>
         <div class="container">
-            <h1 class="text-center">Filter Participants</h1>
+            <h1 class="text-center">Filter Studies</h1>
             <form>
                 <div class="form-group">
                     <label for="programmingLanguage">Programming Language</label>
@@ -38,20 +38,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="contributions">Minimum number of contributions</label>
-                    <input class="form-control" type="number" value="0" id="contributions">
-                </div>
-                <div class="form-group">
-                    <label for="repositories">Minimum number of repositories</label>
-                    <input class="form-control" type="number" value="0" id="repositories">
-                </div>
-                <div class="form-group">
-                    <label for="participants">Limit number of participants</label>
-                    <input class="form-control" type="number" value="10" id="participants">
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" id="emailBody" rows="5"
-                              placeholder="Enter specific users by email or username, comma separated"></textarea>
+                    <label for="invitations">Limit number of invitations</label>
+                    <input class="form-control" type="number" value="10" id="invitations">
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
             </form>
