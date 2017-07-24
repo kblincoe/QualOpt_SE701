@@ -2,33 +2,29 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Study Summary</title>
+        <title>Login</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
               integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     </head>
     <body>
         <div class="container">
-            <h1 class="text-center">Study Summary</h1>
+            <h1 class="text-center">Login</h1>
             <form>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Name">
+                    <input type="email" class="form-control" placeholder="Email">
                 </div>
                 <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" id="description" rows="5"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="incentive">Incentive</label>
-                    <textarea class="form-control" id="incentive" rows="3"></textarea>
+                    <input type="password" class="form-control" placeholder="Password">
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input">
-                        Monetary
+                        Remember me
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
-                <button type="button" class="btn btn-secondary btn-lg btn-block">Draft Email</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                <a href="#">Forgot your password?</a>
+                <button type="submit" class="btn btn-secondary btn-lg btn-block">Sign Up</button>
             </form>
         </div>
     </body>
