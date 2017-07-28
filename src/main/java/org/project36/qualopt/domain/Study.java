@@ -1,10 +1,13 @@
 package org.project36.qualopt.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -30,11 +33,17 @@ public class Study implements Serializable {
     @Column(name = "incentive")
     private String incentive;
 
-    @Column(name = "has_pay")
-    private Boolean hasPay;
+    @OneToMany(mappedBy = "study")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Researcher> researchers = new HashSet<>();
 
-    @ManyToOne
-    private Researcher researcher;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "study_participant",
+               joinColumns = @JoinColumn(name="studies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="participants_id", referencedColumnName="id"))
+    private Set<Participant> participants = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -83,30 +92,54 @@ public class Study implements Serializable {
         this.incentive = incentive;
     }
 
-    public Boolean isHasPay() {
-        return hasPay;
+    public Set<Researcher> getResearchers() {
+        return researchers;
     }
 
-    public Study hasPay(Boolean hasPay) {
-        this.hasPay = hasPay;
+    public Study researchers(Set<Researcher> researchers) {
+        this.researchers = researchers;
         return this;
     }
 
-    public void setHasPay(Boolean hasPay) {
-        this.hasPay = hasPay;
-    }
-
-    public Researcher getResearcher() {
-        return researcher;
-    }
-
-    public Study researcher(Researcher researcher) {
-        this.researcher = researcher;
+    public Study addResearcher(Researcher researcher) {
+        this.researchers.add(researcher);
+        researcher.setStudy(this);
         return this;
     }
 
-    public void setResearcher(Researcher researcher) {
-        this.researcher = researcher;
+    public Study removeResearcher(Researcher researcher) {
+        this.researchers.remove(researcher);
+        researcher.setStudy(null);
+        return this;
+    }
+
+    public void setResearchers(Set<Researcher> researchers) {
+        this.researchers = researchers;
+    }
+
+    public Set<Participant> getParticipants() {
+        return participants;
+    }
+
+    public Study participants(Set<Participant> participants) {
+        this.participants = participants;
+        return this;
+    }
+
+    public Study addParticipant(Participant participant) {
+        this.participants.add(participant);
+        participant.getStudies().add(this);
+        return this;
+    }
+
+    public Study removeParticipant(Participant participant) {
+        this.participants.remove(participant);
+        participant.getStudies().remove(this);
+        return this;
+    }
+
+    public void setParticipants(Set<Participant> participants) {
+        this.participants = participants;
     }
 
     @Override
@@ -118,25 +151,24 @@ public class Study implements Serializable {
             return false;
         }
         Study study = (Study) o;
-        if (study.id == null || id == null) {
+        if (study.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, study.id);
+        return Objects.equals(getId(), study.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Study{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            ", incentive='" + incentive + "'" +
-            ", hasPay='" + hasPay + "'" +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", incentive='" + getIncentive() + "'" +
+            "}";
     }
 }

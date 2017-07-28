@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
 import { SocialRegisterComponent } from './social-register.component';
+import { SocialAuthComponent } from './social-auth.component';
 
 export const socialRegisterRoute: Route = {
     path: 'social-register/:provider?{success:boolean}',
@@ -13,3 +14,12 @@ export const socialRegisterRoute: Route = {
     canActivate: [UserRouteAccessService]
 };
 
+export const socialAuthRoute: Route = {
+    path: 'social-auth',
+    component: SocialAuthComponent,
+    data: {
+        authorities: [],
+        pageTitle: 'Register with {{ label }}'
+    },
+    canActivate: [UserRouteAccessService]
+};

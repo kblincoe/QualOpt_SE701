@@ -1,7 +1,8 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { QualOpt2SharedModule } from '../shared';
+import { QualOptSharedModule } from '../shared';
+/* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
 import {
     adminState,
@@ -29,11 +30,11 @@ import {
     UserModalService
 } from './';
 
-
 @NgModule({
     imports: [
-        QualOpt2SharedModule,
-        RouterModule.forRoot(adminState, { useHash: true })
+        QualOptSharedModule,
+        RouterModule.forRoot(adminState, { useHash: true }),
+        /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
     declarations: [
         AuditsComponent,
@@ -69,4 +70,4 @@ import {
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class QualOpt2AdminModule {}
+export class QualOptAdminModule {}

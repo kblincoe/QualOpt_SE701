@@ -1,13 +1,10 @@
 package org.project36.qualopt.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -27,22 +24,14 @@ public class Researcher implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "occupation")
+    private String occupation;
 
-    @Column(name = "profession")
-    private String profession;
+    @Column(name = "institute")
+    private String institute;
 
-    @Column(name = "institution")
-    private String institution;
-
-    @Column(name = "mail_server")
-    private String mailServer;
-
-    @OneToMany(mappedBy = "researcher")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Study> studies = new HashSet<>();
+    @ManyToOne
+    private Study study;
 
     public Long getId() {
         return id;
@@ -65,81 +54,43 @@ public class Researcher implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getOccupation() {
+        return occupation;
     }
 
-    public Researcher password(String password) {
-        this.password = password;
+    public Researcher occupation(String occupation) {
+        this.occupation = occupation;
         return this;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
     }
 
-    public String getProfession() {
-        return profession;
+    public String getInstitute() {
+        return institute;
     }
 
-    public Researcher profession(String profession) {
-        this.profession = profession;
+    public Researcher institute(String institute) {
+        this.institute = institute;
         return this;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
+    public void setInstitute(String institute) {
+        this.institute = institute;
     }
 
-    public String getInstitution() {
-        return institution;
+    public Study getStudy() {
+        return study;
     }
 
-    public Researcher institution(String institution) {
-        this.institution = institution;
+    public Researcher study(Study study) {
+        this.study = study;
         return this;
     }
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
-    }
-
-    public String getMailServer() {
-        return mailServer;
-    }
-
-    public Researcher mailServer(String mailServer) {
-        this.mailServer = mailServer;
-        return this;
-    }
-
-    public void setMailServer(String mailServer) {
-        this.mailServer = mailServer;
-    }
-
-    public Set<Study> getStudies() {
-        return studies;
-    }
-
-    public Researcher studies(Set<Study> studies) {
-        this.studies = studies;
-        return this;
-    }
-
-    public Researcher addStudy(Study study) {
-        this.studies.add(study);
-        study.setResearcher(this);
-        return this;
-    }
-
-    public Researcher removeStudy(Study study) {
-        this.studies.remove(study);
-        study.setResearcher(null);
-        return this;
-    }
-
-    public void setStudies(Set<Study> studies) {
-        this.studies = studies;
+    public void setStudy(Study study) {
+        this.study = study;
     }
 
     @Override
@@ -151,26 +102,24 @@ public class Researcher implements Serializable {
             return false;
         }
         Researcher researcher = (Researcher) o;
-        if (researcher.id == null || id == null) {
+        if (researcher.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, researcher.id);
+        return Objects.equals(getId(), researcher.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Researcher{" +
-            "id=" + id +
-            ", email='" + email + "'" +
-            ", password='" + password + "'" +
-            ", profession='" + profession + "'" +
-            ", institution='" + institution + "'" +
-            ", mailServer='" + mailServer + "'" +
-            '}';
+            "id=" + getId() +
+            ", email='" + getEmail() + "'" +
+            ", occupation='" + getOccupation() + "'" +
+            ", institute='" + getInstitute() + "'" +
+            "}";
     }
 }

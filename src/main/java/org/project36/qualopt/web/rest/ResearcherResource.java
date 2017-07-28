@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class ResearcherResource {
     private final Logger log = LoggerFactory.getLogger(ResearcherResource.class);
 
     private static final String ENTITY_NAME = "researcher";
-        
+
     private final ResearcherRepository researcherRepository;
 
     public ResearcherResource(ResearcherRepository researcherRepository) {
@@ -59,7 +60,7 @@ public class ResearcherResource {
      * @param researcher the researcher to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated researcher,
      * or with status 400 (Bad Request) if the researcher is not valid,
-     * or with status 500 (Internal Server Error) if the researcher couldnt be updated
+     * or with status 500 (Internal Server Error) if the researcher couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/researchers")
@@ -84,8 +85,7 @@ public class ResearcherResource {
     @Timed
     public List<Researcher> getAllResearchers() {
         log.debug("REST request to get all Researchers");
-        List<Researcher> researchers = researcherRepository.findAll();
-        return researchers;
+        return researcherRepository.findAll();
     }
 
     /**
@@ -115,5 +115,4 @@ public class ResearcherResource {
         researcherRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
 }

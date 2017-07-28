@@ -1,7 +1,7 @@
 # ===================================================================
 # Spring Boot configuration.
 #
-# This configuration will be overriden by the Spring profile you use,
+# This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
 #
 # More information on profiles: https://jhipster.github.io/profiles/
@@ -23,10 +23,10 @@ management:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
 spring:
     application:
-        name: QualOpt2
+        name: QualOpt
     profiles:
         # The commented value for `active` can be replaced with valid Spring profiles to load.
-        # Otherwise, it will be filled in by gradle when building the WAR file
+        # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: #spring.profiles.active#
     jackson:
@@ -96,11 +96,11 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: QualOpt2@localhost
+        from: QualOpt@localhost
     swagger:
         default-include-pattern: /api/.*
-        title: QualOpt2 API
-        description: QualOpt2 API documentation
+        title: QualOpt API
+        description: QualOpt API documentation
         version: 0.0.1
         terms-of-service-url:
         contact-name:
@@ -109,7 +109,7 @@ jhipster:
         license:
         license-url:
     social:
-        redirect-after-sign-in: "/#/home"
+        redirect-after-sign-in: "/#/social-auth"
     ribbon:
         display-on-active-profiles: dev
 

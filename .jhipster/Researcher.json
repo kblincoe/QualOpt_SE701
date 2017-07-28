@@ -2,10 +2,10 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "many-to-one",
             "relationshipName": "study",
             "otherEntityName": "study",
-            "relationshipType": "one-to-many",
-            "otherEntityRelationshipName": "researcher"
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -14,25 +14,17 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "password",
+            "fieldName": "occupation",
             "fieldType": "String"
         },
         {
-            "fieldName": "profession",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "institution",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "mailServer",
+            "fieldName": "institute",
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170404043853",
-    "dto": "no",
-    "service": "no",
+    "changelogDate": "20170728034702",
     "entityTableName": "researcher",
-    "pagination": "no"
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
 }

@@ -1,6 +1,6 @@
 package org.project36.qualopt.web.rest;
 
-import org.project36.qualopt.QualOpt2App;
+import org.project36.qualopt.QualOptApp;
 
 import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.repository.StudyRepository;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see StudyResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = QualOpt2App.class)
+@SpringBootTest(classes = QualOptApp.class)
 public class StudyResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
@@ -45,9 +45,6 @@ public class StudyResourceIntTest {
 
     private static final String DEFAULT_INCENTIVE = "AAAAAAAAAA";
     private static final String UPDATED_INCENTIVE = "BBBBBBBBBB";
-
-    private static final Boolean DEFAULT_HAS_PAY = false;
-    private static final Boolean UPDATED_HAS_PAY = true;
 
     @Autowired
     private StudyRepository studyRepository;
@@ -88,8 +85,7 @@ public class StudyResourceIntTest {
         Study study = new Study()
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
-            .incentive(DEFAULT_INCENTIVE)
-            .hasPay(DEFAULT_HAS_PAY);
+            .incentive(DEFAULT_INCENTIVE);
         return study;
     }
 
@@ -116,7 +112,6 @@ public class StudyResourceIntTest {
         assertThat(testStudy.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testStudy.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testStudy.getIncentive()).isEqualTo(DEFAULT_INCENTIVE);
-        assertThat(testStudy.isHasPay()).isEqualTo(DEFAULT_HAS_PAY);
     }
 
     @Test
@@ -151,8 +146,7 @@ public class StudyResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(study.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].incentive").value(hasItem(DEFAULT_INCENTIVE.toString())))
-            .andExpect(jsonPath("$.[*].hasPay").value(hasItem(DEFAULT_HAS_PAY.booleanValue())));
+            .andExpect(jsonPath("$.[*].incentive").value(hasItem(DEFAULT_INCENTIVE.toString())));
     }
 
     @Test
@@ -168,8 +162,7 @@ public class StudyResourceIntTest {
             .andExpect(jsonPath("$.id").value(study.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.incentive").value(DEFAULT_INCENTIVE.toString()))
-            .andExpect(jsonPath("$.hasPay").value(DEFAULT_HAS_PAY.booleanValue()));
+            .andExpect(jsonPath("$.incentive").value(DEFAULT_INCENTIVE.toString()));
     }
 
     @Test
@@ -192,8 +185,7 @@ public class StudyResourceIntTest {
         updatedStudy
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
-            .incentive(UPDATED_INCENTIVE)
-            .hasPay(UPDATED_HAS_PAY);
+            .incentive(UPDATED_INCENTIVE);
 
         restStudyMockMvc.perform(put("/api/studies")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -207,7 +199,6 @@ public class StudyResourceIntTest {
         assertThat(testStudy.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testStudy.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testStudy.getIncentive()).isEqualTo(UPDATED_INCENTIVE);
-        assertThat(testStudy.isHasPay()).isEqualTo(UPDATED_HAS_PAY);
     }
 
     @Test
@@ -249,5 +240,14 @@ public class StudyResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Study.class);
+        Study study1 = new Study();
+        study1.setId(1L);
+        Study study2 = new Study();
+        study2.setId(study1.getId());
+        assertThat(study1).isEqualTo(study2);
+        study2.setId(2L);
+        assertThat(study1).isNotEqualTo(study2);
+        study1.setId(null);
+        assertThat(study1).isNotEqualTo(study2);
     }
 }
