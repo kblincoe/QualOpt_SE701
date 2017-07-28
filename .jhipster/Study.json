@@ -28,6 +28,10 @@
         {
             "fieldName": "incentive",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "hasPay",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170728034701",

@@ -12,7 +12,11 @@
         <dd>
             <span>{{study.incentive}}</span>
         </dd>
-        <dt><span>Participant</span></dt>
+        <dt><span>Paid</span></dt>
+        <dd>
+            <span>{{study.hasPay}}</span>
+        </dd>
+        <dt><span>Participants</span></dt>
         <dd>
             <span *ngFor="let participant of study.participants; let last = last">
                 <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}

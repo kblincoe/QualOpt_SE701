@@ -19,7 +19,8 @@
             <th><span>Name</span></th>
             <th><span>Description</span></th>
             <th><span>Incentive</span></th>
-            <th><span>Participant</span></th>
+            <th><span>Paid</span></th>
+            <th><span>Participants</span></th>
             <th *jhiHasAnyAuthority="'ROLE_ADMIN'"></th>
             </tr>
             </thead>
@@ -28,6 +29,7 @@
                 <th scope="row"><a [routerLink]="['../study', study.id ]">{{study.name}}</a></th>
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
+                <td>{{study.hasPay}}</td>
                 <td>
                     <span *ngFor="let participant of study.participants; let last = last">
                             <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}

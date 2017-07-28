@@ -33,6 +33,9 @@ public class Study implements Serializable {
     @Column(name = "incentive")
     private String incentive;
 
+    @Column(name = "has_pay")
+    private Boolean hasPay;
+
     @OneToMany(mappedBy = "study")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -90,6 +93,19 @@ public class Study implements Serializable {
 
     public void setIncentive(String incentive) {
         this.incentive = incentive;
+    }
+
+    public Boolean isHasPay() {
+        return hasPay;
+    }
+
+    public Study hasPay(Boolean hasPay) {
+        this.hasPay = hasPay;
+        return this;
+    }
+
+    public void setHasPay(Boolean hasPay) {
+        this.hasPay = hasPay;
     }
 
     public Set<Researcher> getResearchers() {
@@ -169,6 +185,7 @@ public class Study implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", incentive='" + getIncentive() + "'" +
+            ", hasPay='" + isHasPay() + "'" +
             "}";
     }
 }
