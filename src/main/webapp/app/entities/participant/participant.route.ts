@@ -14,7 +14,7 @@ export const participantRoute: Routes = [
         path: 'participant',
         component: ParticipantComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Participants'
         },
         canActivate: [UserRouteAccessService]
@@ -22,7 +22,7 @@ export const participantRoute: Routes = [
         path: 'participant/:id',
         component: ParticipantDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Participants'
         },
         canActivate: [UserRouteAccessService]
@@ -34,7 +34,7 @@ export const participantPopupRoute: Routes = [
         path: 'participant-new',
         component: ParticipantPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Participants'
         },
         canActivate: [UserRouteAccessService],
@@ -44,7 +44,7 @@ export const participantPopupRoute: Routes = [
         path: 'participant/:id/edit',
         component: ParticipantPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Participants'
         },
         canActivate: [UserRouteAccessService],
@@ -54,7 +54,7 @@ export const participantPopupRoute: Routes = [
         path: 'participant/:id/delete',
         component: ParticipantDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Participants'
         },
         canActivate: [UserRouteAccessService],

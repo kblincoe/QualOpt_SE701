@@ -14,7 +14,7 @@ export const researcherRoute: Routes = [
         path: 'researcher',
         component: ResearcherComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Researchers'
         },
         canActivate: [UserRouteAccessService]
@@ -22,7 +22,7 @@ export const researcherRoute: Routes = [
         path: 'researcher/:id',
         component: ResearcherDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Researchers'
         },
         canActivate: [UserRouteAccessService]
@@ -34,7 +34,7 @@ export const researcherPopupRoute: Routes = [
         path: 'researcher-new',
         component: ResearcherPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Researchers'
         },
         canActivate: [UserRouteAccessService],
@@ -44,7 +44,7 @@ export const researcherPopupRoute: Routes = [
         path: 'researcher/:id/edit',
         component: ResearcherPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Researchers'
         },
         canActivate: [UserRouteAccessService],
@@ -54,7 +54,7 @@ export const researcherPopupRoute: Routes = [
         path: 'researcher/:id/delete',
         component: ResearcherDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Researchers'
         },
         canActivate: [UserRouteAccessService],
