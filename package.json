@@ -1,7 +1,7 @@
 {
-  "name": "qual-opt-2",
-  "version": "0.0.0",
-  "description": "Description for QualOpt2",
+  "name": "QualOpt",
+  "version": "0.0.1",
+  "description": "Web app for managing research studies and participants",
   "private": true,
   "cacheDirectories": [
     "node_modules"
