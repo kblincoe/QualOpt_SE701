@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "study",
+            "otherEntityName": "study",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "participant"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "occupation",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170728034703",
+    "entityTableName": "participant",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

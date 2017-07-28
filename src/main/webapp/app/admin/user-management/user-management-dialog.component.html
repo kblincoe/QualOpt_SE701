@@ -8,7 +8,7 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group">
+        <div class="form-group" [hidden]="!user.id">
             <label>ID</label>
             <input type="text" class="form-control" name="id"
                    [(ngModel)]="user.id" readonly>
@@ -17,7 +17,7 @@
         <div class="form-group">
             <label class="form-control-label">Login</label>
             <input type="text" class="form-control" name="login" #loginInput="ngModel"
-                   [(ngModel)]="user.login" required minlength=1 maxlength=50 pattern="^[_'.@A-Za-z0-9-]*$">
+                   [(ngModel)]="user.login" required minlength="1" maxlength="50" pattern="^[_'.@A-Za-z0-9-]*$">
 
             <div *ngIf="loginInput.dirty && loginInput.invalid">
                 <small class="form-text text-danger"
@@ -61,7 +61,7 @@
         <div class="form-group">
             <label class="form-control-label">Email</label>
             <input type="email" class="form-control" name="email" #emailInput="ngModel"
-                   [(ngModel)]="user.email" required maxlength="100">
+                   [(ngModel)]="user.email" minlength="5" required maxlength="100">
 
             <div *ngIf="emailInput.dirty && emailInput.invalid">
                 <small class="form-text text-danger"
@@ -74,9 +74,16 @@
                   >
                     This field cannot be longer than 100 characters.
                 </small>
-		<small class="form-text text-danger"
+
+                <small class="form-text text-danger"
+                   *ngIf="emailInput.errors.minlength"
+                   translate-value-min="5">
+                    This field is required to be at least 5 characters.
+                </small>
+
+                <small class="form-text text-danger"
                    *ngIf="emailInput.errors.email">
-                    Your e-mail is invalid.
+                    Your email is invalid.
                  </small>
             </div>
         </div>

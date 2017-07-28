@@ -15,4 +15,4 @@ import { Http, BaseRequestOptions } from '@angular/http';
         }
     ]
 })
-export class QualOpt2TestModule {}
+export class QualOptTestModule {}

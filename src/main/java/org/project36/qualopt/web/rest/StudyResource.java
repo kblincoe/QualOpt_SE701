@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class StudyResource {
     private final Logger log = LoggerFactory.getLogger(StudyResource.class);
 
     private static final String ENTITY_NAME = "study";
-        
+
     private final StudyRepository studyRepository;
 
     public StudyResource(StudyRepository studyRepository) {
@@ -59,7 +60,7 @@ public class StudyResource {
      * @param study the study to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated study,
      * or with status 400 (Bad Request) if the study is not valid,
-     * or with status 500 (Internal Server Error) if the study couldnt be updated
+     * or with status 500 (Internal Server Error) if the study couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/studies")
@@ -84,8 +85,7 @@ public class StudyResource {
     @Timed
     public List<Study> getAllStudies() {
         log.debug("REST request to get all Studies");
-        List<Study> studies = studyRepository.findAll();
-        return studies;
+        return studyRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -98,7 +98,7 @@ public class StudyResource {
     @Timed
     public ResponseEntity<Study> getStudy(@PathVariable Long id) {
         log.debug("REST request to get Study : {}", id);
-        Study study = studyRepository.findOne(id);
+        Study study = studyRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(study));
     }
 
@@ -115,5 +115,4 @@ public class StudyResource {
         studyRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
 }

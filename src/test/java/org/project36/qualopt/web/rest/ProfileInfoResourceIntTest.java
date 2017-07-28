@@ -1,7 +1,7 @@
 package org.project36.qualopt.web.rest;
 
 import io.github.jhipster.config.JHipsterProperties;
-import org.project36.qualopt.QualOpt2App;
+import org.project36.qualopt.QualOptApp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ProfileInfoResource
  **/
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = QualOpt2App.class)
+@SpringBootTest(classes = QualOptApp.class)
 public class ProfileInfoResourceIntTest {
 
     @Mock

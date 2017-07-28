@@ -8,21 +8,19 @@
         <dd>
             <span>{{researcher.email}}</span>
         </dd>
-        <dt><span>Password</span></dt>
+        <dt><span>Occupation</span></dt>
         <dd>
-            <span>{{researcher.password}}</span>
+            <span>{{researcher.occupation}}</span>
         </dd>
-        <dt><span>Profession</span></dt>
+        <dt><span>Institute</span></dt>
         <dd>
-            <span>{{researcher.profession}}</span>
+            <span>{{researcher.institute}}</span>
         </dd>
-        <dt><span>Institution</span></dt>
+        <dt><span>Study</span></dt>
         <dd>
-            <span>{{researcher.institution}}</span>
-        </dd>
-        <dt><span>Mail Server</span></dt>
-        <dd>
-            <span>{{researcher.mailServer}}</span>
+            <div *ngIf="researcher.study">
+                <a [routerLink]="['/study', researcher.study?.id]">{{researcher.study?.id}}</a>
+            </div>
         </dd>
     </dl>
 

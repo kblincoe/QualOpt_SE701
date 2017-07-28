@@ -15,8 +15,8 @@ public final class HeaderUtil {
 
     public static HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-qualOpt2App-alert", message);
-        headers.add("X-qualOpt2App-params", param);
+        headers.add("X-qualOptApp-alert", message);
+        headers.add("X-qualOptApp-params", param);
         return headers;
     }
 
@@ -33,10 +33,10 @@ public final class HeaderUtil {
     }
 
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
-        log.error("Entity creation failed, {}", defaultMessage);
+        log.error("Entity processing failed, {}", defaultMessage);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-qualOpt2App-error", defaultMessage);
-        headers.add("X-qualOpt2App-params", entityName);
+        headers.add("X-qualOptApp-error", defaultMessage);
+        headers.add("X-qualOptApp-params", entityName);
         return headers;
     }
 }

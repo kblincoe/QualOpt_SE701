@@ -2,10 +2,18 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
             "relationshipName": "researcher",
             "otherEntityName": "researcher",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "email"
+            "otherEntityRelationshipName": "study"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "study",
+            "relationshipName": "participant",
+            "otherEntityName": "participant",
+            "otherEntityField": "email",
+            "ownerSide": true
         }
     ],
     "fields": [
@@ -20,15 +28,11 @@
         {
             "fieldName": "incentive",
             "fieldType": "String"
-        },
-        {
-            "fieldName": "hasPay",
-            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170404044143",
-    "dto": "no",
-    "service": "no",
+    "changelogDate": "20170728034701",
     "entityTableName": "study",
-    "pagination": "no"
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
 }

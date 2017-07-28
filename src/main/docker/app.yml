@@ -1,14 +1,14 @@
 version: '2'
 services:
-    qualopt2-app:
-        image: qualopt2
+    qualopt-app:
+        image: qualopt
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - SPRING_DATASOURCE_URL=jdbc:mysql://qualopt2-mysql:3306/qualopt2?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATASOURCE_URL=jdbc:mysql://qualopt-mysql:3306/qualopt?useUnicode=true&characterEncoding=utf8&useSSL=false
             - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
         ports:
             - 8080:8080
-    qualopt2-mysql:
+    qualopt-mysql:
         extends:
             file: mysql.yml
-            service: qualopt2-mysql
+            service: qualopt-mysql
