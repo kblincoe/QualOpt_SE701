@@ -16,18 +16,16 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
             <th><span>Name</span></th>
             <th><span>Description</span></th>
             <th><span>Incentive</span></th>
             <th><span>Participant</span></th>
-            <th></th>
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let study of studies ;trackBy: trackId">
-                <td><a [routerLink]="['../study', study.id ]">{{study.id}}</a></td>
-                <td>{{study.name}}</td>
+                <th scope="row"><a [routerLink]="['../study', study.id ]">{{study.name}}</a></th>
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
                 <td>
@@ -35,7 +33,7 @@
                             <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td class="text-right">
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'" class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['../study', study.id ]"

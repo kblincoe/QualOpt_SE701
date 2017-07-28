@@ -1,7 +1,7 @@
 {
-  "name": "qual-opt",
-  "version": "0.0.0",
-  "description": "Description for QualOpt",
+  "name": "QualOpt",
+  "version": "0.0.1",
+  "description": "Web app for managing research studies and participants",
   "private": true,
   "license": "UNLICENSED",
   "cacheDirectories": [
