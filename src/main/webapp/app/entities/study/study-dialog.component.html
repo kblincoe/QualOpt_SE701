@@ -37,16 +37,8 @@
                 <input type="checkbox" class="form-check-input" name="hasPay" id="field_hasPay"
                        [(ngModel)]="study.hasPay"
                 />
-                Monetary
+                Paid
             </label>
-        </div>
-
-        <div class="form-group">
-            <label for="field_researcher">Researcher</label>
-            <select class="form-control" id="field_researcher" name="researcher" [(ngModel)]="study.researcher" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="researcherOption.id === study.researcher?.id ? study.researcher : researcherOption" *ngFor="let researcherOption of researchers; trackBy: trackResearcherById">{{researcherOption.email}}</option>
-            </select>
         </div>
     </div>
     <div class="modal-footer">

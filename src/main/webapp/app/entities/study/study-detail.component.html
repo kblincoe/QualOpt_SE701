@@ -16,12 +16,6 @@
         <dd>
             <span>{{study.hasPay}}</span>
         </dd>
-        <dt><span>Researcher</span></dt>
-        <dd>
-            <div *ngIf="study.researcher">
-                <a [routerLink]="['/researcher', study.researcher?.id]">{{study.researcher?.email}}</a>
-            </div>
-        </dd>
     </dl>
 
     <button type="submit"

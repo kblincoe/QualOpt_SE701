@@ -20,7 +20,6 @@
             <th><span>Description</span></th>
             <th><span>Incentive</span></th>
             <th><span>Has Pay</span></th>
-            <th><span>Researcher</span></th>
             <th *jhiHasAnyAuthority="'ROLE_ADMIN'"></th>
             </tr>
             </thead>
@@ -30,11 +29,6 @@
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
                 <td>{{study.hasPay}}</td>
-                <td>
-                    <div *ngIf="study.researcher">
-                        <a [routerLink]="['../researcher', study.researcher?.id ]" >{{study.researcher?.email}}</a>
-                    </div>
-                </td>
                 <td *jhiHasAnyAuthority="'ROLE_ADMIN'" class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
