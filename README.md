@@ -1,6 +1,8 @@
 # QualOpt
 This application was generated using JHipster 4.6.2, you can find documentation and help at [https://jhipster.github.io/documentation-archive/v4.6.2](https://jhipster.github.io/documentation-archive/v4.6.2).
 
+Project documentation is found in the docs directory.
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -21,7 +23,7 @@ We use yarn scripts and [Webpack][] as our build system.
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
-    ./mvnw
+    ./mvnw [mvnw on windows]
     yarn start
 
 [Yarn][] is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
