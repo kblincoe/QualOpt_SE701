@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager, ParseLinks, PaginationUtil, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiAlertService } from 'ng-jhipster';
 
 import { Researcher } from './researcher.model';
 import { ResearcherService } from './researcher.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
 @Component({
@@ -20,18 +19,18 @@ researchers: Researcher[];
 
     constructor(
         private researcherService: ResearcherService,
-        private alertService: AlertService,
-        private eventManager: EventManager,
+        private alertService: JhiAlertService,
+        private eventManager: JhiEventManager,
         private principal: Principal
     ) {
     }
 
     loadAll() {
         this.researcherService.query().subscribe(
-            (res: Response) => {
-                this.researchers = res.json();
+            (res: ResponseWrapper) => {
+                this.researchers = res.json;
             },
-            (res: Response) => this.onError(res.json())
+            (res: ResponseWrapper) => this.onError(res.json)
         );
     }
     ngOnInit() {
@@ -46,18 +45,14 @@ researchers: Researcher[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: Researcher) {
+    trackId(index: number, item: Researcher) {
         return item.id;
     }
-
-
-
     registerChangeInResearchers() {
         this.eventSubscriber = this.eventManager.subscribe('researcherListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

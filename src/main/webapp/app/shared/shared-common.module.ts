@@ -1,41 +1,31 @@
-import { NgModule, Sanitizer } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { AlertService } from 'ng-jhipster';
-
 import {
-    QualOpt2SharedLibsModule,
+    QualOptSharedLibsModule,
     JhiAlertComponent,
     JhiAlertErrorComponent
 } from './';
 
-
-export function alertServiceProvider(sanitizer: Sanitizer) {
-    // set below to true to make alerts look like toast
-    let isToast = false;
-    return new AlertService(sanitizer, isToast);
-}
-
 @NgModule({
     imports: [
-        QualOpt2SharedLibsModule
+        QualOptSharedLibsModule
     ],
     declarations: [
         JhiAlertComponent,
         JhiAlertErrorComponent
     ],
     providers: [
+        Title,
         {
-            provide: AlertService,
-            useFactory: alertServiceProvider,
-            deps: [Sanitizer]
+            provide: LOCALE_ID,
+            useValue: 'en'
         },
-        Title
     ],
     exports: [
-        QualOpt2SharedLibsModule,
+        QualOptSharedLibsModule,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ]
 })
-export class QualOpt2SharedCommonModule {}
+export class QualOptSharedCommonModule {}

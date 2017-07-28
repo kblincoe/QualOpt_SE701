@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { Researcher } from './researcher.model';
 import { ResearcherPopupService } from './researcher-popup.service';
@@ -19,16 +19,16 @@ export class ResearcherDeleteDialogComponent {
     constructor(
         private researcherService: ResearcherService,
         public activeModal: NgbActiveModal,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.researcherService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.researcherService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'researcherListModification',
                 content: 'Deleted an researcher'
@@ -44,18 +44,17 @@ export class ResearcherDeleteDialogComponent {
 })
 export class ResearcherDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private researcherPopupService: ResearcherPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
-            this.modalRef = this.researcherPopupService
-                .open(ResearcherDeleteDialogComponent, params['id']);
+        this.routeSub = this.route.params.subscribe((params) => {
+            this.researcherPopupService
+                .open(ResearcherDeleteDialogComponent as Component, params['id']);
         });
     }
 

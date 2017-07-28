@@ -1,5 +1,3 @@
-
-
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
@@ -17,33 +15,23 @@
         <div class="form-group">
             <label class="form-control-label" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="study.name"
-             />
+                [(ngModel)]="study.name"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_description">Description</label>
             <input type="text" class="form-control" name="description" id="field_description"
-                [(ngModel)]="study.description"
-             />
+                [(ngModel)]="study.description"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_incentive">Incentive</label>
             <input type="text" class="form-control" name="incentive" id="field_incentive"
-                [(ngModel)]="study.incentive"
-             />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_hasPay">Has Pay</label>
-            <input type="checkbox" class="form-control" name="hasPay" id="field_hasPay"
-                [(ngModel)]="study.hasPay"
-             />
+                [(ngModel)]="study.incentive"  />
         </div>
 
         <div class="form-group">
-            <label for="field_researcher">Researcher</label>
-            <select class="form-control" id="field_researcher" name="researcher" [(ngModel)]="study.researcher" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="researcherOption.id === study.researcher?.id ? study.researcher : researcherOption" *ngFor="let researcherOption of researchers; trackBy: trackResearcherById">{{researcherOption.email}}</option>
+            <label for="field_participant">Participant</label>
+            <select class="form-control" id="field_participant" multiple name="participant" [(ngModel)]="study.participants">
+                <option [ngValue]="getSelected(study.participants, participantOption)" *ngFor="let participantOption of participants; trackBy: trackParticipantById">{{participantOption.email}}</option>
             </select>
         </div>
     </div>

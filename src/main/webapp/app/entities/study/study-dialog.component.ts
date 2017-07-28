@@ -2,13 +2,15 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
+import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { Study } from './study.model';
 import { StudyPopupService } from './study-popup.service';
 import { StudyService } from './study.service';
-import { Researcher, ResearcherService } from '../researcher';
+import { Participant, ParticipantService } from '../participant';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-study-dialog',
@@ -17,59 +19,78 @@ import { Researcher, ResearcherService } from '../researcher';
 export class StudyDialogComponent implements OnInit {
 
     study: Study;
-    authorities: any[];
     isSaving: boolean;
 
-    researchers: Researcher[];
+    participants: Participant[];
+
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private studyService: StudyService,
-        private researcherService: ResearcherService,
-        private eventManager: EventManager
+        private participantService: ParticipantService,
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.researcherService.query().subscribe(
-            (res: Response) => { this.researchers = res.json(); }, (res: Response) => this.onError(res.json()));
+        this.participantService.query()
+            .subscribe((res: ResponseWrapper) => { this.participants = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
-    clear () {
+
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.study.id !== undefined) {
-            this.studyService.update(this.study)
-                .subscribe((res: Study) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+            this.subscribeToSaveResponse(
+                this.studyService.update(this.study));
         } else {
-            this.studyService.create(this.study)
-                .subscribe((res: Study) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+            this.subscribeToSaveResponse(
+                this.studyService.create(this.study));
         }
     }
 
-    private onSaveSuccess (result: Study) {
+    private subscribeToSaveResponse(result: Observable<Study>) {
+        result.subscribe((res: Study) =>
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+    }
+
+    private onSaveSuccess(result: Study) {
         this.eventManager.broadcast({ name: 'studyListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
-    trackResearcherById(index: number, item: Researcher) {
+    trackParticipantById(index: number, item: Participant) {
         return item.id;
+    }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 
@@ -79,24 +100,22 @@ export class StudyDialogComponent implements OnInit {
 })
 export class StudyPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private studyPopupService: StudyPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.studyPopupService
-                    .open(StudyDialogComponent, params['id']);
+                this.studyPopupService
+                    .open(StudyDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.studyPopupService
-                    .open(StudyDialogComponent);
+                this.studyPopupService
+                    .open(StudyDialogComponent as Component);
             }
-
         });
     }
 

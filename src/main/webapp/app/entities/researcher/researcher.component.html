@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span>Researchers</span>
-        <button class="btn btn-primary float-right create-researcher" [routerLink]="['/', { outlets: { popup: ['researcher-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-researcher" [routerLink]="['/', { outlets: { popup: ['researcher-new'] } }]">
             <span class="fa fa-plus"></span>
             <span >
             Create new Researcher
@@ -18,10 +18,9 @@
             <tr>
             <th><span>ID</span></th>
             <th><span>Email</span></th>
-            <th><span>Password</span></th>
-            <th><span>Profession</span></th>
-            <th><span>Institution</span></th>
-            <th><span>Mail Server</span></th>
+            <th><span>Occupation</span></th>
+            <th><span>Institute</span></th>
+            <th><span>Study</span></th>
             <th></th>
             </tr>
             </thead>
@@ -29,10 +28,13 @@
             <tr *ngFor="let researcher of researchers ;trackBy: trackId">
                 <td><a [routerLink]="['../researcher', researcher.id ]">{{researcher.id}}</a></td>
                 <td>{{researcher.email}}</td>
-                <td>{{researcher.password}}</td>
-                <td>{{researcher.profession}}</td>
-                <td>{{researcher.institution}}</td>
-                <td>{{researcher.mailServer}}</td>
+                <td>{{researcher.occupation}}</td>
+                <td>{{researcher.institute}}</td>
+                <td>
+                    <div *ngIf="researcher.study">
+                        <a [routerLink]="['../study', researcher.study?.id ]" >{{researcher.study?.id}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

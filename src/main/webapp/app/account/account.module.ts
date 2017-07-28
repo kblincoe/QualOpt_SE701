@@ -1,16 +1,14 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { QualOpt2SharedModule } from '../shared';
+import { QualOptSharedModule } from '../shared';
 
 import {
     Register,
-    Activate,
-    Password,
-    PasswordResetInit,
-    PasswordResetFinish,
-    SessionsService,
-    SessionsComponent,
+    ActivateService,
+    PasswordService,
+    PasswordResetInitService,
+    PasswordResetFinishService,
     PasswordStrengthBarComponent,
     RegisterComponent,
     ActivateComponent,
@@ -19,33 +17,33 @@ import {
     PasswordResetFinishComponent,
     SettingsComponent,
     SocialRegisterComponent,
+    SocialAuthComponent,
     accountState
 } from './';
 
 @NgModule({
     imports: [
-        QualOpt2SharedModule,
+        QualOptSharedModule,
         RouterModule.forRoot(accountState, { useHash: true })
     ],
     declarations: [
         SocialRegisterComponent,
+        SocialAuthComponent,
         ActivateComponent,
         RegisterComponent,
         PasswordComponent,
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SessionsComponent,
         SettingsComponent
     ],
     providers: [
-        SessionsService,
         Register,
-        Activate,
-        Password,
-        PasswordResetInit,
-        PasswordResetFinish
+        ActivateService,
+        PasswordService,
+        PasswordResetInitService,
+        PasswordResetFinishService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class QualOpt2AccountModule {}
+export class QualOptAccountModule {}

@@ -1,6 +1,6 @@
 package org.project36.qualopt.web.rest;
 
-import org.project36.qualopt.QualOpt2App;
+import org.project36.qualopt.QualOptApp;
 
 import org.project36.qualopt.domain.Researcher;
 import org.project36.qualopt.repository.ResearcherRepository;
@@ -34,23 +34,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ResearcherResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = QualOpt2App.class)
+@SpringBootTest(classes = QualOptApp.class)
 public class ResearcherResourceIntTest {
 
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PASSWORD = "AAAAAAAAAA";
-    private static final String UPDATED_PASSWORD = "BBBBBBBBBB";
+    private static final String DEFAULT_OCCUPATION = "AAAAAAAAAA";
+    private static final String UPDATED_OCCUPATION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PROFESSION = "AAAAAAAAAA";
-    private static final String UPDATED_PROFESSION = "BBBBBBBBBB";
-
-    private static final String DEFAULT_INSTITUTION = "AAAAAAAAAA";
-    private static final String UPDATED_INSTITUTION = "BBBBBBBBBB";
-
-    private static final String DEFAULT_MAIL_SERVER = "AAAAAAAAAA";
-    private static final String UPDATED_MAIL_SERVER = "BBBBBBBBBB";
+    private static final String DEFAULT_INSTITUTE = "AAAAAAAAAA";
+    private static final String UPDATED_INSTITUTE = "BBBBBBBBBB";
 
     @Autowired
     private ResearcherRepository researcherRepository;
@@ -90,10 +84,8 @@ public class ResearcherResourceIntTest {
     public static Researcher createEntity(EntityManager em) {
         Researcher researcher = new Researcher()
             .email(DEFAULT_EMAIL)
-            .password(DEFAULT_PASSWORD)
-            .profession(DEFAULT_PROFESSION)
-            .institution(DEFAULT_INSTITUTION)
-            .mailServer(DEFAULT_MAIL_SERVER);
+            .occupation(DEFAULT_OCCUPATION)
+            .institute(DEFAULT_INSTITUTE);
         return researcher;
     }
 
@@ -118,10 +110,8 @@ public class ResearcherResourceIntTest {
         assertThat(researcherList).hasSize(databaseSizeBeforeCreate + 1);
         Researcher testResearcher = researcherList.get(researcherList.size() - 1);
         assertThat(testResearcher.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testResearcher.getPassword()).isEqualTo(DEFAULT_PASSWORD);
-        assertThat(testResearcher.getProfession()).isEqualTo(DEFAULT_PROFESSION);
-        assertThat(testResearcher.getInstitution()).isEqualTo(DEFAULT_INSTITUTION);
-        assertThat(testResearcher.getMailServer()).isEqualTo(DEFAULT_MAIL_SERVER);
+        assertThat(testResearcher.getOccupation()).isEqualTo(DEFAULT_OCCUPATION);
+        assertThat(testResearcher.getInstitute()).isEqualTo(DEFAULT_INSTITUTE);
     }
 
     @Test
@@ -155,10 +145,8 @@ public class ResearcherResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(researcher.getId().intValue())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
-            .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD.toString())))
-            .andExpect(jsonPath("$.[*].profession").value(hasItem(DEFAULT_PROFESSION.toString())))
-            .andExpect(jsonPath("$.[*].institution").value(hasItem(DEFAULT_INSTITUTION.toString())))
-            .andExpect(jsonPath("$.[*].mailServer").value(hasItem(DEFAULT_MAIL_SERVER.toString())));
+            .andExpect(jsonPath("$.[*].occupation").value(hasItem(DEFAULT_OCCUPATION.toString())))
+            .andExpect(jsonPath("$.[*].institute").value(hasItem(DEFAULT_INSTITUTE.toString())));
     }
 
     @Test
@@ -173,10 +161,8 @@ public class ResearcherResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(researcher.getId().intValue()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
-            .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD.toString()))
-            .andExpect(jsonPath("$.profession").value(DEFAULT_PROFESSION.toString()))
-            .andExpect(jsonPath("$.institution").value(DEFAULT_INSTITUTION.toString()))
-            .andExpect(jsonPath("$.mailServer").value(DEFAULT_MAIL_SERVER.toString()));
+            .andExpect(jsonPath("$.occupation").value(DEFAULT_OCCUPATION.toString()))
+            .andExpect(jsonPath("$.institute").value(DEFAULT_INSTITUTE.toString()));
     }
 
     @Test
@@ -198,10 +184,8 @@ public class ResearcherResourceIntTest {
         Researcher updatedResearcher = researcherRepository.findOne(researcher.getId());
         updatedResearcher
             .email(UPDATED_EMAIL)
-            .password(UPDATED_PASSWORD)
-            .profession(UPDATED_PROFESSION)
-            .institution(UPDATED_INSTITUTION)
-            .mailServer(UPDATED_MAIL_SERVER);
+            .occupation(UPDATED_OCCUPATION)
+            .institute(UPDATED_INSTITUTE);
 
         restResearcherMockMvc.perform(put("/api/researchers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -213,10 +197,8 @@ public class ResearcherResourceIntTest {
         assertThat(researcherList).hasSize(databaseSizeBeforeUpdate);
         Researcher testResearcher = researcherList.get(researcherList.size() - 1);
         assertThat(testResearcher.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testResearcher.getPassword()).isEqualTo(UPDATED_PASSWORD);
-        assertThat(testResearcher.getProfession()).isEqualTo(UPDATED_PROFESSION);
-        assertThat(testResearcher.getInstitution()).isEqualTo(UPDATED_INSTITUTION);
-        assertThat(testResearcher.getMailServer()).isEqualTo(UPDATED_MAIL_SERVER);
+        assertThat(testResearcher.getOccupation()).isEqualTo(UPDATED_OCCUPATION);
+        assertThat(testResearcher.getInstitute()).isEqualTo(UPDATED_INSTITUTE);
     }
 
     @Test
@@ -258,5 +240,14 @@ public class ResearcherResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Researcher.class);
+        Researcher researcher1 = new Researcher();
+        researcher1.setId(1L);
+        Researcher researcher2 = new Researcher();
+        researcher2.setId(researcher1.getId());
+        assertThat(researcher1).isEqualTo(researcher2);
+        researcher2.setId(2L);
+        assertThat(researcher1).isNotEqualTo(researcher2);
+        researcher1.setId(null);
+        assertThat(researcher1).isNotEqualTo(researcher2);
     }
 }
