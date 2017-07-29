@@ -34,7 +34,7 @@
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170728034701",
+    "changelogDate": "20170729043309",
     "entityTableName": "study",
     "dto": "no",
     "pagination": "no",

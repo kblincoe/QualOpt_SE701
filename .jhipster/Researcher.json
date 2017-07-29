@@ -22,7 +22,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170728034702",
+    "changelogDate": "20170729043310",
     "entityTableName": "researcher",
     "dto": "no",
     "pagination": "no",

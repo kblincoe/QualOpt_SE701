@@ -40,6 +40,8 @@ public class CacheConfiguration {
             cm.createCache(org.project36.qualopt.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(org.project36.qualopt.domain.PersistentToken.class.getName(), jcacheConfiguration);
+            cm.createCache(org.project36.qualopt.domain.User.class.getName() + ".persistentTokens", jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.SocialUserConnection.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.Study.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.Study.class.getName() + ".researchers", jcacheConfiguration);

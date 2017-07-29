@@ -2,6 +2,7 @@ entity Study {
 	name String,
 	description String,
 	incentive String,
+	hasPay Boolean
 }
 
 entity Researcher {

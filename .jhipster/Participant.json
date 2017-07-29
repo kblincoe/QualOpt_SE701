@@ -19,7 +19,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170728034703",
+    "changelogDate": "20170729043311",
     "entityTableName": "participant",
     "dto": "no",
     "pagination": "no",
