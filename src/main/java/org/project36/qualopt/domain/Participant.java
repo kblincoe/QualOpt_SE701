@@ -21,6 +21,7 @@ public class Participant implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email")
@@ -33,10 +34,6 @@ public class Participant implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Study> studies = new HashSet<>();
-
-    @OneToOne
-    @MapsId
-    private User user;
 
     public Long getId() {
         return id;
