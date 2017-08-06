@@ -34,7 +34,7 @@
                 <td>{{study.hasPay}}</td>
                 <td>
                     <div *ngIf="study.email">
-                        <a [routerLink]="['../email', study.email?.id ]" >{{study.email?.id}}</a>
+                        <a [routerLink]="['../email', study.email?.id ]" >{{study.email?.subject}}</a>
                     </div>
                 </td>
                 <td>
@@ -47,7 +47,7 @@
                         <a [routerLink]="['../researcher', study.researcher?.id ]" >{{study.researcher?.id}}</a>
                     </div>
                 </td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'" class="text-right">
+                <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['../study', study.id ]"

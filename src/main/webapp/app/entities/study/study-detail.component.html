@@ -19,7 +19,7 @@
         <dt><span>Email</span></dt>
         <dd>
             <div *ngIf="study.email">
-                <a [routerLink]="['/email', study.email?.id]">{{study.email?.id}}</a>
+                <a [routerLink]="['/email', study.email?.id]">{{study.email?.subject}}</a>
             </div>
         </dd>
         <dt><span>Participants</span></dt>
@@ -42,17 +42,10 @@
         <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
 
-    <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button"
+    <button type="button"
             [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
             replaceUrl="true"
             class="btn btn-secondary">
         <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/draftEmail'} }]"
-            replaceUrl="true"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Draft Email</span>
     </button>
 </div>

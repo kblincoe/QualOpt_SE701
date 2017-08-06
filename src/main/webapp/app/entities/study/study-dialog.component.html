@@ -7,11 +7,6 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!study.id">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                   [(ngModel)]="study.id" readonly />
-        </div>
         <div class="form-group">
             <label class="form-control-label" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
@@ -32,9 +27,16 @@
         <div class="form-check">
             <label class="form-check-label" for="field_hasPay">
                 <input type="checkbox" class="form-check-input" name="hasPay" id="field_hasPay"
-                   [(ngModel)]="study.hasPay"/>
+                   [(ngModel)]="study.hasPay" />
                 Paid
             </label>
+        </div>
+        <div class="form-group">
+            <label for="field_email">Attach an email</label>
+            <select class="form-control" id="field_email" name="email" [(ngModel)]="study.email">
+                <option [ngValue]="null">New Email</option>
+                <option [ngValue]="emailOption.id === study.email?.id ? study.email : emailOption" *ngFor="let emailOption of emails; trackBy: trackEmailById">{{emailOption.subject}}</option>
+            </select>
         </div>
     </div>
     <div class="modal-footer">

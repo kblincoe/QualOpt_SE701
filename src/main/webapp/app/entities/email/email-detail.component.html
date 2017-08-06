@@ -1,14 +1,9 @@
 
 <div *ngIf="email">
-    <h2><span>Email</span> {{email.id}}</h2>
+    <h2>{{email.subject}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span>Subject</span></dt>
-        <dd>
-            <span>{{email.subject}}</span>
-        </dd>
-        <dt><span>Body</span></dt>
         <dd>
             <span>{{email.body}}</span>
         </dd>

@@ -16,17 +16,13 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
             <th><span>Subject</span></th>
-            <th><span>Body</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let email of emails ;trackBy: trackId">
-                <td><a [routerLink]="['../email', email.id ]">{{email.id}}</a></td>
-                <td>{{email.subject}}</td>
-                <td>{{email.body}}</td>
+                <td><a [routerLink]="['../email', email.id ]">{{email.subject}}</a></td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
