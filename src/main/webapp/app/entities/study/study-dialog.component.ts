@@ -10,6 +10,7 @@ import { Study } from './study.model';
 import { StudyPopupService } from './study-popup.service';
 import { StudyService } from './study.service';
 import { User, UserService } from '../../shared';
+import { Participant, ParticipantService } from '../participant';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -23,12 +24,15 @@ export class StudyDialogComponent implements OnInit {
 
     users: User[];
 
+    participants: Participant[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
         private alertService: JhiAlertService,
         private studyService: StudyService,
         private userService: UserService,
+        private participantService: ParticipantService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -37,6 +41,8 @@ export class StudyDialogComponent implements OnInit {
         this.isSaving = false;
         this.userService.query()
             .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.participantService.query()
+            .subscribe((res: ResponseWrapper) => { this.participants = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     byteSize(field) {
@@ -102,6 +108,21 @@ export class StudyDialogComponent implements OnInit {
 
     trackUserById(index: number, item: User) {
         return item.id;
+    }
+
+    trackParticipantById(index: number, item: Participant) {
+        return item.id;
+    }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 

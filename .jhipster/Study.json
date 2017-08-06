@@ -6,6 +6,14 @@
             "relationshipName": "user",
             "otherEntityName": "user",
             "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "study",
+            "relationshipName": "participant",
+            "otherEntityName": "participant",
+            "otherEntityField": "email",
+            "ownerSide": true
         }
     ],
     "fields": [

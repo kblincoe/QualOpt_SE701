@@ -22,6 +22,7 @@
             <th><span>Incentive</span></th>
             <th><span>Has Pay</span></th>
             <th><span>User</span></th>
+            <th><span>Participant</span></th>
             <th></th>
             </tr>
             </thead>
@@ -34,6 +35,11 @@
                 <td>{{study.hasPay}}</td>
                 <td>
                     {{study.user?.login}}
+                </td>
+                <td>
+                    <span *ngFor="let participant of study.participants; let last = last">
+                            <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

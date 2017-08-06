@@ -15,46 +15,39 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Study.
+        Added the entity Participant.
     -->
-    <changeSet id="20170729043309-1" author="jhipster">
-        <createTable tableName="study">
+    <changeSet id="20170806124646-1" author="jhipster">
+        <createTable tableName="participant">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="email" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="description" type="clob">
+            <column name="occupation" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="incentive" type="clob">
+            <column name="location" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="has_pay" type="bit">
+            <column name="programming_language" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="user_id" type="bigint">
+            <column name="number_of_contributions" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="number_of_repositories" type="integer">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
-        <createTable tableName="study_participant">
-            <column name="participants_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="studies_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="studies_id, participants_id" tableName="study_participant"/>
         
     </changeSet>
 </databaseChangeLog>

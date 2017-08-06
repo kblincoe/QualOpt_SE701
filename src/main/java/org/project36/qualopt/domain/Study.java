@@ -6,6 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -39,6 +41,13 @@ public class Study implements Serializable {
 
     @ManyToOne
     private User user;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "study_participant",
+               joinColumns = @JoinColumn(name="studies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="participants_id", referencedColumnName="id"))
+    private Set<Participant> participants = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -111,6 +120,31 @@ public class Study implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Participant> getParticipants() {
+        return participants;
+    }
+
+    public Study participants(Set<Participant> participants) {
+        this.participants = participants;
+        return this;
+    }
+
+    public Study addParticipant(Participant participant) {
+        this.participants.add(participant);
+        participant.getStudies().add(this);
+        return this;
+    }
+
+    public Study removeParticipant(Participant participant) {
+        this.participants.remove(participant);
+        participant.getStudies().remove(this);
+        return this;
+    }
+
+    public void setParticipants(Set<Participant> participants) {
+        this.participants = participants;
     }
 
     @Override

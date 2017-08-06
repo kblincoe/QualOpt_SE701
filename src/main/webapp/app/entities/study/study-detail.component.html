@@ -24,6 +24,12 @@
         <dd>
             {{study.user?.login}}
         </dd>
+        <dt><span>Participant</span></dt>
+        <dd>
+            <span *ngFor="let participant of study.participants; let last = last">
+                <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
     </dl>
 
     <button type="submit"

@@ -86,7 +86,7 @@ public class StudyResource {
     @Timed
     public List<Study> getAllStudies() {
         log.debug("REST request to get all Studies");
-        return studyRepository.findByUserIsCurrentUser();
+        return studyRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -99,7 +99,7 @@ public class StudyResource {
     @Timed
     public ResponseEntity<Study> getStudy(@PathVariable Long id) {
         log.debug("REST request to get Study : {}", id);
-        Study study = studyRepository.findOne(id);
+        Study study = studyRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(study));
     }
 

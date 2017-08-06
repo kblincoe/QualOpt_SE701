@@ -1,0 +1,46 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "study",
+            "otherEntityName": "study",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "participant"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "email",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "occupation",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "location",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "programmingLanguage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "numberOfContributions",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "numberOfRepositories",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170806124646",
+    "entityTableName": "participant",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

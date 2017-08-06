@@ -10,10 +10,23 @@ entity Email {
     body TextBlob
 }
 
+entity Participant {
+	email String required,
+    occupation String,
+    location String,
+	programmingLanguage String,
+    numberOfContributions Integer,
+    numberOfRepositories Integer
+}
+
 relationship ManyToOne {
     Study{user(login)} to User
 }
 
 relationship OneToOne {
     Email{study} to Study
+}
+
+relationship ManyToMany {
+	Study{participant(email)} to Participant{study}
 }
