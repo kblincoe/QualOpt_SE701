@@ -2,40 +2,29 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "email",
-            "otherEntityName": "email",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "study"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "study",
-            "relationshipName": "participant",
-            "otherEntityName": "participant",
-            "otherEntityField": "emailAddress",
-            "ownerSide": true
-        },
-        {
-            "relationshipName": "researcher",
-            "otherEntityName": "researcher",
             "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login"
         }
     ],
     "fields": [
         {
             "fieldName": "name",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         },
         {
             "fieldName": "incentive",
-            "fieldType": "String"
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         },
         {
             "fieldName": "hasPay",

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Study } from './study.model';
 import { StudyService } from './study.service';
@@ -20,6 +20,7 @@ studies: Study[];
     constructor(
         private studyService: StudyService,
         private alertService: JhiAlertService,
+        private dataUtils: JhiDataUtils,
         private eventManager: JhiEventManager,
         private principal: Principal
     ) {
@@ -47,6 +48,14 @@ studies: Study[];
 
     trackId(index: number, item: Study) {
         return item.id;
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     registerChangeInStudies() {
         this.eventSubscriber = this.eventManager.subscribe('studyListModification', (response) => this.loadAll());

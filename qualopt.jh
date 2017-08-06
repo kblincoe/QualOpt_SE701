@@ -1,34 +1,19 @@
 entity Study {
-	name String,
-	description String,
-	incentive String,
+	name String required,
+	description TextBlob,
+	incentive TextBlob,
 	hasPay Boolean
 }
 
-entity Researcher {
-	emailAddress String,
-    occupation String,
-    institute String
-}
-
-entity Participant {
-	emailAddress String,
-    occupation String
-}
-
 entity Email {
-	subject String,
-    body String
+	subject String required,
+    body TextBlob
 }
 
-relationship OneToMany {
-	Researcher{study} to Study
+relationship ManyToOne {
+    Study{user(login)} to User
 }
 
 relationship OneToOne {
-    Study{email} to Email
-}
-
-relationship ManyToMany {
-	Study{participant(emailAddress)} to Participant{study}
+    Email{study} to Study
 }

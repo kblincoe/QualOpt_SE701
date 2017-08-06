@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -136,6 +137,24 @@ public class StudyResourceIntTest {
         // Validate the Alice in the database
         List<Study> studyList = studyRepository.findAll();
         assertThat(studyList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = studyRepository.findAll().size();
+        // set the field null
+        study.setName(null);
+
+        // Create the Study, which fails.
+
+        restStudyMockMvc.perform(post("/api/studies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(study)))
+            .andExpect(status().isBadRequest());
+
+        List<Study> studyList = studyRepository.findAll();
+        assertThat(studyList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

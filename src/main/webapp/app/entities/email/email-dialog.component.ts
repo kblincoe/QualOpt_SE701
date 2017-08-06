@@ -4,11 +4,13 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Email } from './email.model';
 import { EmailPopupService } from './email-popup.service';
 import { EmailService } from './email.service';
+import { Study, StudyService } from '../study';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-email-dialog',
@@ -19,16 +21,54 @@ export class EmailDialogComponent implements OnInit {
     email: Email;
     isSaving: boolean;
 
+    studies: Study[];
+
     constructor(
         public activeModal: NgbActiveModal,
+        private dataUtils: JhiDataUtils,
         private alertService: JhiAlertService,
         private emailService: EmailService,
+        private studyService: StudyService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.studyService
+            .query({filter: 'email-is-null'})
+            .subscribe((res: ResponseWrapper) => {
+                if (!this.email.study || !this.email.study.id) {
+                    this.studies = res.json;
+                } else {
+                    this.studyService
+                        .find(this.email.study.id)
+                        .subscribe((subRes: Study) => {
+                            this.studies = [subRes].concat(res.json);
+                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
+                }
+            }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+
+    setFileData(event, email, field, isImage) {
+        if (event && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            if (isImage && !/^image\//.test(file.type)) {
+                return;
+            }
+            this.dataUtils.toBase64(file, (base64Data) => {
+                email[field] = base64Data;
+                email[`${field}ContentType`] = file.type;
+            });
+        }
     }
 
     clear() {
@@ -69,6 +109,10 @@ export class EmailDialogComponent implements OnInit {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    trackStudyById(index: number, item: Study) {
+        return item.id;
     }
 }
 

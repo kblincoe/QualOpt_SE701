@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -126,6 +127,24 @@ public class EmailResourceIntTest {
         // Validate the Alice in the database
         List<Email> emailList = emailRepository.findAll();
         assertThat(emailList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkSubjectIsRequired() throws Exception {
+        int databaseSizeBeforeTest = emailRepository.findAll().size();
+        // set the field null
+        email.setSubject(null);
+
+        // Create the Email, which fails.
+
+        restEmailMockMvc.perform(post("/api/emails")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(email)))
+            .andExpect(status().isBadRequest());
+
+        List<Email> emailList = emailRepository.findAll();
+        assertThat(emailList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

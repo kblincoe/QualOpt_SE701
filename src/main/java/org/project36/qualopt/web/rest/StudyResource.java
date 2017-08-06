@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class StudyResource {
      */
     @PostMapping("/studies")
     @Timed
-    public ResponseEntity<Study> createStudy(@RequestBody Study study) throws URISyntaxException {
+    public ResponseEntity<Study> createStudy(@Valid @RequestBody Study study) throws URISyntaxException {
         log.debug("REST request to save Study : {}", study);
         if (study.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new study cannot already have an ID")).body(null);
@@ -65,7 +66,7 @@ public class StudyResource {
      */
     @PutMapping("/studies")
     @Timed
-    public ResponseEntity<Study> updateStudy(@RequestBody Study study) throws URISyntaxException {
+    public ResponseEntity<Study> updateStudy(@Valid @RequestBody Study study) throws URISyntaxException {
         log.debug("REST request to update Study : {}", study);
         if (study.getId() == null) {
             return createStudy(study);
@@ -85,7 +86,7 @@ public class StudyResource {
     @Timed
     public List<Study> getAllStudies() {
         log.debug("REST request to get all Studies");
-        return studyRepository.findAllWithEagerRelationships();
+        return studyRepository.findByUserIsCurrentUser();
     }
 
     /**
@@ -98,7 +99,7 @@ public class StudyResource {
     @Timed
     public ResponseEntity<Study> getStudy(@PathVariable Long id) {
         log.debug("REST request to get Study : {}", id);
-        Study study = studyRepository.findOneWithEagerRelationships(id);
+        Study study = studyRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(study));
     }
 

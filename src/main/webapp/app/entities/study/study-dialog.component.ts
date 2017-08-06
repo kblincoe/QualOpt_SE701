@@ -4,14 +4,12 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Study } from './study.model';
 import { StudyPopupService } from './study-popup.service';
 import { StudyService } from './study.service';
-import { Email, EmailService } from '../email';
-import { Participant, ParticipantService } from '../participant';
-import { Researcher, ResearcherService } from '../researcher';
+import { User, UserService } from '../../shared';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -23,42 +21,43 @@ export class StudyDialogComponent implements OnInit {
     study: Study;
     isSaving: boolean;
 
-    emails: Email[];
-
-    participants: Participant[];
-
-    researchers: Researcher[];
+    users: User[];
 
     constructor(
         public activeModal: NgbActiveModal,
+        private dataUtils: JhiDataUtils,
         private alertService: JhiAlertService,
         private studyService: StudyService,
-        private emailService: EmailService,
-        private participantService: ParticipantService,
-        private researcherService: ResearcherService,
+        private userService: UserService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.emailService
-            .query({filter: 'study-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.study.email || !this.study.email.id) {
-                    this.emails = res.json;
-                } else {
-                    this.emailService
-                        .find(this.study.email.id)
-                        .subscribe((subRes: Email) => {
-                            this.emails = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
-        this.participantService.query()
-            .subscribe((res: ResponseWrapper) => { this.participants = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.researcherService.query()
-            .subscribe((res: ResponseWrapper) => { this.researchers = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.userService.query()
+            .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+
+    setFileData(event, study, field, isImage) {
+        if (event && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            if (isImage && !/^image\//.test(file.type)) {
+                return;
+            }
+            this.dataUtils.toBase64(file, (base64Data) => {
+                study[field] = base64Data;
+                study[`${field}ContentType`] = file.type;
+            });
+        }
     }
 
     clear() {
@@ -101,27 +100,8 @@ export class StudyDialogComponent implements OnInit {
         this.alertService.error(error.message, null, null);
     }
 
-    trackEmailById(index: number, item: Email) {
+    trackUserById(index: number, item: User) {
         return item.id;
-    }
-
-    trackParticipantById(index: number, item: Participant) {
-        return item.id;
-    }
-
-    trackResearcherById(index: number, item: Researcher) {
-        return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 
