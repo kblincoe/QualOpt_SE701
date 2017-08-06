@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,21 +24,23 @@ public class Study implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
+    @Lob
     @Column(name = "incentive")
     private String incentive;
 
     @Column(name = "has_pay")
     private Boolean hasPay;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Email email;
+    @ManyToOne
+    private User user;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -45,9 +48,6 @@ public class Study implements Serializable {
                joinColumns = @JoinColumn(name="studies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="participants_id", referencedColumnName="id"))
     private Set<Participant> participants = new HashSet<>();
-
-    @ManyToOne
-    private Researcher researcher;
 
     public Long getId() {
         return id;
@@ -109,17 +109,17 @@ public class Study implements Serializable {
         this.hasPay = hasPay;
     }
 
-    public Email getEmail() {
-        return email;
+    public User getUser() {
+        return user;
     }
 
-    public Study email(Email email) {
-        this.email = email;
+    public Study user(User user) {
+        this.user = user;
         return this;
     }
 
-    public void setEmail(Email email) {
-        this.email = email;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Set<Participant> getParticipants() {
@@ -145,19 +145,6 @@ public class Study implements Serializable {
 
     public void setParticipants(Set<Participant> participants) {
         this.participants = participants;
-    }
-
-    public Researcher getResearcher() {
-        return researcher;
-    }
-
-    public Study researcher(Researcher researcher) {
-        this.researcher = researcher;
-        return this;
-    }
-
-    public void setResearcher(Researcher researcher) {
-        this.researcher = researcher;
     }
 
     @Override

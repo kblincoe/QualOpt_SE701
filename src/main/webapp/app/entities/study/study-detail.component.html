@@ -1,9 +1,13 @@
 
 <div *ngIf="study">
-    <h2>{{study.name}}</h2>
+    <h2><span>Study</span> {{study.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{study.name}}</span>
+        </dd>
         <dt><span>Description</span></dt>
         <dd>
             <span>{{study.description}}</span>
@@ -12,27 +16,19 @@
         <dd>
             <span>{{study.incentive}}</span>
         </dd>
-        <dt><span>Paid</span></dt>
+        <dt><span>Has Pay</span></dt>
         <dd>
             <span>{{study.hasPay}}</span>
         </dd>
-        <dt><span>Email</span></dt>
+        <dt><span>User</span></dt>
         <dd>
-            <div *ngIf="study.email">
-                <a [routerLink]="['/email', study.email?.id]">{{study.email?.subject}}</a>
-            </div>
+            {{study.user?.login}}
         </dd>
-        <dt><span>Participants</span></dt>
+        <dt><span>Participant</span></dt>
         <dd>
             <span *ngFor="let participant of study.participants; let last = last">
-                <a [routerLink]="['/participant', participant?.id ]">{{participant.emailAddress}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
             </span>
-        </dd>
-        <dt><span>Researcher</span></dt>
-        <dd>
-            <div *ngIf="study.researcher">
-                <a [routerLink]="['/researcher', study.researcher?.id]">{{study.researcher?.id}}</a>
-            </div>
         </dd>
     </dl>
 
@@ -45,7 +41,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
             replaceUrl="true"
-            class="btn btn-secondary">
+            class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
     </button>
 </div>

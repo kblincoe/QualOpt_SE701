@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class ParticipantResource {
      */
     @PostMapping("/participants")
     @Timed
-    public ResponseEntity<Participant> createParticipant(@RequestBody Participant participant) throws URISyntaxException {
+    public ResponseEntity<Participant> createParticipant(@Valid @RequestBody Participant participant) throws URISyntaxException {
         log.debug("REST request to save Participant : {}", participant);
         if (participant.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new participant cannot already have an ID")).body(null);
@@ -65,7 +66,7 @@ public class ParticipantResource {
      */
     @PutMapping("/participants")
     @Timed
-    public ResponseEntity<Participant> updateParticipant(@RequestBody Participant participant) throws URISyntaxException {
+    public ResponseEntity<Participant> updateParticipant(@Valid @RequestBody Participant participant) throws URISyntaxException {
         log.debug("REST request to update Participant : {}", participant);
         if (participant.getId() == null) {
             return createParticipant(participant);

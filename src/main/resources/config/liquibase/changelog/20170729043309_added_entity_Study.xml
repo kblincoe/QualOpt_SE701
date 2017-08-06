@@ -23,24 +23,22 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="description" type="clob">
                 <constraints nullable="true" />
             </column>
 
-            <column name="description" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="incentive" type="varchar(255)">
+            <column name="incentive" type="clob">
                 <constraints nullable="true" />
             </column>
 
             <column name="has_pay" type="bit">
                 <constraints nullable="true" />
             </column>
-            <column name="email_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>
-            <column name="researcher_id" type="bigint">
+
+            <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,11 +25,24 @@ public class Participant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email_address")
-    private String emailAddress;
+    @NotNull
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "occupation")
     private String occupation;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "programming_language")
+    private String programmingLanguage;
+
+    @Column(name = "number_of_contributions")
+    private Integer numberOfContributions;
+
+    @Column(name = "number_of_repositories")
+    private Integer numberOfRepositories;
 
     @ManyToMany(mappedBy = "participants")
     @JsonIgnore
@@ -43,17 +57,17 @@ public class Participant implements Serializable {
         this.id = id;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public String getEmail() {
+        return email;
     }
 
-    public Participant emailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public Participant email(String email) {
+        this.email = email;
         return this;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getOccupation() {
@@ -67,6 +81,58 @@ public class Participant implements Serializable {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public Participant location(String location) {
+        this.location = location;
+        return this;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getProgrammingLanguage() {
+        return programmingLanguage;
+    }
+
+    public Participant programmingLanguage(String programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
+        return this;
+    }
+
+    public void setProgrammingLanguage(String programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
+    }
+
+    public Integer getNumberOfContributions() {
+        return numberOfContributions;
+    }
+
+    public Participant numberOfContributions(Integer numberOfContributions) {
+        this.numberOfContributions = numberOfContributions;
+        return this;
+    }
+
+    public void setNumberOfContributions(Integer numberOfContributions) {
+        this.numberOfContributions = numberOfContributions;
+    }
+
+    public Integer getNumberOfRepositories() {
+        return numberOfRepositories;
+    }
+
+    public Participant numberOfRepositories(Integer numberOfRepositories) {
+        this.numberOfRepositories = numberOfRepositories;
+        return this;
+    }
+
+    public void setNumberOfRepositories(Integer numberOfRepositories) {
+        this.numberOfRepositories = numberOfRepositories;
     }
 
     public Set<Study> getStudies() {
@@ -118,8 +184,12 @@ public class Participant implements Serializable {
     public String toString() {
         return "Participant{" +
             "id=" + getId() +
-            ", emailAddress='" + getEmailAddress() + "'" +
+            ", email='" + getEmail() + "'" +
             ", occupation='" + getOccupation() + "'" +
+            ", location='" + getLocation() + "'" +
+            ", programmingLanguage='" + getProgrammingLanguage() + "'" +
+            ", numberOfContributions='" + getNumberOfContributions() + "'" +
+            ", numberOfRepositories='" + getNumberOfRepositories() + "'" +
             "}";
     }
 }

@@ -1,15 +1,14 @@
-import { BaseEntity } from './../../shared';
+import { BaseEntity, User } from './../../shared';
 
 export class Study implements BaseEntity {
     constructor(
         public id?: number,
         public name?: string,
-        public description?: string,
-        public incentive?: string,
+        public description?: any,
+        public incentive?: any,
         public hasPay?: boolean,
-        public email?: BaseEntity,
+        public user?: User,
         public participants?: BaseEntity[],
-        public researcher?: BaseEntity,
     ) {
         this.hasPay = false;
     }

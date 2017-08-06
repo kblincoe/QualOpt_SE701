@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager  } from 'ng-jhipster';
+import { JhiEventManager , JhiDataUtils } from 'ng-jhipster';
 
 import { Email } from './email.model';
 import { EmailService } from './email.service';
@@ -18,6 +18,7 @@ export class EmailDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         private eventManager: JhiEventManager,
+        private dataUtils: JhiDataUtils,
         private emailService: EmailService,
         private route: ActivatedRoute
     ) {
@@ -34,6 +35,13 @@ export class EmailDetailComponent implements OnInit, OnDestroy {
         this.emailService.find(id).subscribe((email) => {
             this.email = email;
         });
+    }
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     previousState() {
         window.history.back();

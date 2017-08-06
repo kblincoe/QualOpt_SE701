@@ -13,6 +13,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface StudyRepository extends JpaRepository<Study,Long> {
+
+    @Query("select study from Study study where study.user.login = ?#{principal.username}")
+    List<Study> findByUserIsCurrentUser();
     
     @Query("select distinct study from Study study left join fetch study.participants")
     List<Study> findAllWithEagerRelationships();
