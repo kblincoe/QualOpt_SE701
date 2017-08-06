@@ -1,20 +1,16 @@
 
-<div *ngIf="researcher">
-    <h2><span>Researcher</span> {{researcher.id}}</h2>
+<div *ngIf="email">
+    <h2><span>Email</span> {{email.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span>Email Address</span></dt>
+        <dt><span>Subject</span></dt>
         <dd>
-            <span>{{researcher.emailAddress}}</span>
+            <span>{{email.subject}}</span>
         </dd>
-        <dt><span>Occupation</span></dt>
+        <dt><span>Body</span></dt>
         <dd>
-            <span>{{researcher.occupation}}</span>
-        </dd>
-        <dt><span>Institute</span></dt>
-        <dd>
-            <span>{{researcher.institute}}</span>
+            <span>{{email.body}}</span>
         </dd>
     </dl>
 
@@ -25,7 +21,7 @@
     </button>
 
     <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'researcher/'+ researcher.id + '/edit'} }]"
+            [routerLink]="['/', { outlets: { popup: 'email/'+ email.id + '/edit'} }]"
             replaceUrl="true"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>

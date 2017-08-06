@@ -2,15 +2,15 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "one-to-many",
             "relationshipName": "study",
             "otherEntityName": "study",
-            "otherEntityField": "id"
+            "otherEntityRelationshipName": "researcher"
         }
     ],
     "fields": [
         {
-            "fieldName": "email",
+            "fieldName": "emailAddress",
             "fieldType": "String"
         },
         {

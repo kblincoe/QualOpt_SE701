@@ -1,0 +1,34 @@
+entity Study {
+	name String,
+	description String,
+	incentive String,
+	hasPay Boolean
+}
+
+entity Researcher {
+	emailAddress String,
+    occupation String,
+    institute String
+}
+
+entity Participant {
+	emailAddress String,
+    occupation String
+}
+
+entity Email {
+	subject String,
+    body String
+}
+
+relationship OneToMany {
+	Researcher{study} to Study
+}
+
+relationship OneToOne {
+    Study{email} to Email
+}
+
+relationship ManyToMany {
+	Study{participant(emailAddress)} to Participant{study}
+}

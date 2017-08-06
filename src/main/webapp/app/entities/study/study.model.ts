@@ -7,8 +7,9 @@ export class Study implements BaseEntity {
         public description?: string,
         public incentive?: string,
         public hasPay?: boolean,
-        public researchers?: BaseEntity[],
+        public email?: BaseEntity,
         public participants?: BaseEntity[],
+        public researcher?: BaseEntity,
     ) {
         this.hasPay = false;
     }

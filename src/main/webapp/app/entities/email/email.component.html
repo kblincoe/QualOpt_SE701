@@ -1,10 +1,10 @@
 <div>
     <h2>
-        <span>Researchers</span>
-        <button class="btn btn-primary float-right jh-create-entity create-researcher" [routerLink]="['/', { outlets: { popup: ['researcher-new'] } }]">
+        <span>Emails</span>
+        <button class="btn btn-primary float-right jh-create-entity create-email" [routerLink]="['/', { outlets: { popup: ['email-new'] } }]">
             <span class="fa fa-plus"></span>
             <span >
-            Create new Researcher
+            Create new Email
             </span>
         </button>
     </h2>
@@ -12,40 +12,38 @@
     <div class="row">
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="researchers">
+    <div class="table-responsive" *ngIf="emails">
         <table class="table table-striped">
             <thead>
             <tr>
             <th><span>ID</span></th>
-            <th><span>Email Address</span></th>
-            <th><span>Occupation</span></th>
-            <th><span>Institute</span></th>
+            <th><span>Subject</span></th>
+            <th><span>Body</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let researcher of researchers ;trackBy: trackId">
-                <td><a [routerLink]="['../researcher', researcher.id ]">{{researcher.id}}</a></td>
-                <td>{{researcher.emailAddress}}</td>
-                <td>{{researcher.occupation}}</td>
-                <td>{{researcher.institute}}</td>
+            <tr *ngFor="let email of emails ;trackBy: trackId">
+                <td><a [routerLink]="['../email', email.id ]">{{email.id}}</a></td>
+                <td>{{email.subject}}</td>
+                <td>{{email.body}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../researcher', researcher.id ]"
+                                [routerLink]="['../email', email.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="hidden-md-down">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'researcher/'+ researcher.id + '/edit'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'email/'+ email.id + '/edit'} }]"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'researcher/'+ researcher.id + '/delete'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'email/'+ email.id + '/delete'} }]"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
                             <span class="fa fa-remove"></span>

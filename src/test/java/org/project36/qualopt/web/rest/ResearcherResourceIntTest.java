@@ -37,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = QualOptApp.class)
 public class ResearcherResourceIntTest {
 
-    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
-    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+    private static final String DEFAULT_EMAIL_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL_ADDRESS = "BBBBBBBBBB";
 
     private static final String DEFAULT_OCCUPATION = "AAAAAAAAAA";
     private static final String UPDATED_OCCUPATION = "BBBBBBBBBB";
@@ -83,7 +83,7 @@ public class ResearcherResourceIntTest {
      */
     public static Researcher createEntity(EntityManager em) {
         Researcher researcher = new Researcher()
-            .email(DEFAULT_EMAIL)
+            .emailAddress(DEFAULT_EMAIL_ADDRESS)
             .occupation(DEFAULT_OCCUPATION)
             .institute(DEFAULT_INSTITUTE);
         return researcher;
@@ -109,7 +109,7 @@ public class ResearcherResourceIntTest {
         List<Researcher> researcherList = researcherRepository.findAll();
         assertThat(researcherList).hasSize(databaseSizeBeforeCreate + 1);
         Researcher testResearcher = researcherList.get(researcherList.size() - 1);
-        assertThat(testResearcher.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testResearcher.getEmailAddress()).isEqualTo(DEFAULT_EMAIL_ADDRESS);
         assertThat(testResearcher.getOccupation()).isEqualTo(DEFAULT_OCCUPATION);
         assertThat(testResearcher.getInstitute()).isEqualTo(DEFAULT_INSTITUTE);
     }
@@ -144,7 +144,7 @@ public class ResearcherResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(researcher.getId().intValue())))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
+            .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS.toString())))
             .andExpect(jsonPath("$.[*].occupation").value(hasItem(DEFAULT_OCCUPATION.toString())))
             .andExpect(jsonPath("$.[*].institute").value(hasItem(DEFAULT_INSTITUTE.toString())));
     }
@@ -160,7 +160,7 @@ public class ResearcherResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(researcher.getId().intValue()))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+            .andExpect(jsonPath("$.emailAddress").value(DEFAULT_EMAIL_ADDRESS.toString()))
             .andExpect(jsonPath("$.occupation").value(DEFAULT_OCCUPATION.toString()))
             .andExpect(jsonPath("$.institute").value(DEFAULT_INSTITUTE.toString()));
     }
@@ -183,7 +183,7 @@ public class ResearcherResourceIntTest {
         // Update the researcher
         Researcher updatedResearcher = researcherRepository.findOne(researcher.getId());
         updatedResearcher
-            .email(UPDATED_EMAIL)
+            .emailAddress(UPDATED_EMAIL_ADDRESS)
             .occupation(UPDATED_OCCUPATION)
             .institute(UPDATED_INSTITUTE);
 
@@ -196,7 +196,7 @@ public class ResearcherResourceIntTest {
         List<Researcher> researcherList = researcherRepository.findAll();
         assertThat(researcherList).hasSize(databaseSizeBeforeUpdate);
         Researcher testResearcher = researcherList.get(researcherList.size() - 1);
-        assertThat(testResearcher.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testResearcher.getEmailAddress()).isEqualTo(UPDATED_EMAIL_ADDRESS);
         assertThat(testResearcher.getOccupation()).isEqualTo(UPDATED_OCCUPATION);
         assertThat(testResearcher.getInstitute()).isEqualTo(UPDATED_INSTITUTE);
     }

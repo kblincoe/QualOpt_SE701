@@ -15,22 +15,18 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Researcher.
+        Added the entity Email.
     -->
-    <changeSet id="20170729043310-1" author="jhipster">
-        <createTable tableName="researcher">
+    <changeSet id="20170806051703-1" author="jhipster">
+        <createTable tableName="email">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="email_address" type="varchar(255)">
+            <column name="subject" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="occupation" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="institute" type="varchar(255)">
+            <column name="jhi_body" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 

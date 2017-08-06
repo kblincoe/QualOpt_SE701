@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "subject",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "body",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170806051703",
+    "entityTableName": "email",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

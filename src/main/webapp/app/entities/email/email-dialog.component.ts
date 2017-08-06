@@ -6,23 +6,23 @@ import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { Researcher } from './researcher.model';
-import { ResearcherPopupService } from './researcher-popup.service';
-import { ResearcherService } from './researcher.service';
+import { Email } from './email.model';
+import { EmailPopupService } from './email-popup.service';
+import { EmailService } from './email.service';
 
 @Component({
-    selector: 'jhi-researcher-dialog',
-    templateUrl: './researcher-dialog.component.html'
+    selector: 'jhi-email-dialog',
+    templateUrl: './email-dialog.component.html'
 })
-export class ResearcherDialogComponent implements OnInit {
+export class EmailDialogComponent implements OnInit {
 
-    researcher: Researcher;
+    email: Email;
     isSaving: boolean;
 
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
-        private researcherService: ResearcherService,
+        private emailService: EmailService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -37,22 +37,22 @@ export class ResearcherDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.researcher.id !== undefined) {
+        if (this.email.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.researcherService.update(this.researcher));
+                this.emailService.update(this.email));
         } else {
             this.subscribeToSaveResponse(
-                this.researcherService.create(this.researcher));
+                this.emailService.create(this.email));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<Researcher>) {
-        result.subscribe((res: Researcher) =>
+    private subscribeToSaveResponse(result: Observable<Email>) {
+        result.subscribe((res: Email) =>
             this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: Researcher) {
-        this.eventManager.broadcast({ name: 'researcherListModification', content: 'OK'});
+    private onSaveSuccess(result: Email) {
+        this.eventManager.broadcast({ name: 'emailListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -73,26 +73,26 @@ export class ResearcherDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-researcher-popup',
+    selector: 'jhi-email-popup',
     template: ''
 })
-export class ResearcherPopupComponent implements OnInit, OnDestroy {
+export class EmailPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
     constructor(
         private route: ActivatedRoute,
-        private researcherPopupService: ResearcherPopupService
+        private emailPopupService: EmailPopupService
     ) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.researcherPopupService
-                    .open(ResearcherDialogComponent as Component, params['id']);
+                this.emailPopupService
+                    .open(EmailDialogComponent as Component, params['id']);
             } else {
-                this.researcherPopupService
-                    .open(ResearcherDialogComponent as Component);
+                this.emailPopupService
+                    .open(EmailDialogComponent as Component);
             }
         });
     }

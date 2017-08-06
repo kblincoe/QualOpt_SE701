@@ -24,8 +24,8 @@ public class Participant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "email_address")
+    private String emailAddress;
 
     @Column(name = "occupation")
     private String occupation;
@@ -43,17 +43,17 @@ public class Participant implements Serializable {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public Participant email(String email) {
-        this.email = email;
+    public Participant emailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
         return this;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getOccupation() {
@@ -118,7 +118,7 @@ public class Participant implements Serializable {
     public String toString() {
         return "Participant{" +
             "id=" + getId() +
-            ", email='" + getEmail() + "'" +
+            ", emailAddress='" + getEmailAddress() + "'" +
             ", occupation='" + getOccupation() + "'" +
             "}";
     }

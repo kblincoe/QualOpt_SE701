@@ -49,6 +49,8 @@ public class CacheConfiguration {
             cm.createCache(org.project36.qualopt.domain.Researcher.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.Participant.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.Participant.class.getName() + ".studies", jcacheConfiguration);
+            cm.createCache(org.project36.qualopt.domain.Email.class.getName(), jcacheConfiguration);
+            cm.createCache(org.project36.qualopt.domain.Researcher.class.getName() + ".studies", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -17,7 +17,7 @@
             <thead>
             <tr>
             <th><span>ID</span></th>
-            <th><span>Email</span></th>
+            <th><span>Email Address</span></th>
             <th><span>Occupation</span></th>
             <th></th>
             </tr>
@@ -25,7 +25,7 @@
             <tbody>
             <tr *ngFor="let participant of participants ;trackBy: trackId">
                 <td><a [routerLink]="['../participant', participant.id ]">{{participant.id}}</a></td>
-                <td>{{participant.email}}</td>
+                <td>{{participant.emailAddress}}</td>
                 <td>{{participant.occupation}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

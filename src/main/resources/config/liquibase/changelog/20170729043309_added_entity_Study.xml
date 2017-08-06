@@ -37,6 +37,12 @@
             <column name="has_pay" type="bit">
                 <constraints nullable="true" />
             </column>
+            <column name="email_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>
+            <column name="researcher_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
