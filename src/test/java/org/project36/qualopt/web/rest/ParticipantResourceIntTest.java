@@ -37,11 +37,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = QualOptApp.class)
 public class ParticipantResourceIntTest {
 
-    private static final String DEFAULT_EMAIL_ADDRESS = "AAAAAAAAAA";
-    private static final String UPDATED_EMAIL_ADDRESS = "BBBBBBBBBB";
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
     private static final String DEFAULT_OCCUPATION = "AAAAAAAAAA";
     private static final String UPDATED_OCCUPATION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOCATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCATION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PROGRAMMING_LANGUAGE = "AAAAAAAAAA";
+    private static final String UPDATED_PROGRAMMING_LANGUAGE = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_NUMBER_OF_CONTRIBUTIONS = 1;
+    private static final Integer UPDATED_NUMBER_OF_CONTRIBUTIONS = 2;
+
+    private static final Integer DEFAULT_NUMBER_OF_REPOSITORIES = 1;
+    private static final Integer UPDATED_NUMBER_OF_REPOSITORIES = 2;
 
     @Autowired
     private ParticipantRepository participantRepository;
@@ -80,8 +92,12 @@ public class ParticipantResourceIntTest {
      */
     public static Participant createEntity(EntityManager em) {
         Participant participant = new Participant()
-            .emailAddress(DEFAULT_EMAIL_ADDRESS)
-            .occupation(DEFAULT_OCCUPATION);
+            .email(DEFAULT_EMAIL)
+            .occupation(DEFAULT_OCCUPATION)
+            .location(DEFAULT_LOCATION)
+            .programmingLanguage(DEFAULT_PROGRAMMING_LANGUAGE)
+            .numberOfContributions(DEFAULT_NUMBER_OF_CONTRIBUTIONS)
+            .numberOfRepositories(DEFAULT_NUMBER_OF_REPOSITORIES);
         return participant;
     }
 
@@ -105,8 +121,12 @@ public class ParticipantResourceIntTest {
         List<Participant> participantList = participantRepository.findAll();
         assertThat(participantList).hasSize(databaseSizeBeforeCreate + 1);
         Participant testParticipant = participantList.get(participantList.size() - 1);
-        assertThat(testParticipant.getEmailAddress()).isEqualTo(DEFAULT_EMAIL_ADDRESS);
+        assertThat(testParticipant.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testParticipant.getOccupation()).isEqualTo(DEFAULT_OCCUPATION);
+        assertThat(testParticipant.getLocation()).isEqualTo(DEFAULT_LOCATION);
+        assertThat(testParticipant.getProgrammingLanguage()).isEqualTo(DEFAULT_PROGRAMMING_LANGUAGE);
+        assertThat(testParticipant.getNumberOfContributions()).isEqualTo(DEFAULT_NUMBER_OF_CONTRIBUTIONS);
+        assertThat(testParticipant.getNumberOfRepositories()).isEqualTo(DEFAULT_NUMBER_OF_REPOSITORIES);
     }
 
     @Test
@@ -130,6 +150,24 @@ public class ParticipantResourceIntTest {
 
     @Test
     @Transactional
+    public void checkEmailIsRequired() throws Exception {
+        int databaseSizeBeforeTest = participantRepository.findAll().size();
+        // set the field null
+        participant.setEmail(null);
+
+        // Create the Participant, which fails.
+
+        restParticipantMockMvc.perform(post("/api/participants")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(participant)))
+            .andExpect(status().isBadRequest());
+
+        List<Participant> participantList = participantRepository.findAll();
+        assertThat(participantList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllParticipants() throws Exception {
         // Initialize the database
         participantRepository.saveAndFlush(participant);
@@ -139,8 +177,12 @@ public class ParticipantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(participant.getId().intValue())))
-            .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS.toString())))
-            .andExpect(jsonPath("$.[*].occupation").value(hasItem(DEFAULT_OCCUPATION.toString())));
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
+            .andExpect(jsonPath("$.[*].occupation").value(hasItem(DEFAULT_OCCUPATION.toString())))
+            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
+            .andExpect(jsonPath("$.[*].programmingLanguage").value(hasItem(DEFAULT_PROGRAMMING_LANGUAGE.toString())))
+            .andExpect(jsonPath("$.[*].numberOfContributions").value(hasItem(DEFAULT_NUMBER_OF_CONTRIBUTIONS)))
+            .andExpect(jsonPath("$.[*].numberOfRepositories").value(hasItem(DEFAULT_NUMBER_OF_REPOSITORIES)));
     }
 
     @Test
@@ -154,8 +196,12 @@ public class ParticipantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(participant.getId().intValue()))
-            .andExpect(jsonPath("$.emailAddress").value(DEFAULT_EMAIL_ADDRESS.toString()))
-            .andExpect(jsonPath("$.occupation").value(DEFAULT_OCCUPATION.toString()));
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+            .andExpect(jsonPath("$.occupation").value(DEFAULT_OCCUPATION.toString()))
+            .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()))
+            .andExpect(jsonPath("$.programmingLanguage").value(DEFAULT_PROGRAMMING_LANGUAGE.toString()))
+            .andExpect(jsonPath("$.numberOfContributions").value(DEFAULT_NUMBER_OF_CONTRIBUTIONS))
+            .andExpect(jsonPath("$.numberOfRepositories").value(DEFAULT_NUMBER_OF_REPOSITORIES));
     }
 
     @Test
@@ -176,8 +222,12 @@ public class ParticipantResourceIntTest {
         // Update the participant
         Participant updatedParticipant = participantRepository.findOne(participant.getId());
         updatedParticipant
-            .emailAddress(UPDATED_EMAIL_ADDRESS)
-            .occupation(UPDATED_OCCUPATION);
+            .email(UPDATED_EMAIL)
+            .occupation(UPDATED_OCCUPATION)
+            .location(UPDATED_LOCATION)
+            .programmingLanguage(UPDATED_PROGRAMMING_LANGUAGE)
+            .numberOfContributions(UPDATED_NUMBER_OF_CONTRIBUTIONS)
+            .numberOfRepositories(UPDATED_NUMBER_OF_REPOSITORIES);
 
         restParticipantMockMvc.perform(put("/api/participants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -188,8 +238,12 @@ public class ParticipantResourceIntTest {
         List<Participant> participantList = participantRepository.findAll();
         assertThat(participantList).hasSize(databaseSizeBeforeUpdate);
         Participant testParticipant = participantList.get(participantList.size() - 1);
-        assertThat(testParticipant.getEmailAddress()).isEqualTo(UPDATED_EMAIL_ADDRESS);
+        assertThat(testParticipant.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testParticipant.getOccupation()).isEqualTo(UPDATED_OCCUPATION);
+        assertThat(testParticipant.getLocation()).isEqualTo(UPDATED_LOCATION);
+        assertThat(testParticipant.getProgrammingLanguage()).isEqualTo(UPDATED_PROGRAMMING_LANGUAGE);
+        assertThat(testParticipant.getNumberOfContributions()).isEqualTo(UPDATED_NUMBER_OF_CONTRIBUTIONS);
+        assertThat(testParticipant.getNumberOfRepositories()).isEqualTo(UPDATED_NUMBER_OF_REPOSITORIES);
     }
 
     @Test

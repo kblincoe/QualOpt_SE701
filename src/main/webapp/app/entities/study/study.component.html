@@ -21,9 +21,8 @@
             <th><span>Description</span></th>
             <th><span>Incentive</span></th>
             <th><span>Has Pay</span></th>
-            <th><span>Email</span></th>
+            <th><span>User</span></th>
             <th><span>Participant</span></th>
-            <th><span>Researcher</span></th>
             <th></th>
             </tr>
             </thead>
@@ -35,19 +34,12 @@
                 <td>{{study.incentive}}</td>
                 <td>{{study.hasPay}}</td>
                 <td>
-                    <div *ngIf="study.email">
-                        <a [routerLink]="['../email', study.email?.id ]" >{{study.email?.id}}</a>
-                    </div>
+                    {{study.user?.login}}
                 </td>
                 <td>
                     <span *ngFor="let participant of study.participants; let last = last">
-                            <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.emailAddress}}</a>{{last ? '' : ', '}}
+                            <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
                         </span>
-                </td>
-                <td>
-                    <div *ngIf="study.researcher">
-                        <a [routerLink]="['../researcher', study.researcher?.id ]" >{{study.researcher?.id}}</a>
-                    </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

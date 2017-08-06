@@ -20,23 +20,15 @@
         <dd>
             <span>{{study.hasPay}}</span>
         </dd>
-        <dt><span>Email</span></dt>
+        <dt><span>User</span></dt>
         <dd>
-            <div *ngIf="study.email">
-                <a [routerLink]="['/email', study.email?.id]">{{study.email?.id}}</a>
-            </div>
+            {{study.user?.login}}
         </dd>
         <dt><span>Participant</span></dt>
         <dd>
             <span *ngFor="let participant of study.participants; let last = last">
-                <a [routerLink]="['/participant', participant?.id ]">{{participant.emailAddress}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
             </span>
-        </dd>
-        <dt><span>Researcher</span></dt>
-        <dd>
-            <div *ngIf="study.researcher">
-                <a [routerLink]="['/researcher', study.researcher?.id]">{{study.researcher?.id}}</a>
-            </div>
         </dd>
     </dl>
 

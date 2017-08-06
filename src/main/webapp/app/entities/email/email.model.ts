@@ -4,7 +4,8 @@ export class Email implements BaseEntity {
     constructor(
         public id?: number,
         public subject?: string,
-        public body?: string,
+        public body?: any,
+        public study?: BaseEntity,
     ) {
     }
 }

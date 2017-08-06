@@ -20,14 +20,13 @@
     "serviceDiscoveryType": false,
     "buildTool": "maven",
     "enableSocialSignIn": true,
-    "jwtSecretKey": "6bcd2a513515d7c6115685cd666fbf87540719b2",
+    "rememberMeKey": "eef4913748e6c2bd814de1c105215c83acbd706b",
     "clientFramework": "angularX",
     "useSass": false,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "enableTranslation": false,
-    "rememberMeKey": "73d687646e68ec7242c00c4e0c9c9aa0f9ef4215"
+    "enableTranslation": false
   }
 }

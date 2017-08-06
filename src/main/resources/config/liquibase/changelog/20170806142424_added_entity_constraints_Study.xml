@@ -6,13 +6,13 @@
     <!--
         Added the constraints for entity Study.
     -->
-    <changeSet id="20170729043309-2" author="jhipster">
+    <changeSet id="20170806142424-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="email_id"
+        <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="study"
-                                 constraintName="fk_study_email_id"
+                                 constraintName="fk_study_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="email"/>
+                                 referencedTableName="jhi_user"/>
 
         <addForeignKeyConstraint baseColumnNames="studies_id"
                                  baseTableName="study_participant"
@@ -25,11 +25,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="participant"/>
         
-        <addForeignKeyConstraint baseColumnNames="researcher_id"
-                                 baseTableName="study"
-                                 constraintName="fk_study_researcher_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="researcher"/>
-
     </changeSet>
 </databaseChangeLog>
