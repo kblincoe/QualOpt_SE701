@@ -1,6 +1,5 @@
 package org.project36.qualopt.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,10 +35,9 @@ public class Study implements Serializable {
     @Column(name = "has_pay")
     private Boolean hasPay;
 
-    @OneToMany(mappedBy = "study")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Researcher> researchers = new HashSet<>();
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Email email;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -47,6 +45,9 @@ public class Study implements Serializable {
                joinColumns = @JoinColumn(name="studies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="participants_id", referencedColumnName="id"))
     private Set<Participant> participants = new HashSet<>();
+
+    @ManyToOne
+    private Researcher researcher;
 
     public Long getId() {
         return id;
@@ -108,29 +109,17 @@ public class Study implements Serializable {
         this.hasPay = hasPay;
     }
 
-    public Set<Researcher> getResearchers() {
-        return researchers;
+    public Email getEmail() {
+        return email;
     }
 
-    public Study researchers(Set<Researcher> researchers) {
-        this.researchers = researchers;
+    public Study email(Email email) {
+        this.email = email;
         return this;
     }
 
-    public Study addResearcher(Researcher researcher) {
-        this.researchers.add(researcher);
-        researcher.setStudy(this);
-        return this;
-    }
-
-    public Study removeResearcher(Researcher researcher) {
-        this.researchers.remove(researcher);
-        researcher.setStudy(null);
-        return this;
-    }
-
-    public void setResearchers(Set<Researcher> researchers) {
-        this.researchers = researchers;
+    public void setEmail(Email email) {
+        this.email = email;
     }
 
     public Set<Participant> getParticipants() {
@@ -156,6 +145,19 @@ public class Study implements Serializable {
 
     public void setParticipants(Set<Participant> participants) {
         this.participants = participants;
+    }
+
+    public Researcher getResearcher() {
+        return researcher;
+    }
+
+    public Study researcher(Researcher researcher) {
+        this.researcher = researcher;
+        return this;
+    }
+
+    public void setResearcher(Researcher researcher) {
+        this.researcher = researcher;
     }
 
     @Override

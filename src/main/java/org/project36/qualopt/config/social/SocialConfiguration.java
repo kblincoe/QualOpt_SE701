@@ -2,7 +2,6 @@ package org.project36.qualopt.config.social;
 
 import org.project36.qualopt.repository.SocialUserConnectionRepository;
 import org.project36.qualopt.repository.CustomSocialUsersConnectionRepository;
-import org.project36.qualopt.security.jwt.TokenProvider;
 import org.project36.qualopt.security.social.CustomSignInAdapter;
 
 import io.github.jhipster.config.JHipsterProperties;
@@ -124,10 +123,8 @@ public class SocialConfiguration implements SocialConfigurer {
     }
 
     @Bean
-    public SignInAdapter signInAdapter(UserDetailsService userDetailsService, JHipsterProperties jHipsterProperties,
-            TokenProvider tokenProvider) {
-        return new CustomSignInAdapter(userDetailsService, jHipsterProperties,
-            tokenProvider);
+    public SignInAdapter signInAdapter(UserDetailsService userDetailsService, JHipsterProperties jHipsterProperties) {
+        return new CustomSignInAdapter(userDetailsService, jHipsterProperties);
     }
 
     @Bean

@@ -37,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = QualOptApp.class)
 public class ParticipantResourceIntTest {
 
-    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
-    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+    private static final String DEFAULT_EMAIL_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL_ADDRESS = "BBBBBBBBBB";
 
     private static final String DEFAULT_OCCUPATION = "AAAAAAAAAA";
     private static final String UPDATED_OCCUPATION = "BBBBBBBBBB";
@@ -80,7 +80,7 @@ public class ParticipantResourceIntTest {
      */
     public static Participant createEntity(EntityManager em) {
         Participant participant = new Participant()
-            .email(DEFAULT_EMAIL)
+            .emailAddress(DEFAULT_EMAIL_ADDRESS)
             .occupation(DEFAULT_OCCUPATION);
         return participant;
     }
@@ -105,7 +105,7 @@ public class ParticipantResourceIntTest {
         List<Participant> participantList = participantRepository.findAll();
         assertThat(participantList).hasSize(databaseSizeBeforeCreate + 1);
         Participant testParticipant = participantList.get(participantList.size() - 1);
-        assertThat(testParticipant.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testParticipant.getEmailAddress()).isEqualTo(DEFAULT_EMAIL_ADDRESS);
         assertThat(testParticipant.getOccupation()).isEqualTo(DEFAULT_OCCUPATION);
     }
 
@@ -139,7 +139,7 @@ public class ParticipantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(participant.getId().intValue())))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
+            .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS.toString())))
             .andExpect(jsonPath("$.[*].occupation").value(hasItem(DEFAULT_OCCUPATION.toString())));
     }
 
@@ -154,7 +154,7 @@ public class ParticipantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(participant.getId().intValue()))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+            .andExpect(jsonPath("$.emailAddress").value(DEFAULT_EMAIL_ADDRESS.toString()))
             .andExpect(jsonPath("$.occupation").value(DEFAULT_OCCUPATION.toString()));
     }
 
@@ -176,7 +176,7 @@ public class ParticipantResourceIntTest {
         // Update the participant
         Participant updatedParticipant = participantRepository.findOne(participant.getId());
         updatedParticipant
-            .email(UPDATED_EMAIL)
+            .emailAddress(UPDATED_EMAIL_ADDRESS)
             .occupation(UPDATED_OCCUPATION);
 
         restParticipantMockMvc.perform(put("/api/participants")
@@ -188,7 +188,7 @@ public class ParticipantResourceIntTest {
         List<Participant> participantList = participantRepository.findAll();
         assertThat(participantList).hasSize(databaseSizeBeforeUpdate);
         Participant testParticipant = participantList.get(participantList.size() - 1);
-        assertThat(testParticipant.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testParticipant.getEmailAddress()).isEqualTo(UPDATED_EMAIL_ADDRESS);
         assertThat(testParticipant.getOccupation()).isEqualTo(UPDATED_OCCUPATION);
     }
 

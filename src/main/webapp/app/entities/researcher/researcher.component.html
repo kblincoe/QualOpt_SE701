@@ -17,24 +17,18 @@
             <thead>
             <tr>
             <th><span>ID</span></th>
-            <th><span>Email</span></th>
+            <th><span>Email Address</span></th>
             <th><span>Occupation</span></th>
             <th><span>Institute</span></th>
-            <th><span>Study</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let researcher of researchers ;trackBy: trackId">
                 <td><a [routerLink]="['../researcher', researcher.id ]">{{researcher.id}}</a></td>
-                <td>{{researcher.email}}</td>
+                <td>{{researcher.emailAddress}}</td>
                 <td>{{researcher.occupation}}</td>
                 <td>{{researcher.institute}}</td>
-                <td>
-                    <div *ngIf="researcher.study">
-                        <a [routerLink]="['../study', researcher.study?.id ]" >{{researcher.study?.id}}</a>
-                    </div>
-                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

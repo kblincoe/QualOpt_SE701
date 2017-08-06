@@ -97,12 +97,9 @@ jhipster:
         allow-credentials: true
         max-age: 1800
     security:
-        authentication:
-            jwt:
-                secret: my-secret-token-to-change-in-production
-                # Token is valid 24 hours
-                token-validity-in-seconds: 86400
-                token-validity-in-seconds-for-remember-me: 2592000
+        remember-me:
+            # security key (this key should be unique for your application, and kept secret)
+            key: 73d687646e68ec7242c00c4e0c9c9aa0f9ef4215
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: QualOpt@localhost
         base-url: http://127.0.0.1:8080

@@ -4,9 +4,9 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span>Email</span></dt>
+        <dt><span>Email Address</span></dt>
         <dd>
-            <span>{{researcher.email}}</span>
+            <span>{{researcher.emailAddress}}</span>
         </dd>
         <dt><span>Occupation</span></dt>
         <dd>
@@ -15,12 +15,6 @@
         <dt><span>Institute</span></dt>
         <dd>
             <span>{{researcher.institute}}</span>
-        </dd>
-        <dt><span>Study</span></dt>
-        <dd>
-            <div *ngIf="researcher.study">
-                <a [routerLink]="['/study', researcher.study?.id]">{{researcher.study?.id}}</a>
-            </div>
         </dd>
     </dl>
 

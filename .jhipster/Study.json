@@ -2,9 +2,11 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "researcher",
-            "otherEntityName": "researcher",
+            "relationshipType": "one-to-one",
+            "relationshipName": "email",
+            "otherEntityName": "email",
+            "otherEntityField": "id",
+            "ownerSide": true,
             "otherEntityRelationshipName": "study"
         },
         {
@@ -12,8 +14,14 @@
             "otherEntityRelationshipName": "study",
             "relationshipName": "participant",
             "otherEntityName": "participant",
-            "otherEntityField": "email",
+            "otherEntityField": "emailAddress",
             "ownerSide": true
+        },
+        {
+            "relationshipName": "researcher",
+            "otherEntityName": "researcher",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -34,7 +42,7 @@
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170728034701",
+    "changelogDate": "20170729043309",
     "entityTableName": "study",
     "dto": "no",
     "pagination": "no",

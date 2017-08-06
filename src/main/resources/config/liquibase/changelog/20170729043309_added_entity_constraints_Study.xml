@@ -6,8 +6,14 @@
     <!--
         Added the constraints for entity Study.
     -->
-    <changeSet id="20170728034701-2" author="jhipster">
+    <changeSet id="20170729043309-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="email_id"
+                                 baseTableName="study"
+                                 constraintName="fk_study_email_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="email"/>
+
         <addForeignKeyConstraint baseColumnNames="studies_id"
                                  baseTableName="study_participant"
                                  constraintName="fk_study_participant_studies_id"
@@ -19,5 +25,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="participant"/>
         
+        <addForeignKeyConstraint baseColumnNames="researcher_id"
+                                 baseTableName="study"
+                                 constraintName="fk_study_researcher_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="researcher"/>
+
     </changeSet>
 </databaseChangeLog>

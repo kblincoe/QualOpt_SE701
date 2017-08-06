@@ -29,6 +29,31 @@
                 [(ngModel)]="study.incentive">
             </textarea>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_hasPay">Has Pay</label>
+            <input type="checkbox" class="form-control" name="hasPay" id="field_hasPay"
+                [(ngModel)]="study.hasPay"  />
+        </div>
+
+        <div class="form-group">
+            <label for="field_email">Email</label>
+            <select class="form-control" id="field_email" name="email" [(ngModel)]="study.email">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="emailOption.id === study.email?.id ? study.email : emailOption" *ngFor="let emailOption of emails; trackBy: trackEmailById">{{emailOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_participant">Participant</label>
+            <select class="form-control" id="field_participant" multiple name="participant" [(ngModel)]="study.participants">
+                <option [ngValue]="getSelected(study.participants, participantOption)" *ngFor="let participantOption of participants; trackBy: trackParticipantById">{{participantOption.emailAddress}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_researcher">Researcher</label>
+            <select class="form-control" id="field_researcher" name="researcher" [(ngModel)]="study.researcher" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="researcherOption.id === study.researcher?.id ? study.researcher : researcherOption" *ngFor="let researcherOption of researchers; trackBy: trackResearcherById">{{researcherOption.id}}</option>
+            </select>
         <div class="form-check">
             <label class="form-control-label" for="field_hasPay">
                 <input type="checkbox" class="form-control" name="hasPay" id="field_hasPay"

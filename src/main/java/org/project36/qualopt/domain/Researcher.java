@@ -1,10 +1,13 @@
 package org.project36.qualopt.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -21,8 +24,8 @@ public class Researcher implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "email_address")
+    private String emailAddress;
 
     @Column(name = "occupation")
     private String occupation;
@@ -30,8 +33,10 @@ public class Researcher implements Serializable {
     @Column(name = "institute")
     private String institute;
 
-    @ManyToOne
-    private Study study;
+    @OneToMany(mappedBy = "researcher")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Study> studies = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -41,17 +46,17 @@ public class Researcher implements Serializable {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public Researcher email(String email) {
-        this.email = email;
+    public Researcher emailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
         return this;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getOccupation() {
@@ -80,17 +85,29 @@ public class Researcher implements Serializable {
         this.institute = institute;
     }
 
-    public Study getStudy() {
-        return study;
+    public Set<Study> getStudies() {
+        return studies;
     }
 
-    public Researcher study(Study study) {
-        this.study = study;
+    public Researcher studies(Set<Study> studies) {
+        this.studies = studies;
         return this;
     }
 
-    public void setStudy(Study study) {
-        this.study = study;
+    public Researcher addStudy(Study study) {
+        this.studies.add(study);
+        study.setResearcher(this);
+        return this;
+    }
+
+    public Researcher removeStudy(Study study) {
+        this.studies.remove(study);
+        study.setResearcher(null);
+        return this;
+    }
+
+    public void setStudies(Set<Study> studies) {
+        this.studies = studies;
     }
 
     @Override
@@ -117,7 +134,7 @@ public class Researcher implements Serializable {
     public String toString() {
         return "Researcher{" +
             "id=" + getId() +
-            ", email='" + getEmail() + "'" +
+            ", emailAddress='" + getEmailAddress() + "'" +
             ", occupation='" + getOccupation() + "'" +
             ", institute='" + getInstitute() + "'" +
             "}";

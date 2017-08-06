@@ -9,8 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Researcher } from './researcher.model';
 import { ResearcherPopupService } from './researcher-popup.service';
 import { ResearcherService } from './researcher.service';
-import { Study, StudyService } from '../study';
-import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-researcher-dialog',
@@ -21,21 +19,16 @@ export class ResearcherDialogComponent implements OnInit {
     researcher: Researcher;
     isSaving: boolean;
 
-    studies: Study[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private researcherService: ResearcherService,
-        private studyService: StudyService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.studyService.query()
-            .subscribe((res: ResponseWrapper) => { this.studies = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -76,10 +69,6 @@ export class ResearcherDialogComponent implements OnInit {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
-    }
-
-    trackStudyById(index: number, item: Study) {
-        return item.id;
     }
 }
 
