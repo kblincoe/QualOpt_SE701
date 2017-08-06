@@ -16,7 +16,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
             <th><span>Subject</span></th>
             <th><span>Body</span></th>
             <th><span>Study</span></th>
@@ -25,12 +24,11 @@
             </thead>
             <tbody>
             <tr *ngFor="let email of emails ;trackBy: trackId">
-                <td><a [routerLink]="['../email', email.id ]">{{email.id}}</a></td>
-                <td>{{email.subject}}</td>
+                <td><a [routerLink]="['../email', email.id ]">{{email.subject}}</a></td>
                 <td>{{email.body}}</td>
                 <td>
                     <div *ngIf="email.study">
-                        <a [routerLink]="['../study', email.study?.id ]" >{{email.study?.id}}</a>
+                        <a [routerLink]="['../study', email.study?.id ]" >{{email.study?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

@@ -1,7 +1,8 @@
 # QualOpt
 This application was generated using JHipster 4.6.2, you can find documentation and help at [https://jhipster.github.io/documentation-archive/v4.6.2](https://jhipster.github.io/documentation-archive/v4.6.2).
 
-Project documentation is found in the docs directory.
+Documentation is stored in the docs directory
+Our HTML mockups are stored in the mockups directory
 
 ## Development
 

@@ -1,13 +1,9 @@
 
 <div *ngIf="study">
-    <h2><span>Study</span> {{study.id}}</h2>
+    <h2>{{study.name}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span>Name</span></dt>
-        <dd>
-            <span>{{study.name}}</span>
-        </dd>
         <dt><span>Description</span></dt>
         <dd>
             <span>{{study.description}}</span>
@@ -16,7 +12,7 @@
         <dd>
             <span>{{study.incentive}}</span>
         </dd>
-        <dt><span>Has Pay</span></dt>
+        <dt><span>Paid</span></dt>
         <dd>
             <span>{{study.hasPay}}</span>
         </dd>
@@ -24,7 +20,7 @@
         <dd>
             {{study.user?.login}}
         </dd>
-        <dt><span>Participant</span></dt>
+        <dt><span>Participants</span></dt>
         <dd>
             <span *ngFor="let participant of study.participants; let last = last">
                 <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}

@@ -16,20 +16,18 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
             <th><span>Name</span></th>
             <th><span>Description</span></th>
             <th><span>Incentive</span></th>
-            <th><span>Has Pay</span></th>
+            <th><span>Paid</span></th>
             <th><span>User</span></th>
-            <th><span>Participant</span></th>
+            <th><span>Participants</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let study of studies ;trackBy: trackId">
-                <td><a [routerLink]="['../study', study.id ]">{{study.id}}</a></td>
-                <td>{{study.name}}</td>
+                <td><a [routerLink]="['../study', study.id ]">{{study.name}}</a></td>
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
                 <td>{{study.hasPay}}</td>
