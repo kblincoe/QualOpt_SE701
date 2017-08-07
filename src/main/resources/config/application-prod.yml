@@ -102,7 +102,7 @@ jhipster:
             key: eef4913748e6c2bd814de1c105215c83acbd706b
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: QualOpt@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        base-url: https://qual-opt.herokuapp.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:
