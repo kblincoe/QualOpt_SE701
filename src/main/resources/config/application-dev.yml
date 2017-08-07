@@ -46,7 +46,7 @@ spring:
         host: smtp.gmail.com
         port: 587
         username: noreply.qualopt
-        password:
+        password: WDt3&Cj0M7n6
         protocol: smtp
         tls: true
         properties.mail.smtp:
