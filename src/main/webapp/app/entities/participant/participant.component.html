@@ -1,9 +1,9 @@
 <div>
     <h2>
         <span>Participants</span>
-        <button class="btn btn-primary float-right jh-create-entity create-participant" [routerLink]="['/', { outlets: { popup: ['participant-new'] } }]">
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn btn-primary float-right jh-create-entity create-participant" [routerLink]="['/', { outlets: { popup: ['participant-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span >
+            <span>
             Create new Participant
             </span>
         </button>
@@ -43,7 +43,6 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th><span>ID</span></th>
                         <th><span>Email</span></th>
                         <th><span>Occupation</span></th>
                         <th><span>Location</span></th>
@@ -55,14 +54,13 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let participant of participants | participant:filter ;trackBy: trackId">
-                        <td><a [routerLink]="['../participant', participant.id ]">{{participant.id}}</a></td>
-                        <td>{{participant.email}}</td>
+                        <td><a [routerLink]="['../participant', participant.id ]">{{participant.email}}</a></td>
                         <td>{{participant.occupation}}</td>
                         <td>{{participant.location}}</td>
                         <td>{{participant.programmingLanguage}}</td>
                         <td>{{participant.numberOfContributions}}</td>
                         <td>{{participant.numberOfRepositories}}</td>
-                        <td class="text-right">
+                        <td *jhiHasAnyAuthority="'ROLE_ADMIN'" class="text-right">
                             <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
                                         [routerLink]="['../participant', participant.id ]"
