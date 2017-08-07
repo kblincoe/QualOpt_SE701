@@ -1,6 +1,6 @@
 package org.project36.qualopt.web.rest;
 
-import org.project36.qualopt.QualOpt2App;
+import org.project36.qualopt.QualOptApp;
 
 import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.repository.StudyRepository;
@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see StudyResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = QualOpt2App.class)
+@SpringBootTest(classes = QualOptApp.class)
 public class StudyResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
@@ -136,6 +137,24 @@ public class StudyResourceIntTest {
         // Validate the Alice in the database
         List<Study> studyList = studyRepository.findAll();
         assertThat(studyList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = studyRepository.findAll().size();
+        // set the field null
+        study.setName(null);
+
+        // Create the Study, which fails.
+
+        restStudyMockMvc.perform(post("/api/studies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(study)))
+            .andExpect(status().isBadRequest());
+
+        List<Study> studyList = studyRepository.findAll();
+        assertThat(studyList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -249,5 +268,14 @@ public class StudyResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Study.class);
+        Study study1 = new Study();
+        study1.setId(1L);
+        Study study2 = new Study();
+        study2.setId(study1.getId());
+        assertThat(study1).isEqualTo(study2);
+        study2.setId(2L);
+        assertThat(study1).isNotEqualTo(study2);
+        study1.setId(null);
+        assertThat(study1).isNotEqualTo(study2);
     }
 }

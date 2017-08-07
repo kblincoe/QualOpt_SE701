@@ -1,26 +1,25 @@
 import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { Observable } from 'rxjs/Rx';
-import { QualOpt2TestModule } from '../../../test.module';
+import { QualOptTestModule } from '../../../test.module';
 import { Session } from '../../../../../../main/webapp/app/account/sessions/session.model';
 import { SessionsComponent } from '../../../../../../main/webapp/app/account/sessions/sessions.component';
 import { SessionsService } from '../../../../../../main/webapp/app/account/sessions/sessions.service';
 import { MockPrincipal } from '../../../helpers/mock-principal.service';
 import { Principal } from '../../../../../../main/webapp/app/shared/auth/principal.service';
 
-
 describe('Component Tests', () => {
 
-    let sessions: Session;
+    let sessions: Session[];
     let fixture: ComponentFixture<SessionsComponent>;
     let comp: SessionsComponent;
 
-    describe('SessionsComponent', function () {
+    describe('SessionsComponent', function() {
 
         beforeEach(() => {
-            sessions = new Session('xxxxxx==', new Date(2015, 10, 15), '0:0:0:0:0:0:0:1', 'Mozilla/5.0');
+            sessions = [new Session('xxxxxx==', new Date(2015, 10, 15), '0:0:0:0:0:0:0:1', 'Mozilla/5.0')];
 
             fixture = TestBed.configureTestingModule({
-                imports: [QualOpt2TestModule],
+                imports: [QualOptTestModule],
                 declarations: [SessionsComponent],
                 providers: [
                     SessionsService,
@@ -29,11 +28,8 @@ describe('Component Tests', () => {
                         useClass: MockPrincipal
                     }
                 ]
-            }).overrideComponent(SessionsComponent, {
-                set: {
-                    template: ''
-                }
-            }).createComponent(SessionsComponent);
+            }).overrideTemplate(SessionsComponent, '')
+            .createComponent(SessionsComponent);
             comp = fixture.componentInstance;
         });
 

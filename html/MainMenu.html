@@ -1,40 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Main Menu</title>
-    <script src="scripts/jquery-3.1.1.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="scripts/mainMenu.js"></script>
-</head>
-<body>
-    <h1 class="titleText">List of Studies</h1>
-    <div class="container">
-        <table class="table table-hover table-striped table-bordered" id="studytable">
-            <thead>
-                <th>Name</th>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-    </div>
-    <div class="container buttonContainer">
-        <button>Log Out</button>
-        <button onclick="goToNewStudy()">New Study</button>
-    </div>
-    <script>
-        function goToNewStudy(){
-            window.location.href = 'NewStudy.html';
-        }
-    </script>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Main Menu</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+              integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="text-center">Main Menu</h1>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Incentive</th>
+                    <th>Monetary</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Web Apps UI/UX</th>
+                    <td>Improving the UI/UX of web apps</td>
+                    <td>Free access to results</td>
+                    <td>False</td>
+                </tr>
+                <tr>
+                    <th scope="row">HTTP Optimisations</th>
+                    <td>Optimising HTTP request speed</td>
+                    <td>IETF commissioned</td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <th scope="row">SQL Injection</th>
+                    <td>Different security measures against SQL injection</td>
+                    <td>Supported by Google</td>
+                    <td>True</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary btn-lg">New Study</button>
+                <button type="button" class="btn btn-secondary btn-lg">Logout</button>
+            </div>
+        </div>
+    </body>
 </html>

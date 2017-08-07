@@ -1,5 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { JhiEventManager , JhiDataUtils } from 'ng-jhipster';
+
 import { Study } from './study.model';
 import { StudyService } from './study.service';
 
@@ -10,24 +13,35 @@ import { StudyService } from './study.service';
 export class StudyDetailComponent implements OnInit, OnDestroy {
 
     study: Study;
-    private subscription: any;
+    private subscription: Subscription;
+    private eventSubscriber: Subscription;
 
     constructor(
+        private eventManager: JhiEventManager,
+        private dataUtils: JhiDataUtils,
         private studyService: StudyService,
         private route: ActivatedRoute
     ) {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
+        this.registerChangeInStudies();
     }
 
-    load (id) {
-        this.studyService.find(id).subscribe(study => {
+    load(id) {
+        this.studyService.find(id).subscribe((study) => {
             this.study = study;
         });
+    }
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     previousState() {
         window.history.back();
@@ -35,6 +49,13 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
     }
 
+    registerChangeInStudies() {
+        this.eventSubscriber = this.eventManager.subscribe(
+            'studyListModification',
+            (response) => this.load(this.study.id)
+        );
+    }
 }

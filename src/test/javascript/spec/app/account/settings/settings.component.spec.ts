@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Rx';
-import { QualOpt2TestModule } from '../../../test.module';
+import { QualOptTestModule } from '../../../test.module';
 import { Principal, AccountService } from '../../../../../../main/webapp/app/shared';
 import { SettingsComponent } from '../../../../../../main/webapp/app/account/settings/settings.component';
 import { MockAccountService } from '../../../helpers/mock-account.service';
 import { MockPrincipal } from '../../../helpers/mock-principal.service';
-
 
 describe('Component Tests', () => {
 
@@ -13,12 +12,12 @@ describe('Component Tests', () => {
 
         let comp: SettingsComponent;
         let fixture: ComponentFixture<SettingsComponent>;
-        let mockAuth: MockAccountService;
-        let mockPrincipal: MockPrincipal;
+        let mockAuth: any;
+        let mockPrincipal: any;
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [QualOpt2TestModule],
+                imports: [QualOptTestModule],
                 declarations: [SettingsComponent],
                 providers: [
                     {
@@ -30,11 +29,8 @@ describe('Component Tests', () => {
                         useClass: MockAccountService
                     },
                 ]
-            }).overrideComponent(SettingsComponent, {
-                set: {
-                    template: ''
-                }
-            }).compileComponents();
+            }).overrideTemplate(SettingsComponent, '')
+            .compileComponents();
         }));
 
         beforeEach(() => {
@@ -44,9 +40,9 @@ describe('Component Tests', () => {
             mockPrincipal = fixture.debugElement.injector.get(Principal);
         });
 
-        it('should send the current identity upon save', function () {
+        it('should send the current identity upon save', () => {
             // GIVEN
-            let accountValues = {
+            const accountValues = {
                 firstName: 'John',
                 lastName: 'Doe',
 
@@ -67,9 +63,9 @@ describe('Component Tests', () => {
             expect(comp.settingsAccount).toEqual(accountValues);
         });
 
-        it('should notify of success upon successful save', function () {
+        it('should notify of success upon successful save', () => {
             // GIVEN
-            let accountValues = {
+            const accountValues = {
                 firstName: 'John',
                 lastName: 'Doe'
             };
@@ -83,7 +79,7 @@ describe('Component Tests', () => {
             expect(comp.success).toBe('OK');
         });
 
-        it('should notify of error upon failed save', function () {
+        it('should notify of error upon failed save', () => {
             // GIVEN
             mockAuth.saveSpy.and.returnValue(Observable.throw('ERROR'));
 

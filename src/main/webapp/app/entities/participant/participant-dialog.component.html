@@ -1,0 +1,61 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myParticipantLabel">Create or edit a Participant</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!participant.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="participant.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email"
+                [(ngModel)]="participant.email" required />
+            <div [hidden]="!(editForm.controls.email?.dirty && editForm.controls.email?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.email?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_occupation">Occupation</label>
+            <input type="text" class="form-control" name="occupation" id="field_occupation"
+                [(ngModel)]="participant.occupation"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_location">Location</label>
+            <input type="text" class="form-control" name="location" id="field_location"
+                [(ngModel)]="participant.location"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_programmingLanguage">Programming Language</label>
+            <input type="text" class="form-control" name="programmingLanguage" id="field_programmingLanguage"
+                [(ngModel)]="participant.programmingLanguage"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_numberOfContributions">Number Of Contributions</label>
+            <input type="number" class="form-control" name="numberOfContributions" id="field_numberOfContributions"
+                [(ngModel)]="participant.numberOfContributions"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_numberOfRepositories">Number Of Repositories</label>
+            <input type="number" class="form-control" name="numberOfRepositories" id="field_numberOfRepositories"
+                [(ngModel)]="participant.numberOfRepositories"  />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

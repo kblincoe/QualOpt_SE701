@@ -1,0 +1,93 @@
+<div>
+    <h2>
+        <span>Participants</span>
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn btn-primary float-right jh-create-entity create-participant" [routerLink]="['/', { outlets: { popup: ['participant-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span>
+            Create new Participant
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-3">
+            <h5>Filter Participants</h5>
+            <form>
+                <div class="form-group">
+                    <label for="filter_occupation">Occupation</label>
+                    <input class="form-control" type="text" id="filter_occupation" name="occupation" [(ngModel)]="filter.occupation">
+                </div>
+                <div class="form-group">
+                    <label for="filter_location">Location</label>
+                    <input class="form-control" type="text" id="filter_location" name="location" [(ngModel)]="filter.location">
+                </div>
+                <div class="form-group">
+                    <label for="filter_programmingLanguage">Programming Language</label>
+                    <input class="form-control" type="text" id="filter_programmingLanguage" name="programmingLanguage" [(ngModel)]="filter.programmingLanguage">
+                </div>
+                <div class="form-group">
+                    <label for="filter_numberOfContributions">Minimum number of contributions</label>
+                    <input class="form-control" type="number" id="filter_numberOfContributions" name="numberOfContributions" [(ngModel)]="filter.numberOfContributions">
+                </div>
+                <div class="form-group">
+                    <label for="filter_numberOfRepositories">Minimum number of repositories</label>
+                    <input class="form-control" type="number" id="filter_numberOfRepositories" name="numberOfRepositories" [(ngModel)]="filter.numberOfRepositories">
+                </div>
+            </form>
+        </div>
+        <div class="col-9">
+            <div class="table-responsive" *ngIf="participants">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span>Email</span></th>
+                        <th><span>Occupation</span></th>
+                        <th><span>Location</span></th>
+                        <th><span>Programming Language</span></th>
+                        <th><span>Number Of Contributions</span></th>
+                        <th><span>Number Of Repositories</span></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let participant of participants | participant:filter ;trackBy: trackId">
+                        <td><a [routerLink]="['../participant', participant.id ]">{{participant.email}}</a></td>
+                        <td>{{participant.occupation}}</td>
+                        <td>{{participant.location}}</td>
+                        <td>{{participant.programmingLanguage}}</td>
+                        <td>{{participant.numberOfContributions}}</td>
+                        <td>{{participant.numberOfRepositories}}</td>
+                        <td *jhiHasAnyAuthority="'ROLE_ADMIN'" class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        [routerLink]="['../participant', participant.id ]"
+                                        class="btn btn-info btn-sm">
+                                    <span class="fa fa-eye"></span>
+                                    <span class="hidden-md-down">View</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'participant/'+ participant.id + '/edit'} }]"
+                                        replaceUrl="true"
+                                        class="btn btn-primary btn-sm">
+                                    <span class="fa fa-pencil"></span>
+                                    <span class="hidden-md-down">Edit</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'participant/'+ participant.id + '/delete'} }]"
+                                        replaceUrl="true"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove"></span>
+                                    <span class="hidden-md-down">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

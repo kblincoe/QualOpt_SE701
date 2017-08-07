@@ -4,7 +4,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -21,12 +24,15 @@ public class Study implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
+    @Lob
     @Column(name = "incentive")
     private String incentive;
 
@@ -34,7 +40,14 @@ public class Study implements Serializable {
     private Boolean hasPay;
 
     @ManyToOne
-    private Researcher researcher;
+    private User user;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "study_participant",
+               joinColumns = @JoinColumn(name="studies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="participants_id", referencedColumnName="id"))
+    private Set<Participant> participants = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -96,17 +109,42 @@ public class Study implements Serializable {
         this.hasPay = hasPay;
     }
 
-    public Researcher getResearcher() {
-        return researcher;
+    public User getUser() {
+        return user;
     }
 
-    public Study researcher(Researcher researcher) {
-        this.researcher = researcher;
+    public Study user(User user) {
+        this.user = user;
         return this;
     }
 
-    public void setResearcher(Researcher researcher) {
-        this.researcher = researcher;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Participant> getParticipants() {
+        return participants;
+    }
+
+    public Study participants(Set<Participant> participants) {
+        this.participants = participants;
+        return this;
+    }
+
+    public Study addParticipant(Participant participant) {
+        this.participants.add(participant);
+        participant.getStudies().add(this);
+        return this;
+    }
+
+    public Study removeParticipant(Participant participant) {
+        this.participants.remove(participant);
+        participant.getStudies().remove(this);
+        return this;
+    }
+
+    public void setParticipants(Set<Participant> participants) {
+        this.participants = participants;
     }
 
     @Override
@@ -118,25 +156,25 @@ public class Study implements Serializable {
             return false;
         }
         Study study = (Study) o;
-        if (study.id == null || id == null) {
+        if (study.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, study.id);
+        return Objects.equals(getId(), study.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Study{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            ", incentive='" + incentive + "'" +
-            ", hasPay='" + hasPay + "'" +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", incentive='" + getIncentive() + "'" +
+            ", hasPay='" + isHasPay() + "'" +
+            "}";
     }
 }

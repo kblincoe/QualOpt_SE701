@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Filter Studies</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+              integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="text-center">Filter Studies</h1>
+            <form>
+                <div class="form-group">
+                    <label for="programmingLanguage">Programming Language</label>
+                    <select class="form-control" id="programmingLanguage">
+                        <option>Java</option>
+                        <option>JavaScript</option>
+                        <option>C</option>
+                        <option>Python</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select class="form-control" id="location">
+                        <option>New Zealand</option>
+                        <option>Australia</option>
+                        <option>Singapore</option>
+                        <option>California</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="occupation">Occupation</label>
+                    <select class="form-control" id="occupation">
+                        <option>Software Engineer</option>
+                        <option>Student</option>
+                        <option>Designer</option>
+                        <option>Developer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="invitations">Limit number of invitations</label>
+                    <input class="form-control" type="number" value="10" id="invitations">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+            </form>
+        </div>
+    </body>
+</html>

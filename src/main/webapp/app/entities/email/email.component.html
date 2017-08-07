@@ -1,0 +1,62 @@
+<div>
+    <h2>
+        <span>Emails</span>
+        <button class="btn btn-primary float-right jh-create-entity create-email" [routerLink]="['/', { outlets: { popup: ['email-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Email
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="emails">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>Subject</span></th>
+            <th><span>Body</span></th>
+            <th><span>Study</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let email of emails ;trackBy: trackId">
+                <td><a [routerLink]="['../email', email.id ]">{{email.subject}}</a></td>
+                <td>{{email.body}}</td>
+                <td>
+                    <div *ngIf="email.study">
+                        <a [routerLink]="['../study', email.study?.id ]" >{{email.study?.name}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../email', email.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'email/'+ email.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'email/'+ email.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

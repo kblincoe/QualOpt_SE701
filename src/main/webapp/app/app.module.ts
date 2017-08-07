@@ -4,18 +4,20 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Ng2Webstorage } from 'ng2-webstorage';
 
-import { QualOpt2SharedModule, UserRouteAccessService } from './shared';
-import { QualOpt2HomeModule } from './home/home.module';
-import { QualOpt2AdminModule } from './admin/admin.module';
-import { QualOpt2AccountModule } from './account/account.module';
-import { QualOpt2EntityModule } from './entities/entity.module';
+import { QualOptSharedModule, UserRouteAccessService } from './shared';
+import { QualOptHomeModule } from './home/home.module';
+import { QualOptAdminModule } from './admin/admin.module';
+import { QualOptAccountModule } from './account/account.module';
+import { QualOptEntityModule } from './entities/entity.module';
 
-import { LayoutRoutingModule } from './layouts';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 
+// jhipster-needle-angular-add-module-import JHipster will add new module here
+
 import {
     JhiMainComponent,
+    LayoutRoutingModule,
     NavbarComponent,
     FooterComponent,
     ProfileService,
@@ -23,17 +25,17 @@ import {
     ErrorComponent
 } from './layouts';
 
-
 @NgModule({
     imports: [
         BrowserModule,
         LayoutRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
-        QualOpt2SharedModule,
-        QualOpt2HomeModule,
-        QualOpt2AdminModule,
-        QualOpt2AccountModule,
-        QualOpt2EntityModule
+        QualOptSharedModule,
+        QualOptHomeModule,
+        QualOptAdminModule,
+        QualOptAccountModule,
+        QualOptEntityModule,
+        // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
         JhiMainComponent,
@@ -44,12 +46,10 @@ import {
     ],
     providers: [
         ProfileService,
-        { provide: Window, useValue: window },
-        { provide: Document, useValue: document },
         customHttpProvider(),
         PaginationConfig,
         UserRouteAccessService
     ],
     bootstrap: [ JhiMainComponent ]
 })
-export class QualOpt2AppModule {}
+export class QualOptAppModule {}

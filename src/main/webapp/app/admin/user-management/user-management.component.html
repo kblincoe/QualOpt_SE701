@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span>Users</span>
-        <button class="btn btn-primary float-right" [routerLink]="['/', { outlets: { popup: ['user-management-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity" [routerLink]="['/', { outlets: { popup: ['user-management-new'] } }]">
             <span class="fa fa-plus"></span> <span>Create a new User</span>
         </button>
     </h2>
@@ -10,7 +10,7 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span><span class="fa fa-sort"></span></th>
+                <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="login"><span>Login</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="email"><span>Email</span> <span class="fa fa-sort"></span></th>
                 <th></th>
@@ -27,15 +27,15 @@
                 <td>{{user.login}}</td>
                 <td>{{user.email}}</td>
                 <td>
-                    <span class="badge badge-danger hand" (click)="setActive(user, true)" *ngIf="!user.activated"
-                         >Deactivated</span>
-                    <span class="badge badge-success hand" (click)="setActive(user, false)" *ngIf="user.activated"
-                         >Activated</span>
+                    <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
+                           >Deactivated</button>
+                    <button class="btn btn-success btn-sm" (click)="setActive(user, false)" *ngIf="user.activated"
+                            [disabled]="currentAccount.login === user.login">Activated</button>
                 </td>
                 
                 <td>
                     <div *ngFor="let authority of user.authorities">
-                        <span class="tag tag-info">{{ authority }}</span>
+                        <span class="badge badge-info">{{ authority }}</span>
                     </div>
                 </td>
                 <td>{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
@@ -59,7 +59,7 @@
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'user-management/'+ user.login + '/delete'} }]"
                                 replaceUrl="true"
-                                class="btn btn-danger btn-sm" [disabled]="currentAccount.login==user.login">
+                                class="btn btn-danger btn-sm" [disabled]="currentAccount.login === user.login">
                             <span class="fa fa-remove"></span>
                             <span class="hidden-md-down">Delete</span>
                         </button>

@@ -13,7 +13,7 @@ export class JhiSocialComponent implements OnInit {
     providerURL: string;
     csrf: string;
 
-    constructor (
+    constructor(
         private csrfService: CSRFService,
         private socialService: SocialService
     ) {}

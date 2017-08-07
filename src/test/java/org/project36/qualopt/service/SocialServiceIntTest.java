@@ -1,6 +1,6 @@
 package org.project36.qualopt.service;
 
-import org.project36.qualopt.QualOpt2App;
+import org.project36.qualopt.QualOptApp;
 import org.project36.qualopt.domain.Authority;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.AuthorityRepository;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = QualOpt2App.class)
+@SpringBootTest(classes = QualOptApp.class)
 @Transactional
 public class SocialServiceIntTest {
 

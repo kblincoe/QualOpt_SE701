@@ -1,12 +1,10 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-import { CookieService } from 'angular2-cookie/services/cookies.service';
 import {
-    QualOpt2SharedLibsModule,
-    QualOpt2SharedCommonModule,
+    QualOptSharedLibsModule,
+    QualOptSharedCommonModule,
     CSRFService,
-    AuthService,
     AuthServerProvider,
     AccountService,
     UserService,
@@ -22,8 +20,8 @@ import {
 
 @NgModule({
     imports: [
-        QualOpt2SharedLibsModule,
-        QualOpt2SharedCommonModule
+        QualOptSharedLibsModule,
+        QualOptSharedCommonModule
     ],
     declarations: [
         JhiSocialComponent,
@@ -31,7 +29,6 @@ import {
         HasAnyAuthorityDirective
     ],
     providers: [
-        CookieService,
         LoginService,
         LoginModalService,
         AccountService,
@@ -40,13 +37,12 @@ import {
         CSRFService,
         AuthServerProvider,
         SocialService,
-        AuthService,
         UserService,
         DatePipe
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [
-        QualOpt2SharedCommonModule,
+        QualOptSharedCommonModule,
         JhiSocialComponent,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
@@ -55,4 +51,4 @@ import {
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
-export class QualOpt2SharedModule {}
+export class QualOptSharedModule {}

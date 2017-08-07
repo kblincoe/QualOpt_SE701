@@ -1,8 +1,8 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { QualOpt2SharedModule } from '../../shared';
-
+import { QualOptSharedModule } from '../../shared';
+import { QualOptAdminModule } from '../../admin/admin.module';
 import {
     StudyService,
     StudyPopupService,
@@ -16,14 +16,15 @@ import {
     studyPopupRoute,
 } from './';
 
-let ENTITY_STATES = [
+const ENTITY_STATES = [
     ...studyRoute,
     ...studyPopupRoute,
 ];
 
 @NgModule({
     imports: [
-        QualOpt2SharedModule,
+        QualOptSharedModule,
+        QualOptAdminModule,
         RouterModule.forRoot(ENTITY_STATES, { useHash: true })
     ],
     declarations: [
@@ -47,4 +48,4 @@ let ENTITY_STATES = [
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class QualOpt2StudyModule {}
+export class QualOptStudyModule {}

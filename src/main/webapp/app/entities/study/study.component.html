@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span>Studies</span>
-        <button class="btn btn-primary float-right create-study" [routerLink]="['/', { outlets: { popup: ['study-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-study" [routerLink]="['/', { outlets: { popup: ['study-new'] } }]">
             <span class="fa fa-plus"></span>
             <span >
             Create new Study
@@ -16,26 +16,28 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
             <th><span>Name</span></th>
             <th><span>Description</span></th>
             <th><span>Incentive</span></th>
-            <th><span>Has Pay</span></th>
-            <th><span>Researcher</span></th>
+            <th><span>Paid</span></th>
+            <th><span>User</span></th>
+            <th><span>Participants</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let study of studies ;trackBy: trackId">
-                <td><a [routerLink]="['../study', study.id ]">{{study.id}}</a></td>
-                <td>{{study.name}}</td>
+                <td><a [routerLink]="['../study', study.id ]">{{study.name}}</a></td>
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
                 <td>{{study.hasPay}}</td>
                 <td>
-                    <div *ngIf="study.researcher">
-                        <a [routerLink]="['../researcher', study.researcher?.id ]" >{{study.researcher?.email}}</a>
-                    </div>
+                    {{study.user?.login}}
+                </td>
+                <td>
+                    <span *ngFor="let participant of study.participants; let last = last">
+                            <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

@@ -1,51 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Filter Participants</title>
-    <script src="scripts/jquery-3.1.1.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
-<body>
-<div>
-    <form name="filter" id="filter" action="http://localhost:8080/QualOptServer/services/user/filter" method="post" accept-charset="utf-8">
-        <h1 class="titleText">
-            Filter Participants
-        </h1>
-
+    <head>
+        <meta charset="UTF-8">
+        <title>Filter Participants</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+              integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    </head>
+    <body>
         <div class="container">
-            <label><b>Filter By Programming Language</b></label><br>
-            <select class="dropdown" name="languages">
-                <option value="C">C</option>
-                <option value="C++">C++</option>
-                <option value="C#">C#</option>
-                <option value="Ruby">Ruby</option>
-                <option value="Java">Java</option>
-                <option value="Shell">Shell</option>
-                <option value="JavaScript">JavaScript</option>
-                <option value="Perl">Perl</option>
-                <option value="Python">Python</option>
-                <option value="PHP">PHP</option>
-                <option value="Objective-C">Objective-C</option>
-            </select><br>
-
-            <label>Enter The Number of Participants</label>
-            <input type="number" id="participants" name="participants" min="1" max="500" required><br>
-
-            <button type="submit" name="submit" value="Submit">Submit</button>
-
+            <h1 class="text-center">Filter Participants</h1>
+            <form>
+                <div class="form-group">
+                    <label for="programmingLanguage">Programming Language</label>
+                    <select class="form-control" id="programmingLanguage">
+                        <option>Java</option>
+                        <option>JavaScript</option>
+                        <option>C</option>
+                        <option>Python</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select class="form-control" id="location">
+                        <option>New Zealand</option>
+                        <option>Australia</option>
+                        <option>Singapore</option>
+                        <option>California</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="occupation">Occupation</label>
+                    <select class="form-control" id="occupation">
+                        <option>Software Engineer</option>
+                        <option>Student</option>
+                        <option>Designer</option>
+                        <option>Developer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contributions">Minimum number of contributions</label>
+                    <input class="form-control" type="number" value="0" id="contributions">
+                </div>
+                <div class="form-group">
+                    <label for="repositories">Minimum number of repositories</label>
+                    <input class="form-control" type="number" value="0" id="repositories">
+                </div>
+                <div class="form-group">
+                    <label for="participants">Limit number of participants</label>
+                    <input class="form-control" type="number" value="10" id="participants">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="emailBody" rows="5"
+                              placeholder="Enter specific users by email or username, comma separated"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+            </form>
         </div>
-
-    </form>
-    <script src="scripts/filter.js"></script>
-</div>
-</body>
+    </body>
 </html>

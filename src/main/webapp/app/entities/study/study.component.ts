@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager, ParseLinks, PaginationUtil, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Study } from './study.model';
 import { StudyService } from './study.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
 @Component({
@@ -20,18 +19,19 @@ studies: Study[];
 
     constructor(
         private studyService: StudyService,
-        private alertService: AlertService,
-        private eventManager: EventManager,
+        private alertService: JhiAlertService,
+        private dataUtils: JhiDataUtils,
+        private eventManager: JhiEventManager,
         private principal: Principal
     ) {
     }
 
     loadAll() {
         this.studyService.query().subscribe(
-            (res: Response) => {
-                this.studies = res.json();
+            (res: ResponseWrapper) => {
+                this.studies = res.json;
             },
-            (res: Response) => this.onError(res.json())
+            (res: ResponseWrapper) => this.onError(res.json)
         );
     }
     ngOnInit() {
@@ -46,18 +46,22 @@ studies: Study[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: Study) {
+    trackId(index: number, item: Study) {
         return item.id;
     }
 
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
 
-
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
     registerChangeInStudies() {
         this.eventSubscriber = this.eventManager.subscribe('studyListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }
