@@ -12,6 +12,22 @@
         <dd>
             <span>{{participant.occupation}}</span>
         </dd>
+        <dt><span>Location</span></dt>
+        <dd>
+            <span>{{participant.location}}</span>
+        </dd>
+        <dt><span>Programming Language</span></dt>
+        <dd>
+            <span>{{participant.programmingLanguage}}</span>
+        </dd>
+        <dt><span>Number Of Contributions</span></dt>
+        <dd>
+            <span>{{participant.numberOfContributions}}</span>
+        </dd>
+        <dt><span>Number Of Repositories</span></dt>
+        <dd>
+            <span>{{participant.numberOfRepositories}}</span>
+        </dd>
     </dl>
 
     <button type="submit"
@@ -20,7 +36,7 @@
         <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
 
-    <button type="button"
+    <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button"
             [routerLink]="['/', { outlets: { popup: 'participant/'+ participant.id + '/edit'} }]"
             replaceUrl="true"
             class="btn btn-primary">

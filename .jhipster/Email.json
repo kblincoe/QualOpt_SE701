@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "study",
+            "otherEntityName": "study",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "email"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "subject",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "body",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "changelogDate": "20170806142425",
+    "entityTableName": "email",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

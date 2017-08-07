@@ -20,22 +20,26 @@
             <th><span>Description</span></th>
             <th><span>Incentive</span></th>
             <th><span>Paid</span></th>
+            <th><span>User</span></th>
             <th><span>Participants</span></th>
-            <th *jhiHasAnyAuthority="'ROLE_ADMIN'"></th>
+            <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let study of studies ;trackBy: trackId">
-                <th scope="row"><a [routerLink]="['../study', study.id ]">{{study.name}}</a></th>
+                <td><a [routerLink]="['../study', study.id ]">{{study.name}}</a></td>
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
                 <td>{{study.hasPay}}</td>
+                <td>
+                    {{study.user?.login}}
+                </td>
                 <td>
                     <span *ngFor="let participant of study.participants; let last = last">
                             <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'" class="text-right">
+                <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['../study', study.id ]"

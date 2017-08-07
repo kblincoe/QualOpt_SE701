@@ -2,10 +2,10 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "researcher",
-            "otherEntityName": "researcher",
-            "otherEntityRelationshipName": "study"
+            "relationshipType": "many-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login"
         },
         {
             "relationshipType": "many-to-many",
@@ -19,22 +19,27 @@
     "fields": [
         {
             "fieldName": "name",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         },
         {
             "fieldName": "incentive",
-            "fieldType": "String"
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         },
         {
             "fieldName": "hasPay",
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170728034701",
+    "changelogDate": "20170806142424",
     "entityTableName": "study",
     "dto": "no",
     "pagination": "no",

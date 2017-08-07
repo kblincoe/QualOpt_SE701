@@ -14,6 +14,7 @@ import {
     participantRoute,
     participantPopupRoute,
 } from './';
+import { ParticipantPipe } from './participant.pipe';
 
 const ENTITY_STATES = [
     ...participantRoute,
@@ -32,6 +33,7 @@ const ENTITY_STATES = [
         ParticipantDeleteDialogComponent,
         ParticipantPopupComponent,
         ParticipantDeletePopupComponent,
+        ParticipantPipe,
     ],
     entryComponents: [
         ParticipantComponent,

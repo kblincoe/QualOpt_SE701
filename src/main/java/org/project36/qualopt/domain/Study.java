@@ -1,10 +1,10 @@
 package org.project36.qualopt.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,22 +24,23 @@ public class Study implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
+    @Lob
     @Column(name = "incentive")
     private String incentive;
 
     @Column(name = "has_pay")
     private Boolean hasPay;
 
-    @OneToMany(mappedBy = "study")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Researcher> researchers = new HashSet<>();
+    @ManyToOne
+    private User user;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -108,29 +109,17 @@ public class Study implements Serializable {
         this.hasPay = hasPay;
     }
 
-    public Set<Researcher> getResearchers() {
-        return researchers;
+    public User getUser() {
+        return user;
     }
 
-    public Study researchers(Set<Researcher> researchers) {
-        this.researchers = researchers;
+    public Study user(User user) {
+        this.user = user;
         return this;
     }
 
-    public Study addResearcher(Researcher researcher) {
-        this.researchers.add(researcher);
-        researcher.setStudy(this);
-        return this;
-    }
-
-    public Study removeResearcher(Researcher researcher) {
-        this.researchers.remove(researcher);
-        researcher.setStudy(null);
-        return this;
-    }
-
-    public void setResearchers(Set<Researcher> researchers) {
-        this.researchers = researchers;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Set<Participant> getParticipants() {

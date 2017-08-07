@@ -5,6 +5,10 @@ export class Participant implements BaseEntity {
         public id?: number,
         public email?: string,
         public occupation?: string,
+        public location?: string,
+        public programmingLanguage?: string,
+        public numberOfContributions?: number,
+        public numberOfRepositories?: number,
         public studies?: BaseEntity[],
     ) {
     }

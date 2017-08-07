@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Study.
+    -->
+    <changeSet id="20170806142424-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="study"
+                                 constraintName="fk_study_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="studies_id"
+                                 baseTableName="study_participant"
+                                 constraintName="fk_study_participant_studies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="study"/>
+        <addForeignKeyConstraint baseColumnNames="participants_id"
+                                 baseTableName="study_participant"
+                                 constraintName="fk_study_participant_participants_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="participant"/>
+        
+    </changeSet>
+</databaseChangeLog>

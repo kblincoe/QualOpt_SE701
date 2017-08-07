@@ -16,6 +16,10 @@
         <dd>
             <span>{{study.hasPay}}</span>
         </dd>
+        <dt><span>User</span></dt>
+        <dd>
+            {{study.user?.login}}
+        </dd>
         <dt><span>Participants</span></dt>
         <dd>
             <span *ngFor="let participant of study.participants; let last = last">
@@ -30,17 +34,17 @@
         <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
 
-    <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button"
+    <button type="button"
             [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
             replaceUrl="true"
-            class="btn btn-secondary">
+            class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
     </button>
 
     <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/draftEmail'} }]"
+            [routerLink]="['#']"
             replaceUrl="true"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Draft Email</span>
+            class="btn btn-success">
+        <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
     </button>
 </div>
