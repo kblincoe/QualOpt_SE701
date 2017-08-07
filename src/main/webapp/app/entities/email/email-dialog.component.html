@@ -26,11 +26,18 @@
 
         <div class="form-group">
             <label for="field_study">Study</label>
-            <select class="form-control" id="field_study" name="study" [(ngModel)]="email.study">
+            <select class="form-control" id="field_study" name="study" [(ngModel)]="email.study" required>
                 <option [ngValue]="null"></option>
                 <option [ngValue]="studyOption.id === email.study?.id ? email.study : studyOption" *ngFor="let studyOption of studies; trackBy: trackStudyById">{{studyOption.name}}</option>
             </select>
+            <div [hidden]="!(editForm.controls.study?.dirty && email.study==null)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.study?.errors?.required">
+                    This field is required.
+                </small>
+            </div>
         </div>
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
