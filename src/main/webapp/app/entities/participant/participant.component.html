@@ -17,43 +17,24 @@
             <h5>Filter Participants</h5>
             <form>
                 <div class="form-group">
-                    <label for="programmingLanguage">Programming Language</label>
-                    <select class="form-control" id="programmingLanguage">
-                        <option>Java</option>
-                        <option>JavaScript</option>
-                        <option>C</option>
-                        <option>Python</option>
-                    </select>
+                    <label for="filter_occupation">Occupation</label>
+                    <input class="form-control" type="text" id="filter_occupation" name="occupation" [(ngModel)]="filter.occupation">
                 </div>
                 <div class="form-group">
-                    <label for="location">Location</label>
-                    <select class="form-control" id="location">
-                        <option>New Zealand</option>
-                        <option>Australia</option>
-                        <option>Singapore</option>
-                        <option>California</option>
-                    </select>
+                    <label for="filter_location">Location</label>
+                    <input class="form-control" type="text" id="filter_location" name="location" [(ngModel)]="filter.location">
                 </div>
                 <div class="form-group">
-                    <label for="occupation">Occupation</label>
-                    <select class="form-control" id="occupation">
-                        <option>Software Engineer</option>
-                        <option>Student</option>
-                        <option>Designer</option>
-                        <option>Developer</option>
-                    </select>
+                    <label for="filter_programmingLanguage">Programming Language</label>
+                    <input class="form-control" type="text" id="filter_programmingLanguage" name="programmingLanguage" [(ngModel)]="filter.programmingLanguage">
                 </div>
                 <div class="form-group">
-                    <label for="contributions">Minimum number of contributions</label>
-                    <input class="form-control" type="number" value="0" id="contributions">
+                    <label for="filter_numberOfContributions">Minimum number of contributions</label>
+                    <input class="form-control" type="number" id="filter_numberOfContributions" name="numberOfContributions" [(ngModel)]="filter.numberOfContributions">
                 </div>
                 <div class="form-group">
-                    <label for="repositories">Minimum number of repositories</label>
-                    <input class="form-control" type="number" value="0" id="repositories">
-                </div>
-                <div class="form-group">
-                    <label for="participants">Limit number of participants</label>
-                    <input class="form-control" type="number" value="10" id="participants">
+                    <label for="filter_numberOfRepositories">Minimum number of repositories</label>
+                    <input class="form-control" type="number" id="filter_numberOfRepositories" name="numberOfRepositories" [(ngModel)]="filter.numberOfRepositories">
                 </div>
             </form>
         </div>
@@ -73,7 +54,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let participant of participants ;trackBy: trackId">
+                    <tr *ngFor="let participant of participants | participant:filter ;trackBy: trackId">
                         <td><a [routerLink]="['../participant', participant.id ]">{{participant.id}}</a></td>
                         <td>{{participant.email}}</td>
                         <td>{{participant.occupation}}</td>

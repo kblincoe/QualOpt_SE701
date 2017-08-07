@@ -14,6 +14,7 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 })
 export class ParticipantComponent implements OnInit, OnDestroy {
 participants: Participant[];
+filter: Participant = new Participant();
     currentAccount: any;
     eventSubscriber: Subscription;
 
