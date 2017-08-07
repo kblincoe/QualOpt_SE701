@@ -4,10 +4,7 @@
     </div>
     <div class="col-md-9">
         <h1 class="display-4">QualOpt</h1>
-        <p class="lead">
-            QualOpt problem statement
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu libero commodo, tristique sapien quis, luctus est.
-        </p>
+        <p class="lead"></p>
 
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
@@ -17,7 +14,7 @@
 
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span>If you want to </span>
-                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
+                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default account:<br/>- User (login="user" and password="user").</span>
             </div>
 
             <div class="alert alert-warning" *ngSwitchCase="false">
@@ -27,20 +24,16 @@
         </div>
 
         <p>
-            How QualOpt effectively solves this/benefits:
+            Benefits of QualOpt:
         </p>
 
         <ul>
             <li>Support Researchers</li>
             <li>Supports GitHub users</li>
             <li>Security</li>
-            <li>etc.</li>
         </ul>
 
-        <p>
-            More about GitHub and problem:
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu libero commodo, tristique sapien quis, luctus est.
-        </p>
+        <p></p>
 
         <a href="https://github.com/">Link to GitHub for visitors</a>
     </div>
