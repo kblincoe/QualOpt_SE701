@@ -86,7 +86,7 @@ public class StudyResource {
     @Timed
     public List<Study> getAllStudies() {
         log.debug("REST request to get all Studies");
-        return studyRepository.findAllWithEagerRelationships();
+        return studyRepository.findByUserIsCurrentUser();
     }
 
     /**
