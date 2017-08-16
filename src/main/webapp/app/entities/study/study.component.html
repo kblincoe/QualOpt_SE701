@@ -15,29 +15,27 @@
     <div class="table-responsive" *ngIf="studies">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span>Name</span></th>
-            <th><span>Description</span></th>
-            <th><span>Incentive</span></th>
-            <th><span>Paid</span></th>
-            <th><span>User</span></th>
-            <th><span>Participants</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="incentive"><span>Incentive</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="email.subject"><span>Email</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let study of studies ;trackBy: trackId">
                 <td><a [routerLink]="['../study', study.id ]">{{study.name}}</a></td>
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
-                <td>{{study.hasPay}}</td>
                 <td>
-                    {{study.user?.login}}
+                    <div *ngIf="study.email">
+                        <a [routerLink]="['../email', study.email?.id ]" >{{study.email?.subject}}</a>
+                    </div>
                 </td>
                 <td>
-                    <span *ngFor="let participant of study.participants; let last = last">
-                            <a class="form-control-static" [routerLink]="['../participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
-                        </span>
+                    {{study.user?.login}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

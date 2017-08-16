@@ -5,7 +5,6 @@ export class Email implements BaseEntity {
         public id?: number,
         public subject?: string,
         public body?: any,
-        public study?: BaseEntity,
     ) {
     }
 }

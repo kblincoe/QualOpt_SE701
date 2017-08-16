@@ -30,10 +30,6 @@ public class Email implements Serializable {
     @Column(name = "jhi_body")
     private String body;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Study study;
-
     public Long getId() {
         return id;
     }
@@ -66,19 +62,6 @@ public class Email implements Serializable {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public Study getStudy() {
-        return study;
-    }
-
-    public Email study(Study study) {
-        this.study = study;
-        return this;
-    }
-
-    public void setStudy(Study study) {
-        this.study = study;
     }
 
     @Override

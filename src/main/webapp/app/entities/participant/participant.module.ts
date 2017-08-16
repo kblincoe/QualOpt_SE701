@@ -33,7 +33,7 @@ const ENTITY_STATES = [
         ParticipantDeleteDialogComponent,
         ParticipantPopupComponent,
         ParticipantDeletePopupComponent,
-        ParticipantPipe,
+        ParticipantPipe
     ],
     entryComponents: [
         ParticipantComponent,

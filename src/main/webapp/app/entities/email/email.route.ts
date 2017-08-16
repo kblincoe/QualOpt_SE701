@@ -14,7 +14,7 @@ export const emailRoute: Routes = [
         path: 'email',
         component: EmailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Emails'
         },
         canActivate: [UserRouteAccessService]

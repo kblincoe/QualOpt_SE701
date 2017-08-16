@@ -8,12 +8,6 @@
         <dd>
             <span>{{email.body}}</span>
         </dd>
-        <dt><span>Study</span></dt>
-        <dd>
-            <div *ngIf="email.study">
-                <a [routerLink]="['/study', email.study?.id]">{{email.study?.name}}</a>
-            </div>
-        </dd>
     </dl>
 
     <button type="submit"

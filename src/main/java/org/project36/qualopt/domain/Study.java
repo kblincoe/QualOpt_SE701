@@ -36,8 +36,9 @@ public class Study implements Serializable {
     @Column(name = "incentive")
     private String incentive;
 
-    @Column(name = "has_pay")
-    private Boolean hasPay;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Email email;
 
     @ManyToOne
     private User user;
@@ -96,17 +97,17 @@ public class Study implements Serializable {
         this.incentive = incentive;
     }
 
-    public Boolean isHasPay() {
-        return hasPay;
+    public Email getEmail() {
+        return email;
     }
 
-    public Study hasPay(Boolean hasPay) {
-        this.hasPay = hasPay;
+    public Study email(Email email) {
+        this.email = email;
         return this;
     }
 
-    public void setHasPay(Boolean hasPay) {
-        this.hasPay = hasPay;
+    public void setEmail(Email email) {
+        this.email = email;
     }
 
     public User getUser() {
@@ -174,7 +175,6 @@ public class Study implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", incentive='" + getIncentive() + "'" +
-            ", hasPay='" + isHasPay() + "'" +
             "}";
     }
 }

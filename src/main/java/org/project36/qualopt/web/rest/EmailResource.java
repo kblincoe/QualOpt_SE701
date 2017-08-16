@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import org.project36.qualopt.domain.Email;
 
 import org.project36.qualopt.repository.EmailRepository;
-import org.project36.qualopt.security.SecurityUtils;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -87,7 +86,7 @@ public class EmailResource {
     @Timed
     public List<Email> getAllEmails() {
         log.debug("REST request to get all Emails");
-        return emailRepository.findByStudyUserLogin(SecurityUtils.getCurrentUserLogin());
+        return emailRepository.findAll();
     }
 
     /**

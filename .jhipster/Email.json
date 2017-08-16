@@ -1,15 +1,6 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "study",
-            "otherEntityName": "study",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "email"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "subject",

@@ -33,11 +33,9 @@
             <column name="incentive" type="clob">
                 <constraints nullable="true" />
             </column>
-
-            <column name="has_pay" type="bit">
-                <constraints nullable="true" />
+            <column name="email_id" type="bigint">
+                <constraints unique="true" nullable="true" />
             </column>
-
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -2,6 +2,14 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "email",
+            "otherEntityName": "email",
+            "otherEntityField": "subject",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "study"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "user",
             "otherEntityName": "user",
@@ -33,15 +41,11 @@
             "fieldName": "incentive",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "text"
-        },
-        {
-            "fieldName": "hasPay",
-            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170806142424",
     "entityTableName": "study",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "infinite-scroll",
     "service": "no"
 }
