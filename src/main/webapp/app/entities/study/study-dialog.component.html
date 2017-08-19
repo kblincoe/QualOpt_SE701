@@ -54,8 +54,8 @@
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" [routerLink]="['/', { outlets: { popup: ['email-new'] } }]" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Next</span>
         </button>
     </div>
 </form>
