@@ -12,19 +12,14 @@
         <dd>
             <span>{{study.incentive}}</span>
         </dd>
-        <dt><span>Email Subject</span></dt>
+        <dt><span>Email</span></dt>
         <dd>
             <span>{{study.emailSubject}}</span>
         </dd>
-        <dt><span>Email Body</span></dt>
         <dd>
             <span>{{study.emailBody}}</span>
         </dd>
-        <dt><span>User</span></dt>
-        <dd>
-            {{study.user?.login}}
-        </dd>
-        <dt><span>Participant</span></dt>
+        <dt><span>Participants</span></dt>
         <dd>
             <span *ngFor="let participant of study.participants; let last = last">
                 <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
