@@ -36,9 +36,13 @@ public class Study implements Serializable {
     @Column(name = "incentive")
     private String incentive;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Email email;
+    @NotNull
+    @Column(name = "email_subject", nullable = false)
+    private String emailSubject;
+
+    @Lob
+    @Column(name = "email_body")
+    private String emailBody;
 
     @ManyToOne
     private User user;
@@ -97,17 +101,30 @@ public class Study implements Serializable {
         this.incentive = incentive;
     }
 
-    public Email getEmail() {
-        return email;
+    public String getEmailSubject() {
+        return emailSubject;
     }
 
-    public Study email(Email email) {
-        this.email = email;
+    public Study emailSubject(String emailSubject) {
+        this.emailSubject = emailSubject;
         return this;
     }
 
-    public void setEmail(Email email) {
-        this.email = email;
+    public void setEmailSubject(String emailSubject) {
+        this.emailSubject = emailSubject;
+    }
+
+    public String getEmailBody() {
+        return emailBody;
+    }
+
+    public Study emailBody(String emailBody) {
+        this.emailBody = emailBody;
+        return this;
+    }
+
+    public void setEmailBody(String emailBody) {
+        this.emailBody = emailBody;
     }
 
     public User getUser() {
@@ -175,6 +192,8 @@ public class Study implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", incentive='" + getIncentive() + "'" +
+            ", emailSubject='" + getEmailSubject() + "'" +
+            ", emailBody='" + getEmailBody() + "'" +
             "}";
     }
 }

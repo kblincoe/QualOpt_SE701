@@ -12,11 +12,13 @@
         <dd>
             <span>{{study.incentive}}</span>
         </dd>
-        <dt><span>Email</span></dt>
+        <dt><span>Email Subject</span></dt>
         <dd>
-            <div *ngIf="study.email">
-                <a [routerLink]="['/email', study.email?.id]">{{study.email?.subject}}</a>
-            </div>
+            <span>{{study.emailSubject}}</span>
+        </dd>
+        <dt><span>Email Body</span></dt>
+        <dd>
+            <span>{{study.emailBody}}</span>
         </dd>
         <dt><span>User</span></dt>
         <dd>

@@ -6,7 +6,8 @@ export class Study implements BaseEntity {
         public name?: string,
         public description?: any,
         public incentive?: any,
-        public email?: BaseEntity,
+        public emailSubject?: string,
+        public emailBody?: any,
         public user?: User,
         public participants?: BaseEntity[],
     ) {

@@ -33,9 +33,15 @@
             <column name="incentive" type="clob">
                 <constraints nullable="true" />
             </column>
-            <column name="email_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+
+            <column name="email_subject" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
+
+            <column name="email_body" type="clob">
+                <constraints nullable="true" />
+            </column>
+
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>

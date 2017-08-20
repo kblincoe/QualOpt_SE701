@@ -9,7 +9,6 @@ import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { Study } from './study.model';
 import { StudyPopupService } from './study-popup.service';
 import { StudyService } from './study.service';
-import { Email, EmailService } from '../email';
 import { User, UserService } from '../../shared';
 import { Participant, ParticipantService } from '../participant';
 import { ResponseWrapper } from '../../shared';
@@ -23,8 +22,6 @@ export class StudyDialogComponent implements OnInit {
     study: Study;
     isSaving: boolean;
 
-    emails: Email[];
-
     users: User[];
 
     participants: Participant[];
@@ -34,7 +31,6 @@ export class StudyDialogComponent implements OnInit {
         private dataUtils: JhiDataUtils,
         private alertService: JhiAlertService,
         private studyService: StudyService,
-        private emailService: EmailService,
         private userService: UserService,
         private participantService: ParticipantService,
         private eventManager: JhiEventManager
@@ -43,19 +39,6 @@ export class StudyDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.emailService
-            .query({filter: 'study-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.study.email || !this.study.email.id) {
-                    this.emails = res.json;
-                } else {
-                    this.emailService
-                        .find(this.study.email.id)
-                        .subscribe((subRes: Email) => {
-                            this.emails = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
         this.userService.query()
             .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.participantService.query()
@@ -121,10 +104,6 @@ export class StudyDialogComponent implements OnInit {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
-    }
-
-    trackEmailById(index: number, item: Email) {
-        return item.id;
     }
 
     trackUserById(index: number, item: User) {

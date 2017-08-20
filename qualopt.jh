@@ -1,7 +1,9 @@
 entity Study {
 	name String required,
 	description TextBlob,
-	incentive TextBlob
+	incentive TextBlob,
+	emailSubject String required,
+    emailBody TextBlob
 }
 
 entity Participant {
@@ -13,21 +15,12 @@ entity Participant {
     numberOfRepositories Integer
 }
 
-entity Email {
-	subject String required,
-    body TextBlob
-}
-
 relationship ManyToOne {
     Study{user(login)} to User
 }
 
 relationship ManyToMany {
 	Study{participant(email)} to Participant{study}
-}
-
-relationship OneToOne {
-    Study{email(subject)} to Email
 }
 
 paginate Study, Participant with infinite-scroll
