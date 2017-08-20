@@ -4,7 +4,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -22,46 +21,12 @@ public class Email implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "subject", nullable = false)
-    private String subject;
-
-    @Lob
-    @Column(name = "jhi_body")
-    private String body;
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public Email subject(String subject) {
-        this.subject = subject;
-        return this;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public Email body(String body) {
-        this.body = body;
-        return this;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
     }
 
     @Override
@@ -88,8 +53,6 @@ public class Email implements Serializable {
     public String toString() {
         return "Email{" +
             "id=" + getId() +
-            ", subject='" + getSubject() + "'" +
-            ", body='" + getBody() + "'" +
             "}";
     }
 }

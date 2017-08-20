@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -37,12 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = QualOptApp.class)
 public class EmailResourceIntTest {
-
-    private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
-    private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
-
-    private static final String DEFAULT_BODY = "AAAAAAAAAA";
-    private static final String UPDATED_BODY = "BBBBBBBBBB";
 
     @Autowired
     private EmailRepository emailRepository;
@@ -80,9 +73,7 @@ public class EmailResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Email createEntity(EntityManager em) {
-        Email email = new Email()
-            .subject(DEFAULT_SUBJECT)
-            .body(DEFAULT_BODY);
+        Email email = new Email();
         return email;
     }
 
@@ -106,8 +97,6 @@ public class EmailResourceIntTest {
         List<Email> emailList = emailRepository.findAll();
         assertThat(emailList).hasSize(databaseSizeBeforeCreate + 1);
         Email testEmail = emailList.get(emailList.size() - 1);
-        assertThat(testEmail.getSubject()).isEqualTo(DEFAULT_SUBJECT);
-        assertThat(testEmail.getBody()).isEqualTo(DEFAULT_BODY);
     }
 
     @Test
@@ -131,24 +120,6 @@ public class EmailResourceIntTest {
 
     @Test
     @Transactional
-    public void checkSubjectIsRequired() throws Exception {
-        int databaseSizeBeforeTest = emailRepository.findAll().size();
-        // set the field null
-        email.setSubject(null);
-
-        // Create the Email, which fails.
-
-        restEmailMockMvc.perform(post("/api/emails")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(email)))
-            .andExpect(status().isBadRequest());
-
-        List<Email> emailList = emailRepository.findAll();
-        assertThat(emailList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllEmails() throws Exception {
         // Initialize the database
         emailRepository.saveAndFlush(email);
@@ -157,9 +128,7 @@ public class EmailResourceIntTest {
         restEmailMockMvc.perform(get("/api/emails?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(email.getId().intValue())))
-            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT.toString())))
-            .andExpect(jsonPath("$.[*].body").value(hasItem(DEFAULT_BODY.toString())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(email.getId().intValue())));
     }
 
     @Test
@@ -172,9 +141,7 @@ public class EmailResourceIntTest {
         restEmailMockMvc.perform(get("/api/emails/{id}", email.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(email.getId().intValue()))
-            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT.toString()))
-            .andExpect(jsonPath("$.body").value(DEFAULT_BODY.toString()));
+            .andExpect(jsonPath("$.id").value(email.getId().intValue()));
     }
 
     @Test
@@ -194,9 +161,6 @@ public class EmailResourceIntTest {
 
         // Update the email
         Email updatedEmail = emailRepository.findOne(email.getId());
-        updatedEmail
-            .subject(UPDATED_SUBJECT)
-            .body(UPDATED_BODY);
 
         restEmailMockMvc.perform(put("/api/emails")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -207,8 +171,6 @@ public class EmailResourceIntTest {
         List<Email> emailList = emailRepository.findAll();
         assertThat(emailList).hasSize(databaseSizeBeforeUpdate);
         Email testEmail = emailList.get(emailList.size() - 1);
-        assertThat(testEmail.getSubject()).isEqualTo(UPDATED_SUBJECT);
-        assertThat(testEmail.getBody()).isEqualTo(UPDATED_BODY);
     }
 
     @Test
