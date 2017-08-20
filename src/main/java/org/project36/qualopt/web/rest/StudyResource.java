@@ -57,7 +57,7 @@ public class StudyResource {
         }
         Study result = studyRepository.save(study);
         return ResponseEntity.created(new URI("/api/studies/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getName()))
             .body(result);
     }
 
@@ -79,7 +79,7 @@ public class StudyResource {
         }
         Study result = studyRepository.save(study);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, study.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, study.getName()))
             .body(result);
     }
 
