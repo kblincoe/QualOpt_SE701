@@ -34,7 +34,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="has_pay" type="bit">
+            <column name="email_subject" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="email_body" type="clob">
                 <constraints nullable="true" />
             </column>
 

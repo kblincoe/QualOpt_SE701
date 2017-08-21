@@ -13,26 +13,56 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
     templateUrl: './participant.component.html'
 })
 export class ParticipantComponent implements OnInit, OnDestroy {
-participants: Participant[];
-filter: Participant = new Participant();
+
+    participants: Participant[];
+    filter: Participant = new Participant;
     currentAccount: any;
     eventSubscriber: Subscription;
+    itemsPerPage: number;
+    links: any;
+    page: any;
+    predicate: any;
+    queryCount: any;
+    reverse: any;
+    totalItems: number;
 
     constructor(
         private participantService: ParticipantService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
+        private parseLinks: JhiParseLinks,
         private principal: Principal
     ) {
+        this.participants = [];
+        this.itemsPerPage = ITEMS_PER_PAGE;
+        this.page = 0;
+        this.links = {
+            last: 0
+        };
+        this.predicate = 'id';
+        this.reverse = true;
     }
 
     loadAll() {
-        this.participantService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.participants = res.json;
-            },
+        this.participantService.query({
+            page: this.page,
+            size: this.itemsPerPage,
+            sort: this.sort()
+        }).subscribe(
+            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
+    }
+
+    reset() {
+        this.page = 0;
+        this.participants = [];
+        this.loadAll();
+    }
+
+    loadPage(page) {
+        this.page = page;
+        this.loadAll();
     }
     ngOnInit() {
         this.loadAll();
@@ -50,7 +80,23 @@ filter: Participant = new Participant();
         return item.id;
     }
     registerChangeInParticipants() {
-        this.eventSubscriber = this.eventManager.subscribe('participantListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('participantListModification', (response) => this.reset());
+    }
+
+    sort() {
+        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+        if (this.predicate !== 'id') {
+            result.push('id');
+        }
+        return result;
+    }
+
+    private onSuccess(data, headers) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = headers.get('X-Total-Count');
+        for (let i = 0; i < data.length; i++) {
+            this.participants.push(data[i]);
+        }
     }
 
     private onError(error) {
