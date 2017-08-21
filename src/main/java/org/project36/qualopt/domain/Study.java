@@ -36,8 +36,13 @@ public class Study implements Serializable {
     @Column(name = "incentive")
     private String incentive;
 
-    @Column(name = "has_pay")
-    private Boolean hasPay;
+    @NotNull
+    @Column(name = "email_subject", nullable = false)
+    private String emailSubject;
+
+    @Lob
+    @Column(name = "email_body")
+    private String emailBody;
 
     @ManyToOne
     private User user;
@@ -96,17 +101,30 @@ public class Study implements Serializable {
         this.incentive = incentive;
     }
 
-    public Boolean isHasPay() {
-        return hasPay;
+    public String getEmailSubject() {
+        return emailSubject;
     }
 
-    public Study hasPay(Boolean hasPay) {
-        this.hasPay = hasPay;
+    public Study emailSubject(String emailSubject) {
+        this.emailSubject = emailSubject;
         return this;
     }
 
-    public void setHasPay(Boolean hasPay) {
-        this.hasPay = hasPay;
+    public void setEmailSubject(String emailSubject) {
+        this.emailSubject = emailSubject;
+    }
+
+    public String getEmailBody() {
+        return emailBody;
+    }
+
+    public Study emailBody(String emailBody) {
+        this.emailBody = emailBody;
+        return this;
+    }
+
+    public void setEmailBody(String emailBody) {
+        this.emailBody = emailBody;
     }
 
     public User getUser() {
@@ -174,7 +192,8 @@ public class Study implements Serializable {
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", incentive='" + getIncentive() + "'" +
-            ", hasPay='" + isHasPay() + "'" +
+            ", emailSubject='" + getEmailSubject() + "'" +
+            ", emailBody='" + getEmailBody() + "'" +
             "}";
     }
 }

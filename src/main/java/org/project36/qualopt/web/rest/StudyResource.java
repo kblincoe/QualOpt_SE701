@@ -5,9 +5,15 @@ import org.project36.qualopt.domain.Study;
 
 import org.project36.qualopt.repository.StudyRepository;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
+import org.project36.qualopt.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +57,7 @@ public class StudyResource {
         }
         Study result = studyRepository.save(study);
         return ResponseEntity.created(new URI("/api/studies/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getName()))
             .body(result);
     }
 
@@ -73,20 +79,23 @@ public class StudyResource {
         }
         Study result = studyRepository.save(study);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, study.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, study.getName()))
             .body(result);
     }
 
     /**
      * GET  /studies : get all the studies.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of studies in body
      */
     @GetMapping("/studies")
     @Timed
-    public List<Study> getAllStudies() {
-        log.debug("REST request to get all Studies");
-        return studyRepository.findByUserIsCurrentUser();
+    public ResponseEntity<List<Study>> getAllStudies(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Studies");
+        Page<Study> page = studyRepository.findByUserIsCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/studies");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**

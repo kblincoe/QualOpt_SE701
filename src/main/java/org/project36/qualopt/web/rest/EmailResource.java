@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import org.project36.qualopt.domain.Email;
 
 import org.project36.qualopt.repository.EmailRepository;
-import org.project36.qualopt.security.SecurityUtils;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -45,7 +43,7 @@ public class EmailResource {
      */
     @PostMapping("/emails")
     @Timed
-    public ResponseEntity<Email> createEmail(@Valid @RequestBody Email email) throws URISyntaxException {
+    public ResponseEntity<Email> createEmail(@RequestBody Email email) throws URISyntaxException {
         log.debug("REST request to save Email : {}", email);
         if (email.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new email cannot already have an ID")).body(null);
@@ -67,7 +65,7 @@ public class EmailResource {
      */
     @PutMapping("/emails")
     @Timed
-    public ResponseEntity<Email> updateEmail(@Valid @RequestBody Email email) throws URISyntaxException {
+    public ResponseEntity<Email> updateEmail(@RequestBody Email email) throws URISyntaxException {
         log.debug("REST request to update Email : {}", email);
         if (email.getId() == null) {
             return createEmail(email);
@@ -87,7 +85,7 @@ public class EmailResource {
     @Timed
     public List<Email> getAllEmails() {
         log.debug("REST request to get all Emails");
-        return emailRepository.findByStudyUserLogin(SecurityUtils.getCurrentUserLogin());
+        return emailRepository.findAll();
     }
 
     /**

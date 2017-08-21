@@ -47,8 +47,11 @@ public class StudyResourceIntTest {
     private static final String DEFAULT_INCENTIVE = "AAAAAAAAAA";
     private static final String UPDATED_INCENTIVE = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_HAS_PAY = false;
-    private static final Boolean UPDATED_HAS_PAY = true;
+    private static final String DEFAULT_EMAIL_SUBJECT = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL_SUBJECT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL_BODY = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL_BODY = "BBBBBBBBBB";
 
     @Autowired
     private StudyRepository studyRepository;
@@ -90,7 +93,8 @@ public class StudyResourceIntTest {
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
             .incentive(DEFAULT_INCENTIVE)
-            .hasPay(DEFAULT_HAS_PAY);
+            .emailSubject(DEFAULT_EMAIL_SUBJECT)
+            .emailBody(DEFAULT_EMAIL_BODY);
         return study;
     }
 
@@ -117,7 +121,8 @@ public class StudyResourceIntTest {
         assertThat(testStudy.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testStudy.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testStudy.getIncentive()).isEqualTo(DEFAULT_INCENTIVE);
-        assertThat(testStudy.isHasPay()).isEqualTo(DEFAULT_HAS_PAY);
+        assertThat(testStudy.getEmailSubject()).isEqualTo(DEFAULT_EMAIL_SUBJECT);
+        assertThat(testStudy.getEmailBody()).isEqualTo(DEFAULT_EMAIL_BODY);
     }
 
     @Test
@@ -159,6 +164,24 @@ public class StudyResourceIntTest {
 
     @Test
     @Transactional
+    public void checkEmailSubjectIsRequired() throws Exception {
+        int databaseSizeBeforeTest = studyRepository.findAll().size();
+        // set the field null
+        study.setEmailSubject(null);
+
+        // Create the Study, which fails.
+
+        restStudyMockMvc.perform(post("/api/studies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(study)))
+            .andExpect(status().isBadRequest());
+
+        List<Study> studyList = studyRepository.findAll();
+        assertThat(studyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllStudies() throws Exception {
         // Initialize the database
         studyRepository.saveAndFlush(study);
@@ -171,7 +194,8 @@ public class StudyResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].incentive").value(hasItem(DEFAULT_INCENTIVE.toString())))
-            .andExpect(jsonPath("$.[*].hasPay").value(hasItem(DEFAULT_HAS_PAY.booleanValue())));
+            .andExpect(jsonPath("$.[*].emailSubject").value(hasItem(DEFAULT_EMAIL_SUBJECT.toString())))
+            .andExpect(jsonPath("$.[*].emailBody").value(hasItem(DEFAULT_EMAIL_BODY.toString())));
     }
 
     @Test
@@ -188,7 +212,8 @@ public class StudyResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.incentive").value(DEFAULT_INCENTIVE.toString()))
-            .andExpect(jsonPath("$.hasPay").value(DEFAULT_HAS_PAY.booleanValue()));
+            .andExpect(jsonPath("$.emailSubject").value(DEFAULT_EMAIL_SUBJECT.toString()))
+            .andExpect(jsonPath("$.emailBody").value(DEFAULT_EMAIL_BODY.toString()));
     }
 
     @Test
@@ -212,7 +237,8 @@ public class StudyResourceIntTest {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
             .incentive(UPDATED_INCENTIVE)
-            .hasPay(UPDATED_HAS_PAY);
+            .emailSubject(UPDATED_EMAIL_SUBJECT)
+            .emailBody(UPDATED_EMAIL_BODY);
 
         restStudyMockMvc.perform(put("/api/studies")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -226,7 +252,8 @@ public class StudyResourceIntTest {
         assertThat(testStudy.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testStudy.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testStudy.getIncentive()).isEqualTo(UPDATED_INCENTIVE);
-        assertThat(testStudy.isHasPay()).isEqualTo(UPDATED_HAS_PAY);
+        assertThat(testStudy.getEmailSubject()).isEqualTo(UPDATED_EMAIL_SUBJECT);
+        assertThat(testStudy.getEmailBody()).isEqualTo(UPDATED_EMAIL_BODY);
     }
 
     @Test

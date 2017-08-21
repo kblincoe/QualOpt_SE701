@@ -35,13 +35,21 @@
             "fieldTypeBlobContent": "text"
         },
         {
-            "fieldName": "hasPay",
-            "fieldType": "Boolean"
+            "fieldName": "emailSubject",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "emailBody",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         }
     ],
     "changelogDate": "20170806142424",
     "entityTableName": "study",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "infinite-scroll",
     "service": "no"
 }
