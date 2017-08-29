@@ -3,7 +3,9 @@ package org.project36.qualopt.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import org.project36.qualopt.domain.Study;
 
+import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.StudyRepository;
+import org.project36.qualopt.repository.UserRepository;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
 import org.project36.qualopt.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -15,8 +17,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,6 +40,9 @@ public class StudyResource {
     private final Logger log = LoggerFactory.getLogger(StudyResource.class);
 
     private static final String ENTITY_NAME = "study";
+
+    @Inject
+    private UserRepository UserRepository;
 
     private final StudyRepository studyRepository;
 
@@ -55,6 +64,9 @@ public class StudyResource {
         if (study.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new study cannot already have an ID")).body(null);
         }
+        User user = new User();
+        user = UserRepository.findOneByLogin(getCurrentUserLogin()).get();
+        study.setUser(user);
         Study result = studyRepository.save(study);
         return ResponseEntity.created(new URI("/api/studies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getName()))
@@ -124,5 +136,20 @@ public class StudyResource {
         log.debug("REST request to delete Study : {}", id);
         studyRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    public String getCurrentUserLogin() {
+        org.springframework.security.core.context.SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        String login = null;
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof UserDetails) {
+                login = ((UserDetails) authentication.getPrincipal()).getUsername();
+            }
+            else if (authentication.getPrincipal() instanceof String) {
+                login = (String) authentication.getPrincipal();
+            }
+        }
+        return login;
     }
 }
