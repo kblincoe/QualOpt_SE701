@@ -59,7 +59,7 @@
                     </tr>
                     </thead>
                     <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-                    <tr *ngFor="let participant of participants ;trackBy: trackId">
+                    <tr *ngFor="let participant of participants | participant:filter ;trackBy: trackId">
                         <td><a [routerLink]="['../participant', participant.id ]">{{participant.email}}</a></td>
                         <td>{{participant.occupation}}</td>
                         <td>{{participant.location}}</td>
