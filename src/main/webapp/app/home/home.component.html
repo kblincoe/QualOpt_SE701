@@ -10,7 +10,7 @@
             </span>
         </button>
         <h1 class="display-4">QualOpt</h1>
-        <p class="lead"></p>
+        <p class="lead">A Web Application to Support Qualitative Research</p>
 
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
@@ -30,27 +30,30 @@
         </div>
 
         <p>
-            QualOpt is a platform for researchers to manage the survey invitations for their studies, and find participants to send them to via GitHub.
-            It also provides the ability for GitHub users to opt out of receiving survey invitations.
-            The goal of this is to address the issue of GitHub users receiving too many unsolicited survey invitations
-            <!-- TODO: About QualOpt here -->
+            QualOpt is a platform for software engineering researchers to manage survey invitations for their qualitative research studies, and find participants to send them to via GitHub.<br/>
+            The goal of this is to address the issue of GitHub users receiving too many unsolicited survey invitations via the GHTorrent project.<br/>
+            We do this by providing a centralized location for researchers to find GitHub users, and for GitHub users to manage who can find them.
+            <!-- TODO: More about QualOpt here -->
         </p>
 
         <div class="row">
             <div class="col-6">
                 <h2>For Researchers</h2>
                 <p>
-                    Researchers can use this application to send out survey invitations in moderation.
-                    You can create a study on the application, with details of your survey and draft the email to be sent to your participants.
-                    Additionally, you can filter the participants who will receive the survey invitations using information from GitHub
-                    <!-- TODO: Researcher info here -->
+                    Researchers can use this application to send out survey invitations in moderation.<br/>
+                    You can create a study on the application, with details of your survey and draft the email to be sent to your participants.<br/>
+                    Additionally, you can filter the participants who will receive the survey invitations using information from GitHub.<br/>
+                    This is great if you want easy contact to a tailored set of willing participants for your surveys.
+                    <!-- TODO: More researcher info here -->
                 </p>
             </div>
             <div class="col-6">
-                <h2>For Study Participants</h2>
+                <h2>For GitHub Users</h2>
                 <p>
-                    Participants may choose to opt out of receiving survey invitations
-                    <!-- TODO: Participant info here -->
+                    GitHub users will be able to use this app to moderate the number of survey invitations they recieve.<br/>
+                    You will also have the benefit of being able to customise the types of surveys they recieve invitations for.<br/>
+                    We care about your privacy, so you're only giving out your email address to those who you want to see it.
+                    <!-- TODO: More participant info here -->
                 </p>
             </div>
         </div>
