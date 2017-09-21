@@ -21,7 +21,7 @@ export class ParticipantPipe implements PipeTransform {
                         return false;
                     }
                 } else if (typeof filter[field] === 'number') {
-                    if (participant[field] !== filter[field]) {
+                    if (participant[field] < filter[field]) {
                         return false;
                     }
                 }
