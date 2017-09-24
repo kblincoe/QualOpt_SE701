@@ -1,8 +1,26 @@
 # QualOpt
-This application was generated using JHipster 4.6.2, you can find documentation and help at [https://jhipster.github.io/documentation-archive/v4.6.2](https://jhipster.github.io/documentation-archive/v4.6.2).
 
-Documentation is stored in the docs directory
-Our HTML mockups are stored in the mockups directory
+QualOpt is a platform for software engineering researchers to manage survey invitations for their qualitative research studies, and find participants to send them to via GitHub.
+The goal of this is to address the issue of GitHub users receiving too many unsolicited survey invitations via the GHTorrent project.
+We do this by providing a centralized location for researchers to find GitHub users, and for GitHub users to manage who can find them.
+
+## For Researchers
+Researchers can use this application to send out survey invitations in moderation.
+You can create a study on the application, with details of your survey and draft the email to be sent to your participants.
+Additionally, you can filter the participants who will receive the survey invitations using information from GitHub.
+This is great if you want easy contact to a tailored set of willing participants for your surveys.
+
+## For GitHub Users
+GitHub users will be able to use this app to moderate the number of survey invitations they recieve.
+You will also have the benefit of being able to customise the types of surveys they recieve invitations for.
+We care about your privacy, so you're only giving out your email address to those who you want to see it.
+
+* Server-side code is located in /src/main/java/org/project36/qualopt/
+* Client-side code is located in /src/main/webapp/
+* All documentation is localed in the /docs/ directory
+* HTML mockups are stored in the /mockups/ directory
+
+This application was generated using JHipster 4.6.2, you can find documentation and help at [https://jhipster.github.io/documentation-archive/v4.6.2](https://jhipster.github.io/documentation-archive/v4.6.2).
 
 ## Development
 
@@ -13,7 +31,7 @@ Before you can build this project, you must install and configure the following 
 2. [Yarn][]: We use Yarn to manage Node dependencies.
    Depending on your system, you can install Yarn either from source or as a pre-packaged bundle.
 
-After installing Node, you should be able to run the following command to install development tools.
+After installing Node, you should be able to run the following command to install development tools (try `npm install` if you have problems).
 You will only need to run this command when dependencies change in [package.json](package.json).
 
     yarn install
@@ -24,7 +42,7 @@ We use yarn scripts and [Webpack][] as our build system.
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
-    ./mvnw [mvnw on windows]
+    ./mvnw [just mvnw on cmd enviroments]
     yarn start
 
 [Yarn][] is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
@@ -124,7 +142,7 @@ Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in
 
 For more information, refer to the [Running tests page][].
 
-## Using Docker to simplify development (optional)
+## Using Docker to simplify development (optional, we currently use Heroku for web hosting http://www.jhipster.tech/heroku/)
 
 You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
 For example, to start a mysql database in a docker container, run:
@@ -146,7 +164,7 @@ Then run:
 
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
-## Continuous Integration (optional)
+## Continuous Integration (optional, not currently impletmented)
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
