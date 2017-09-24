@@ -74,14 +74,14 @@
                                     <span class="fa fa-eye"></span>
                                     <span class="hidden-md-down">View</span>
                                 </button>
-                                <button type="submit"
+                                <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                         [routerLink]="['/', { outlets: { popup: 'participant/'+ participant.id + '/edit'} }]"
                                         replaceUrl="true"
                                         class="btn btn-primary btn-sm">
                                     <span class="fa fa-pencil"></span>
                                     <span class="hidden-md-down">Edit</span>
                                 </button>
-                                <button type="submit"
+                                <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                         [routerLink]="['/', { outlets: { popup: 'participant/'+ participant.id + '/delete'} }]"
                                         replaceUrl="true"
                                         class="btn btn-danger btn-sm">
