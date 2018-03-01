@@ -1,7 +1,7 @@
 # QualOpt
 
 QualOpt is a platform for software engineering researchers to manage survey invitations for their qualitative research studies, and find participants to send them to via GitHub.
-The goal of this is to address the issue of GitHub users receiving too many unsolicited survey invitations via the GHTorrent project.
+The goal of this is to address the issue of GitHub users receiving too many unsolicited survey invitations.
 We do this by providing a centralized location for researchers to find GitHub users, and for GitHub users to manage who can find them.
 
 ## For Researchers
