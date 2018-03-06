@@ -6,7 +6,8 @@ import { JhiPaginationUtil } from 'ng-jhipster';
 
 import { StudyComponent } from './study.component';
 import { StudyDetailComponent } from './study-detail.component';
-import { StudyPopupComponent } from './study-dialog.component';
+import { StudyPopupCreateComponent } from './study-dialog-create.component';
+import { StudyPopupEditComponent } from './study-dialog-edit.component';
 import { StudyDeletePopupComponent } from './study-delete-dialog.component';
 
 export const studyRoute: Routes = [
@@ -32,7 +33,7 @@ export const studyRoute: Routes = [
 export const studyPopupRoute: Routes = [
     {
         path: 'study-new',
-        component: StudyPopupComponent,
+        component: StudyPopupCreateComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Studies'
@@ -42,7 +43,7 @@ export const studyPopupRoute: Routes = [
     },
     {
         path: 'study/:id/edit',
-        component: StudyPopupComponent,
+        component: StudyPopupEditComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Studies'

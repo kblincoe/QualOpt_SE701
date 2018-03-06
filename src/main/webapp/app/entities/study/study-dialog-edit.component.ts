@@ -15,9 +15,9 @@ import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-study-dialog',
-    templateUrl: './study-dialog.component.html'
+    templateUrl: './study-dialog-edit.component.html'
 })
-export class StudyDialogComponent implements OnInit {
+export class StudyDialogEditComponent implements OnInit {
 
     study: Study;
     isSaving: boolean;
@@ -130,7 +130,7 @@ export class StudyDialogComponent implements OnInit {
     selector: 'jhi-study-popup',
     template: ''
 })
-export class StudyPopupComponent implements OnInit, OnDestroy {
+export class StudyPopupEditComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
@@ -143,10 +143,10 @@ export class StudyPopupComponent implements OnInit, OnDestroy {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.studyPopupService
-                    .open(StudyDialogComponent as Component, params['id']);
+                    .open(StudyDialogEditComponent as Component, params['id']);
             } else {
                 this.studyPopupService
-                    .open(StudyDialogComponent as Component);
+                    .open(StudyDialogEditComponent as Component);
             }
         });
     }
