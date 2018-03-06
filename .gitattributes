@@ -8,6 +8,7 @@
 # These files are text and should be normalized (Convert crlf => lf)
 
 *.bat           text eol=crlf
+mvnw            text eol=lf
 *.coffee        text
 *.css           text
 *.cql           text
