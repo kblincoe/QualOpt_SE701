@@ -41,7 +41,7 @@
     </button>
 
     <button type="button"
-            [routerLink]="['#']"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSend'} }]"
             replaceUrl="true"
             class="btn btn-success">
         <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
