@@ -9,7 +9,7 @@ import { QualOptHomeModule } from './home/home.module';
 import { QualOptAdminModule } from './admin/admin.module';
 import { QualOptAccountModule } from './account/account.module';
 import { QualOptEntityModule } from './entities/entity.module';
-
+import { QualOptAboutModule } from './entities/about/about.module';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 
