@@ -1,5 +1,9 @@
 import { Route } from '@angular/router';
 
+/**
+ * Routing for the about page
+ */
+
 import { UserRouteAccessService } from '../../shared';
 import { AboutComponent } from './about.component';
 
