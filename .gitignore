@@ -226,3 +226,9 @@ bin/
 .worksheet
 
 package-lock\.json
+
+package\.json
+
+src/main/webapp/app/account/password-reset/init/password-reset-init\.component\.html
+
+src/main/webapp/app/account/register/register\.component\.html
