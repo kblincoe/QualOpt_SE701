@@ -224,3 +224,5 @@ bin/
 .cache-main
 .scala_dependencies
 .worksheet
+
+package-lock\.json
