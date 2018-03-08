@@ -680,60 +680,6 @@ public class AccountResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("current-sessions")
-    public void testGetCurrentSessions()  throws Exception {
-        User user = new User();
-        user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("current-sessions");
-        user.setEmail("current-sessions@example.com");
-        userRepository.saveAndFlush(user);
-
-        PersistentToken token = new PersistentToken();
-        token.setSeries("current-sessions");
-        token.setUser(user);
-        token.setTokenValue("current-session-data");
-        token.setTokenDate(LocalDate.of(2017, 3, 23));
-        token.setIpAddress("127.0.0.1");
-        token.setUserAgent("Test agent");
-        persistentTokenRepository.saveAndFlush(token);
-
-        restMvc.perform(get("/api/account/sessions"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.[*].series").value(hasItem(token.getSeries())))
-            .andExpect(jsonPath("$.[*].ipAddress").value(hasItem(token.getIpAddress())))
-            .andExpect(jsonPath("$.[*].userAgent").value(hasItem(token.getUserAgent())))
-            .andExpect(jsonPath("$.[*].tokenDate").value(hasItem(token.getTokenDate().toString())));
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("invalidate-session")
-    public void testInvalidateSession() throws Exception {
-        User user = new User();
-        user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("invalidate-session");
-        user.setEmail("invalidate-session@example.com");
-        userRepository.saveAndFlush(user);
-
-        PersistentToken token = new PersistentToken();
-        token.setSeries("invalidate-session");
-        token.setUser(user);
-        token.setTokenValue("invalidate-data");
-        token.setTokenDate(LocalDate.of(2017, 3, 23));
-        token.setIpAddress("127.0.0.1");
-        token.setUserAgent("Test agent");
-        persistentTokenRepository.saveAndFlush(token);
-
-        assertThat(persistentTokenRepository.findByUser(user)).hasSize(1);
-
-        restMvc.perform(delete("/api/account/sessions/invalidate-session"))
-            .andExpect(status().isOk());
-
-        assertThat(persistentTokenRepository.findByUser(user)).isEmpty();
-    }
-
-    @Test
-    @Transactional
     public void testRequestPasswordReset() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
