@@ -9,8 +9,6 @@ import {
     PasswordService,
     PasswordResetInitService,
     PasswordResetFinishService,
-    SessionsService,
-    SessionsComponent,
     PasswordStrengthBarComponent,
     RegisterComponent,
     ActivateComponent,
@@ -35,11 +33,9 @@ import {
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SessionsComponent,
         SettingsComponent
     ],
     providers: [
-        SessionsService,
         Register,
         ActivateService,
         PasswordService,
