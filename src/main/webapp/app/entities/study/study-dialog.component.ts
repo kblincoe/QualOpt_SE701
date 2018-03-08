@@ -124,6 +124,14 @@ export class StudyDialogComponent implements OnInit {
         }
         return option;
     }
+
+    getTitle() {
+        if ( this.study.id != null ) {
+            return 'Edit Study';
+        }else {
+            return 'Create Study';
+        }
+    }
 }
 
 @Component({
