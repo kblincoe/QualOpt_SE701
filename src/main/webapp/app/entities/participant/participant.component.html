@@ -36,11 +36,11 @@
                 </div>
                 <div class="form-group">
                     <label for="filter_numberOfContributions">Minimum number of contributions</label>
-                    <input class="form-control" type="number" id="filter_numberOfContributions" name="numberOfContributions" [(ngModel)]="filter.numberOfContributions">
+                    <input class="form-control" type="number" id="filter_numberOfContributions" name="numberOfContributions" min=0 max={{getMaxContributions()}} [(ngModel)]="filter.numberOfContributions">
                 </div>
                 <div class="form-group">
                     <label for="filter_numberOfRepositories">Minimum number of repositories</label>
-                    <input class="form-control" type="number" id="filter_numberOfRepositories" name="numberOfRepositories" [(ngModel)]="filter.numberOfRepositories">
+                    <input class="form-control" type="number" id="filter_numberOfRepositories" name="numberOfRepositories" min=0 max={{getMaxRepositories()}} [(ngModel)]="filter.numberOfRepositories">
                 </div>
             </form>
             <h5>Find More Participants</h5>
