@@ -5,10 +5,9 @@
 * text=auto
 
 # The above will handle all files NOT found below
-# These files are text and should be normalized (Convert crlf => lf)
+# These files are text and should be normalized (Convert crlf => lf on Linux and vice versa on Windows)
 
 *.bat           text eol=crlf
-mvnw            text eol=lf
 *.coffee        text
 *.css           text
 *.cql           text
@@ -29,6 +28,7 @@ mvnw            text eol=lf
 *.xml           text
 *.yaml          text
 *.yml           text
+mvnw            text eol=lf
 
 # Documents
 *.doc           diff=astextplain
