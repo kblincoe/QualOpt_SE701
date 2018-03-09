@@ -16,6 +16,8 @@
     <name>Qual Opt</name>
 
     <properties>
+        <start-class>org.project36.qualopt.QualOptApp</start-class>
+
         <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
         <assertj.version>3.6.2</assertj.version>
         <awaitility.version>2.0.0</awaitility.version>
