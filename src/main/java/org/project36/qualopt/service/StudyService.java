@@ -55,6 +55,8 @@ public class StudyService {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
+        // trust the host gmail; prevents antivirus from blocking emails being sent
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         return Session.getInstance(props,
             new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
