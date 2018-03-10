@@ -1,0 +1,91 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="sendAPIRequest()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myGitHubQueryLabel">Create a new GitHub Query</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <p>Please fill out the fields you'd like to query in the Github API</p>
+        <p>Any fields left blank will not be entered into the search query - so fill in the fields that you specifically want to search, as the GitHub API works by "AND"-ing these terms together.</p>
+        <div class="form-group">
+            <label class="form-control-label" for="field_userType">Type of User:</label>
+            <select class="form-control" name="userType" id="field_userType" [(ngModel)]="gitHubAPIRequest.userType">
+                <option selected value="NOPREFERENCE" selected="selected">User and Orginization (default)</option>
+                <option value="USER">User</option>
+                <option value="ORG">Organization</option>
+            </select>
+        </div>
+
+        <!-- Keyword -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_keyword">Keyword Search:</label>
+            <input type="text" class="form-control" name="keyword" id="field_keyword" [(ngModel)]="gitHubAPIRequest.keyword">
+            <small class="form-text text-info">This will search the name, email and organization fields for a GitHub User</small>
+        </div>
+
+        <!-- Number of Repositories -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_numberOfRepositories">Number Of Repositories:</label>
+            <input type="text" class="form-control" name="numberOfRepositories" id="field_numberOfRepositories" [(ngModel)]="gitHubAPIRequest.numberOfRepositories">
+            <small class="form-text text-info">Note: Optional prefix with >, >=, &lt;, &lt;=)</small>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_location">Location:</label>
+            <input type="text" class="form-control" name="location" id="field_location" [(ngModel)]="gitHubAPIRequest.location">
+        </div>
+
+        <!-- Programming Languages -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_programmingLanguage">Programming Language:</label>
+            <input type="text" class="form-control" name="programmingLanguage" id="field_programmingLanguage" max="10" [(ngModel)]="gitHubAPIRequest.programmingLanguage">
+        </div>
+
+        <!-- Joined Before -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_joinedBefore">Date:</label>
+            <input type="text" class="form-control" name="joinedBefore" id="field_joinedBefore" [(ngModel)]="gitHubAPIRequest.joinedBeforeDate">
+            <small class="form-text text-info">Note: Date Format as YYYY-MM-DD, optional prefix with >, >=, &lt;, &lt;=)</small>
+        </div>
+
+        <!-- Number of Followers -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_numberOfFollowers">Number Of Followers:</label>
+            <input type="text" class="form-control" name="numberOfFollowers" id="field_numberOfFollowers" [(ngModel)]="gitHubAPIRequest.numberOfFollowers">
+            <small class="form-text text-info">Note: Optional prefix with >, >=, &lt;, &lt;=)</small>
+        </div>
+
+        <!-- Requesting Contribution Count -->
+        <div class="form-group" style="white-space: nowrap; display:inline-block">
+            <label class="form-control-label" style="display:inline-block;" for="field_requestedContributionCount">Do you want to perform Contribution Counts on each User Lookup?</label>
+            <input type="checkbox" class="form-control" style="display: inline-block;" name="requestedContributionCount" id="field_requestedContributionCount" 
+                [(ngModel)]="gitHubAPIRequest.requestedContributionCount">
+            <small class="form-text text-danger" style="margin-bottom: 10px; margin-top: -5px;">WARNING: Very network intensive, only execute on searches with a small number of repositories per user!</small>
+        </div>
+
+        <!-- Max Number of User Lookups -->
+        <div class="form-group">
+            <label class="form-control-label" for="field_maxNumberOfUserLookups">Number of User Lookups:</label>
+            <input type="number" class="form-control" name="maxNumberOfUserLookups" id="field_maxNumberOfUserLookups" [(ngModel)]="gitHubAPIRequest.maxNumberOfUserLookups"
+                required min='0' max='10' pattern="^$|^([0-9]|[1][0])?" #rateInput2 = "ngModel">
+            <small class="form-text text-info">Note: Maximum value of 10</small>
+        </div>
+
+    </div>
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;
+            <span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid" class="btn btn-primary">
+            <span class="fa fa-arrow-right"></span>&nbsp;
+            <span>Send User Search to GitHub API</span>
+        </button>
+    </div>
+</form>
