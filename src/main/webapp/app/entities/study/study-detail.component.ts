@@ -36,6 +36,7 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
             this.study = study;
         });
     }
+
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -43,8 +44,13 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
     }
+
     previousState() {
         window.history.back();
+    }
+
+    sendInvitation() {
+        this.studyService.send(this.study).subscribe();
     }
 
     ngOnDestroy() {

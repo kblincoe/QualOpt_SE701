@@ -1,9 +1,12 @@
 package org.project36.qualopt.web.rest;
 
+import org.mockito.Mock;
 import org.project36.qualopt.QualOptApp;
 
 import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.repository.StudyRepository;
+import org.project36.qualopt.repository.UserRepository;
+import org.project36.qualopt.service.MailService;
 import org.project36.qualopt.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -19,7 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -57,6 +59,9 @@ public class StudyResourceIntTest {
     private StudyRepository studyRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,10 +77,13 @@ public class StudyResourceIntTest {
 
     private Study study;
 
+    @Mock
+    private MailService mockMailService;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StudyResource studyResource = new StudyResource(studyRepository);
+        StudyResource studyResource = new StudyResource(studyRepository, mockMailService, userRepository);
         this.restStudyMockMvc = MockMvcBuilders.standaloneSetup(studyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

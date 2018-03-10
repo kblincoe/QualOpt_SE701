@@ -41,8 +41,7 @@
     </button>
 
     <button type="button"
-            [routerLink]="['#']"
-            replaceUrl="true"
+            (click)="sendInvitation()"
             class="btn btn-success">
         <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
     </button>
