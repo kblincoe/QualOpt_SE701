@@ -25,6 +25,8 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -315,5 +317,15 @@ public class StudyResourceIntTest {
         assertThat(study1).isNotEqualTo(study2);
         study1.setId(null);
         assertThat(study1).isNotEqualTo(study2);
+    }
+
+    @Test
+    @Transactional
+    public void sendStudy() throws Exception {
+        doNothing().when(mockStudyService).sendInvitationEmail(any(Study.class));
+        restStudyMockMvc.perform(post("/api/studies/send")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(study)))
+            .andExpect(status().isCreated());
     }
 }

@@ -1,8 +1,10 @@
 package org.project36.qualopt.service;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.project36.qualopt.domain.Study;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,12 @@ public class StudyService {
 
     private static final Logger log = LoggerFactory.getLogger(StudyService.class);
 
+    private final JavaMailSenderImpl javaMailSender;
+
+    public StudyService(JavaMailSenderImpl javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
     @Async
     public void sendInvitationEmail(Study study){
         log.debug("Sending invitation email for study '{}'", study);
@@ -26,7 +34,8 @@ public class StudyService {
         String content = Objects.isNull(study.getEmailBody()) ? "" : study.getEmailBody();
         String userEmail = study.getUser().getEmail();
         try {
-            MimeMessage message = new MimeMessage(getUserEmailSession());
+            javaMailSender.setSession(getUserEmailSession());
+            MimeMessage message = javaMailSender.createMimeMessage();
             message.setFrom(new InternetAddress(userEmail));
             message.addRecipients(Message.RecipientType.TO, study
                 .getParticipants()
@@ -40,9 +49,9 @@ public class StudyService {
                     }
                 })
                 .toArray(Address[]::new));
-            message.setSubject(subject);
-            message.setText(content);
-            Transport.send(message);
+            message.setSubject(subject, CharEncoding.UTF_8);
+            message.setText(content, CharEncoding.UTF_8);
+            javaMailSender.send(message);
             log.debug("Sent invitation email for study '{}'", study);
         } catch (MessagingException e) {
             log.error("Failed to send invitation email", e);
