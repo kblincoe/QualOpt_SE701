@@ -63,7 +63,7 @@
                         <select class="form-control" id="field_participant" multiple name="participant"
                                 [(ngModel)]="study.participants">
                             <option [ngValue]="getSelected(study.participants, participantOption)"
-                                    *ngFor="let participantOption of participants; trackBy: trackParticipantById">
+                                    *ngFor="let participantOption of filterOptedInParticipants(); trackBy: trackParticipantById">
                                 {{participantOption.email}}
                             </option>
                         </select>

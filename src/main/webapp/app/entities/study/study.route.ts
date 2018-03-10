@@ -24,7 +24,7 @@ export const studyRoute: Routes = [
         path: 'study/:id',
         component: StudyDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_USER', 'ROLE_PARTICIPANT'],
             pageTitle: 'Studies'
         },
         canActivate: [UserRouteAccessService]

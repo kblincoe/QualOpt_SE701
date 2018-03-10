@@ -27,6 +27,7 @@ import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 import io.github.jhipster.config.JHipsterProperties;
 
+import org.springframework.social.github.connect.GitHubConnectionFactory;
 // jhipster-needle-add-social-connection-factory-import-package
 
 /**
@@ -106,6 +107,21 @@ public class SocialConfiguration implements SocialConfigurer {
             );
         } else {
             log.error("Cannot configure FacebookConnectionFactory id or secrets are null. Make sure that environment variables FACEBOOK_CLIENT_ID and FACEBOOK_CLIENT_SECRET are set.");
+        }
+
+        // GitHub configuration
+        String githubClientId = System.getenv("GITHUB_CLIENT_ID");
+        String githubClientSecret = System.getenv("GITHUB_CLIENT_SECRET");
+        if (githubClientId != null && githubClientSecret != null) {
+            log.debug("Configuring GitHubConnectionFactory");
+            connectionFactoryConfigurer.addConnectionFactory(
+                new GitHubConnectionFactory(
+                    githubClientId,
+                    githubClientSecret
+                )
+            );
+        } else {
+            log.error("Cannot configure GitHubConnectionFactory id or secrets are null, make sure GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET evnivronment variables are set");
         }
 
         // Twitter configuration
