@@ -7,7 +7,7 @@ import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.StudyRepository;
 import org.project36.qualopt.repository.UserRepository;
-import org.project36.qualopt.service.MailService;
+import org.project36.qualopt.service.StudyService;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
 import org.project36.qualopt.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -41,15 +41,15 @@ public class StudyResource {
 
     private static final String ENTITY_NAME = "study";
 
-    private final MailService mailService;
+    private final StudyService studyService;
 
     private final UserRepository UserRepository;
 
     private final StudyRepository studyRepository;
 
-    public StudyResource(StudyRepository studyRepository, MailService mailService, UserRepository UserRepository) {
+    public StudyResource(StudyRepository studyRepository, StudyService studyService, UserRepository UserRepository) {
         this.studyRepository = studyRepository;
-        this.mailService = mailService;
+        this.studyService = studyService;
         this.UserRepository = UserRepository;
     }
 
@@ -170,7 +170,7 @@ public class StudyResource {
         if (Objects.isNull(study)){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        mailService.sendInvitationEmail(study);
+        studyService.sendInvitationEmail(study);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

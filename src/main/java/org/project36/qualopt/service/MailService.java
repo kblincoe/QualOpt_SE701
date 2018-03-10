@@ -1,10 +1,10 @@
 package org.project36.qualopt.service;
 
-import io.github.jhipster.config.JHipsterProperties;
-import org.apache.commons.lang3.CharEncoding;
-import org.apache.commons.lang3.StringUtils;
-import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.domain.User;
+
+import io.github.jhipster.config.JHipsterProperties;
+
+import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -14,10 +14,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Service for sending emails.
@@ -83,6 +83,7 @@ public class MailService {
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
+
     }
 
     @Async
@@ -113,15 +114,5 @@ public class MailService {
         String content = templateEngine.process("socialRegistrationValidationEmail", context);
         String subject = messageSource.getMessage("email.social.registration.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
-    }
-
-    @Async
-    public void sendInvitationEmail(Study study){
-        log.debug("Sending invitation email for '{}", study.getEmailSubject());
-
-        String subject = study.getEmailSubject();
-        String content = Objects.isNull(study.getEmailBody()) ? "" : study.getEmailBody();
-        study.getParticipants().forEach(participant ->
-            sendEmail(participant.getEmail(), subject, content, false, true));
     }
 }
