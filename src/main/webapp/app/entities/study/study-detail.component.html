@@ -12,6 +12,10 @@
         <dd>
             <span>{{study.incentive}}</span>
         </dd>
+        <dt><span>Status</span></dt>
+        <dd>
+            <span>{{study.status}}</span>
+        </dd>
         <dt><span>Email</span></dt>
         <dd>
             <span>{{study.emailSubject}}</span>
@@ -32,7 +36,7 @@
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
-
+    <div  style="display: inline-block;" *ngIf="this.study.status != status.COMPLETED">
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
             replaceUrl="true"
@@ -41,9 +45,16 @@
     </button>
 
     <button type="button"
+            (click)="beginStudy()"
             [routerLink]="['#']"
             replaceUrl="true"
             class="btn btn-success">
         <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
     </button>
+    <button *ngIf="this.study.status == status.ACTIVE" type="button"
+            (click)="closeStudy()"
+            class="btn btn-danger">
+        <span class="fa fa-flag-checkered"></span>&nbsp;<span> End Study</span>
+    </button>
+    </div>
 </div>

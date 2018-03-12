@@ -6,10 +6,17 @@ export class Study implements BaseEntity {
         public name?: string,
         public description?: any,
         public incentive?: any,
+        public status?: Status,
         public emailSubject?: string,
         public emailBody?: any,
         public user?: User,
         public participants?: BaseEntity[],
     ) {
     }
+}
+
+export enum Status {
+    INACTIVE = 'Inactive',
+    ACTIVE = 'Active',
+    COMPLETED = 'Completed'
 }

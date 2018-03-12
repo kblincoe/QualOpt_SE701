@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager , JhiDataUtils } from 'ng-jhipster';
 
-import { Study } from './study.model';
+import {Status, Study} from './study.model';
 import { StudyService } from './study.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     study: Study;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
+    status = Status;
 
     constructor(
         private eventManager: JhiEventManager,
@@ -45,6 +46,14 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     }
     previousState() {
         window.history.back();
+    }
+    beginStudy() {
+        this.study.status = Status.ACTIVE;
+        this.studyService.update(this.study).subscribe();
+    }
+    closeStudy() {
+        this.study.status = Status.COMPLETED;
+        this.studyService.update(this.study).subscribe();
     }
 
     ngOnDestroy() {
