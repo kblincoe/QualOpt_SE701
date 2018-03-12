@@ -10,9 +10,9 @@ import { StudyService } from './study.service';
 
 @Component({
     selector: 'jhi-study-confirm-dialog',
-    templateUrl: './study-confirm-invitation.component.html'
+    templateUrl: './study-confirm-invitation-ToNew.component.html'
 })
-export class StudyConfirmDialogComponent {
+export class StudyConfirmToNewDialogComponent {
 
     study: Study;
 
@@ -27,17 +27,18 @@ export class StudyConfirmDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmSend() {
-        this.studyService.send(this.study).subscribe();
+     confirmSendToNew() {
+        this.studyService.sendToNew(this.study).subscribe();
         this.activeModal.dismiss('sent');
     }
+
 }
 
 @Component({
     selector: 'jhi-study-confirm-popup',
     template: ''
 })
-export class StudyConfirmPopupComponent implements OnInit, OnDestroy {
+export class StudyConfirmToNewPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
@@ -49,7 +50,7 @@ export class StudyConfirmPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             this.studyPopupService
-                .open(StudyConfirmDialogComponent as Component, params['id']);
+                .open(StudyConfirmToNewDialogComponent as Component, params['id']);
         });
     }
 
