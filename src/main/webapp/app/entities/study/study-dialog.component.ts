@@ -18,7 +18,6 @@ import { ResponseWrapper } from '../../shared';
     templateUrl: './study-dialog.component.html'
 })
 export class StudyDialogComponent implements OnInit {
-
     study: Study;
     isSaving: boolean;
 
