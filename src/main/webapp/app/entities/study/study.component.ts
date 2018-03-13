@@ -8,6 +8,18 @@ import { StudyService } from './study.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
+// Map the Java enum values to something more human-readable.
+const incentiveTypeMapper = {
+    ONEOFFPAYMENT: 'One-off payment',
+    RANDOMLYALLOCATED: 'Randomly allocated',
+    OTHER: 'Other',
+};
+
+// A helper function to convert the enum values using the map above.
+const convertToReadableIncentiveType = (incentive) => {
+    return incentiveTypeMapper[incentive];
+};
+
 @Component({
     selector: 'jhi-study',
     templateUrl: './study.component.html'
@@ -24,6 +36,7 @@ export class StudyComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
+    convertToReadableIncentiveType = convertToReadableIncentiveType;
 
     constructor(
         private studyService: StudyService,
