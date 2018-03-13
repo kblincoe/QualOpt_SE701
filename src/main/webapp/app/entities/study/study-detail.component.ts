@@ -47,10 +47,12 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     previousState() {
         window.history.back();
     }
+    // Changes the status of the study to active.
     beginStudy() {
         this.study.status = Status.ACTIVE;
         this.studyService.update(this.study).subscribe();
     }
+    // Changes the status of the study to Completed.
     closeStudy() {
         this.study.status = Status.COMPLETED;
         this.studyService.update(this.study).subscribe();

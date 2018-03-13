@@ -16,7 +16,7 @@ export class Study implements BaseEntity {
 }
 
 export enum Status {
-    INACTIVE = 'Inactive',
-    ACTIVE = 'Active',
-    COMPLETED = 'Completed'
+    INACTIVE = 'Inactive', // When no emails have been sent out.
+    ACTIVE = 'Active', // When emails have been sent out.
+    COMPLETED = 'Completed' // When the study has finished and no more changes are required.
 }
