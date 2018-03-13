@@ -49,14 +49,14 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="Your email"
+                    <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="Your email" ngModel [email]="true"
                             [(ngModel)]="registerAccount.email" minlength=5 maxlength=100 required>
                     <div *ngIf="email.dirty && email.invalid">
                         <small class="form-text text-danger" *ngIf="email.errors.required"
                                >
                             Your email is required.
                         </small>
-                        <small class="form-text text-danger" *ngIf="email.errors.invalid"
+                        <small class="form-text text-danger" *ngIf="email.errors.email && !email.errors.minlength && !email.errors.maxlength && !email.errors.required"
                               >
                             Your email is invalid.
                         </small>

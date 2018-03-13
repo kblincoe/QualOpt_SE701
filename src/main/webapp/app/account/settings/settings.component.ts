@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 
 import { Principal, AccountService } from '../../shared';
 
@@ -6,16 +6,20 @@ import { Principal, AccountService } from '../../shared';
     selector: 'jhi-settings',
     templateUrl: './settings.component.html'
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnChanges {
     error: string;
     success: string;
     settingsAccount: any;
     languages: any[];
-
+    email: string;
     constructor(
         private account: AccountService,
         private principal: Principal
     ) {
+    }
+
+    ngOnChanges() {
+        let x = this.email.split("@");
     }
 
     ngOnInit() {
