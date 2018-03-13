@@ -40,6 +40,13 @@
         <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
     </button>
 
+    <button type="submit"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/delete'} }]"
+            replaceUrl="true"
+            class="btn btn-danger">
+        <span class="fa fa-remove"></span>&nbsp;<span class="hidden-md-down">Delete</span>
+    </button>
+
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSend'} }]"
             replaceUrl="true"

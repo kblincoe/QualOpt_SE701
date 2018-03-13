@@ -34,6 +34,7 @@ export class StudyDeleteDialogComponent {
                 content: 'Deleted an study'
             });
             this.activeModal.dismiss(true);
+            window.history.back();
         });
     }
 }
