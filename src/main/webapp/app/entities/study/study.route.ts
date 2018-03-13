@@ -52,6 +52,17 @@ export const studyPopupRoute: Routes = [
         outlet: 'popup'
     },
     {
+        path: "study/:id/copy",
+        component: StudyPopupComponent,
+        data: {
+            authorities: ["ROLE_USER"],
+            pageTitle: "Studies",
+            copy: true
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: "popup"
+    },
+    {
         path: 'study/:id/delete',
         component: StudyDeletePopupComponent,
         data: {
