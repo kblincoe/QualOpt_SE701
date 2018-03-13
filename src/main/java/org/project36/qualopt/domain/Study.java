@@ -33,8 +33,12 @@ public class Study implements Serializable {
     private String description;
 
     @Lob
-    @Column(name = "incentive")
-    private String incentive;
+    @Column(name = "incentive_type")
+    private IncentiveType incentiveType;
+
+    @Lob
+    @Column(name = "incentive_detail")
+    private String incentiveDetail;
 
     @NotNull
     @Column(name = "email_subject", nullable = false)
@@ -88,17 +92,30 @@ public class Study implements Serializable {
         this.description = description;
     }
 
-    public String getIncentive() {
-        return incentive;
+    public IncentiveType getIncentiveType() {
+        return incentiveType;
     }
 
-    public Study incentive(String incentive) {
-        this.incentive = incentive;
+    public Study incentiveType(IncentiveType incentiveType) {
+        this.incentiveType = incentiveType;
         return this;
     }
 
-    public void setIncentive(String incentive) {
-        this.incentive = incentive;
+    public void setIncentiveType(IncentiveType incentiveType) {
+        this.incentiveType = incentiveType;
+    }
+
+    public String getIncentiveDetail() {
+        return incentiveDetail;
+    }
+
+    public Study incentiveDetail(String incentiveDetail) {
+        this.incentiveDetail = incentiveDetail;
+        return this;
+    }
+
+    public void setIncentiveDetail(String incentiveDetail) {
+        this.incentiveDetail = incentiveDetail;
     }
 
     public String getEmailSubject() {
@@ -191,7 +208,8 @@ public class Study implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", incentive='" + getIncentive() + "'" +
+            ", incentiveType='" + getIncentiveType() + "'" +
+            ", incentiveDetails='" + getIncentiveDetail() + "'" +
             ", emailSubject='" + getEmailSubject() + "'" +
             ", emailBody='" + getEmailBody() + "'" +
             "}";
