@@ -49,10 +49,6 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
         window.history.back();
     }
 
-    sendInvitation() {
-        this.studyService.send(this.study).subscribe();
-    }
-
     ngOnDestroy() {
         this.subscription.unsubscribe();
         this.eventManager.destroy(this.eventSubscriber);
