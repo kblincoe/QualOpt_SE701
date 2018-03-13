@@ -7,3 +7,4 @@ export * from './study-detail.component';
 export * from './study.component';
 export * from './study.route';
 export * from './study-confirm-invitation.component'; 
+export * from './study-info.component'

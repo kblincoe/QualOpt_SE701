@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { Study } from './study.model';
+import { Study, StudyInfo } from './study.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
@@ -28,6 +28,12 @@ export class StudyService {
 
     find(id: number): Observable<Study> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
+            return res.json();
+        });
+    }
+
+    getStudyInfo(id: number): Observable<StudyInfo> {
+        return this.http.get(`${this.resourceUrl}/${id}/info`).map((res: Response) => {
             return res.json();
         });
     }

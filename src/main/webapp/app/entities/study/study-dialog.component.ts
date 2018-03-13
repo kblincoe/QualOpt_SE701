@@ -12,11 +12,15 @@ import { StudyPopupService } from './study-popup.service';
 import { StudyService } from './study.service';
 import { User, UserService } from '../../shared';
 import { Participant, ParticipantService } from '../participant';
+import { Document } from '../document';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-study-dialog',
-    templateUrl: './study-dialog.component.html'
+    templateUrl: './study-dialog.component.html',
+    styleUrls: [
+        'study.css'
+    ]
 })
 export class StudyDialogComponent implements OnInit {
 
@@ -26,6 +30,7 @@ export class StudyDialogComponent implements OnInit {
     users: User[];
 
     participants: Participant[];
+    selectedDocuments: Document[];
 
     @ViewChild('editForm') editForm: NgForm;
 
@@ -66,6 +71,35 @@ export class StudyDialogComponent implements OnInit {
                 study[field] = base64Data;
                 study[`${field}ContentType`] = file.type;
             });
+        }
+    }
+
+    clearSelectedDocuments() {
+        this.selectedDocuments.forEach((selectedDocument): void => {
+            let index = this.study.documents.findIndex((studyDocument: Document): boolean => {
+                if(studyDocument.filename==selectedDocument.filename) {
+                    return true;
+                }
+                return false;
+            })
+            this.study.documents.splice(index, 1);
+        });
+    }
+
+    fileSelected(event: EventTarget) {
+        let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+        let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+
+        let file = target.files[0];
+        let fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        
+        let self = this;
+        fileReader.onload = function() {
+            let document = new Document();
+            document.filename = file.name;
+            document.fileimage = this.result.split(',').pop();
+            self.study.documents.push(document);
         }
     }
 
@@ -146,6 +180,10 @@ export class StudyDialogComponent implements OnInit {
     }
 
     trackParticipantById(index: number, item: Participant) {
+        return item.id;
+    }
+
+    trackDocumentById(index: number, item: Document) {
         return item.id;
     }
 

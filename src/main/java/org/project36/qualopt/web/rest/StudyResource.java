@@ -8,6 +8,7 @@ import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.StudyRepository;
 import org.project36.qualopt.repository.UserRepository;
 import org.project36.qualopt.service.StudyService;
+import org.project36.qualopt.service.dto.StudyInfoDTO;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
 import org.project36.qualopt.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -125,6 +126,25 @@ public class StudyResource {
         log.debug("REST request to get Study : {}", id);
         Study study = studyRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(study));
+    }
+
+    /**
+     * GET  /studies/info/:id : get the study info with the specified id.
+     *
+     * @param id the id of the study, from which the study info will be retrieved
+     * @return the ResponseEntity with status 200 (OK) and with body the study, or with status 404 (Not Found)
+     */
+    @GetMapping("/studies/{id}/info")
+    @Timed
+    public ResponseEntity<StudyInfoDTO> getStudyInfo(@PathVariable Long id) {
+        log.debug("REST request to get study info: {}", id);
+        Study study = studyRepository.findOneWithEagerRelationships(id);
+        if(study==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        StudyInfoDTO studyInfo = new StudyInfoDTO(study);
+        return new ResponseEntity<>(studyInfo, HttpStatus.OK);
     }
 
     /**
