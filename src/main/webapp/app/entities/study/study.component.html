@@ -32,28 +32,33 @@
                 <td>{{study.emailSubject}}</td>
                 <td>{{study.status}}</td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../study', study.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="hidden-md-down">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
-                                replaceUrl="true"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="hidden-md-down">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/delete'} }]"
-                                replaceUrl="true"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="hidden-md-down">Delete</span>
-                        </button>
-                    </div>
+                  <button type="submit"
+                          [routerLink]="['../study', study.id ]"
+                          class="btn btn-info btn-sm">
+                      <span class="fa fa-eye"></span>
+                      <span class="hidden-md-down">View</span>
+                  </button>
+                  <button type="submit"
+                          [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
+                          replaceUrl="true"
+                          class="btn btn-primary btn-sm">
+                      <span class="fa fa-pencil"></span>
+                      <span class="hidden-md-down">Edit</span>
+                  </button>
+                  <button type="submit" 
+                          [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/copy'} }]" 
+                          replaceUrl="true" 
+                          class="btn btn-success btn-sm">
+                    <span class="fa fa-copy"></span>
+                    <span class="hidden-md-down">Copy</span>
+                  </button>
+                  <button type="submit"
+                          [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/delete'} }]"
+                          replaceUrl="true"
+                          class="btn btn-danger btn-sm">
+                      <span class="fa fa-remove"></span>
+                      <span class="hidden-md-down">Delete</span>
+                  </button>
                 </td>
             </tr>
             </tbody>

@@ -5,11 +5,13 @@ import { AuthServerProvider } from '../auth/auth-session.service';
 
 @Injectable()
 export class LoginService {
-
+private rememberMe;
+private username; 
     constructor(
         private principal: Principal,
         private authServerProvider: AuthServerProvider
     ) {}
+
 
     login(credentials, callback?) {
         const cb = callback || function() {};
@@ -19,15 +21,23 @@ export class LoginService {
                 this.principal.identity(true).then((account) => {
                     resolve(data);
                 });
+                this.setRememberMe(credentials.rememberMe);
                 return cb();
             }, (err) => {
                 this.logout();
-                reject(err);
+                reject(err);reject(err);
                 return cb(err);
             });
         });
     }
 
+    setRememberMe(rememberMe){
+        this.rememberMe = rememberMe; 
+    }
+
+    getRememberMe() : boolean {
+        return this.rememberMe; 
+    }
     logout() {
         this.authServerProvider.logout().subscribe();
         this.principal.authenticate(null);
