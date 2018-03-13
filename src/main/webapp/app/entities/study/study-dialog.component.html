@@ -9,8 +9,7 @@
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group">
             <label class="form-control-label" for="field_name">Title</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="study.name" required />
+            <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="study.name" required jhiAutofocus />
             <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.name?.errors?.required">
