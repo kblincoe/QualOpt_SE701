@@ -28,8 +28,8 @@ export class StudyConfirmDialogComponent {
     }
 
     confirmSend() {
-        //update with sending function 
-        console.log("sent")
+        this.studyService.send(this.study).subscribe();
+        this.activeModal.dismiss('sent');
     }
 }
 
