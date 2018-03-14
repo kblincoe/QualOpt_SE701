@@ -82,7 +82,6 @@ export class StudyDialogComponent implements OnInit {
                 this.activeModal.dismiss('cancel');
             }
         }
-
     }
 
     /*
