@@ -20,6 +20,7 @@
             <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="incentive"><span>Incentive</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="emailSubject"><span>Email Subject</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -29,6 +30,7 @@
                 <td>{{study.description}}</td>
                 <td>{{study.incentive}}</td>
                 <td>{{study.emailSubject}}</td>
+                <td>{{study.status}}</td>
                 <td class="text-right">
                   <button type="submit"
                           [routerLink]="['../study', study.id ]"
