@@ -9,10 +9,10 @@ import { StudyPopupService } from './study-popup.service';
 import { StudyService } from './study.service';
 
 @Component({
-    selector: 'jhi-study-delete-dialog',
-    templateUrl: './study-delete-dialog.component.html'
+    selector: 'jhi-study-confirm-dialog',
+    templateUrl: './study-confirm-invitation.component.html'
 })
-export class StudyDeleteDialogComponent {
+export class StudyConfirmDialogComponent {
 
     study: Study;
 
@@ -27,23 +27,17 @@ export class StudyDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: number) {
-        this.studyService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'studyListModification',
-                content: 'Deleted an study'
-            });
-            this.activeModal.dismiss(true);
-            window.history.back();
-        });
+    confirmSend() {
+        this.studyService.send(this.study).subscribe();
+        this.activeModal.dismiss('sent');
     }
 }
 
 @Component({
-    selector: 'jhi-study-delete-popup',
+    selector: 'jhi-study-confirm-popup',
     template: ''
 })
-export class StudyDeletePopupComponent implements OnInit, OnDestroy {
+export class StudyConfirmPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
@@ -55,7 +49,7 @@ export class StudyDeletePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             this.studyPopupService
-                .open(StudyDeleteDialogComponent as Component, params['id']);
+                .open(StudyConfirmDialogComponent as Component, params['id']);
         });
     }
 
