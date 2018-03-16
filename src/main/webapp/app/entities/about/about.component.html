@@ -3,20 +3,11 @@
         <span class="hipster img-fluid img-rounded"></span>
     </div>
     <div class="col-md-9">
-        <button class="btn btn-primary float-right jh-create-entity create-participant" routerLink="../study">
-            <span class="fa fa-arrow-right"></span>
-            <span >
-            Go To Studies
-            </span>
-        </button>
+ 
         <h1 class="display-4">QualOpt</h1>
         <p class="lead">A Web Application to Support Qualitative Research</p>
 
-        <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span *ngIf="account"
-                   > You are logged in as user "{{account.login}}". </span>
-            </div>
+       
 
 
         <p>
