@@ -173,6 +173,7 @@ Positions it in the center, and sets font colour to white with black shading. */
     color: white;
     top: 100px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
 }
 
 /* Defines prpoperties of the text for header and paragraph */
