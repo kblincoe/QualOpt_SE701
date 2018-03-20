@@ -1,8 +1,11 @@
 package org.project36.qualopt.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import java.util.Optional;
 
-import org.project36.qualopt.domain.PersistentToken;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.apache.commons.lang3.StringUtils;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.PersistentTokenRepository;
 import org.project36.qualopt.repository.UserRepository;
@@ -10,24 +13,23 @@ import org.project36.qualopt.security.SecurityUtils;
 import org.project36.qualopt.service.MailService;
 import org.project36.qualopt.service.UserService;
 import org.project36.qualopt.service.dto.UserDTO;
+import org.project36.qualopt.web.rest.util.HeaderUtil;
 import org.project36.qualopt.web.rest.vm.KeyAndPasswordVM;
 import org.project36.qualopt.web.rest.vm.ManagedUserVM;
-import org.project36.qualopt.web.rest.util.HeaderUtil;
-
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
+import com.codahale.metrics.annotation.Timed;
 
 /**
  * REST controller for managing the current user's account.
