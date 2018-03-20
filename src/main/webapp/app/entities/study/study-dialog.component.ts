@@ -81,6 +81,11 @@ export class StudyDialogComponent implements OnInit {
         }
     }
 
+    changeTab(tab) {
+        document.getElementById(tab).click();
+        console.log(document.getElementById(tab));
+    }
+
     private subscribeToSaveResponse(result: Observable<Study>) {
         result.subscribe((res: Study) =>
             this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
@@ -150,8 +155,13 @@ export class StudyPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.studyPopupService
+                if (this.route.snapshot.data.copy) {
+                    this.studyPopupService
+                    .copy(StudyDialogComponent as Component, params['id'])
+                } else {
+                    this.studyPopupService
                     .open(StudyDialogComponent as Component, params['id']);
+                }
             } else {
                 this.studyPopupService
                     .open(StudyDialogComponent as Component);

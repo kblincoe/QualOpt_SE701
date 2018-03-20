@@ -45,6 +45,10 @@
             "fieldName": "emailBody",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170806142424",

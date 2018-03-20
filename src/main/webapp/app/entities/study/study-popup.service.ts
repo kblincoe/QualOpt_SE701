@@ -39,6 +39,20 @@ export class StudyPopupService {
         });
     }
 
+    // copy a study by fetching the original study and setting the id to null
+    copy(component: Component, id?: number | any): Promise<NgbModalRef> {
+        console.log("copy");
+        return new Promise<NgbModalRef>((resolve, reject) => {
+            setTimeout(() => {
+                this.studyService.find(id).subscribe(study => {
+                    study.id = null;
+                    this.ngbModalRef = this.studyModalRef(component, study);
+                    resolve(this.ngbModalRef);
+                });
+            });
+        });
+    }
+
     studyModalRef(component: Component, study: Study): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.study = study;

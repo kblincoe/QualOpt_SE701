@@ -42,6 +42,10 @@ export class StudyService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
+    send(study: Study): Observable<any> {
+        return this.http.post(`${this.resourceUrl}/send`, study);
+    }
+
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
