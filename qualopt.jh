@@ -2,6 +2,7 @@ entity Study {
 	name String required,
 	description TextBlob,
 	incentive TextBlob,
+	status String,
 	emailSubject String required,
     emailBody TextBlob
 }

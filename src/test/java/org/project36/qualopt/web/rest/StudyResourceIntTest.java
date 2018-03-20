@@ -1,15 +1,16 @@
 package org.project36.qualopt.web.rest;
 
-import org.project36.qualopt.QualOptApp;
-
-import org.project36.qualopt.domain.Study;
-import org.project36.qualopt.repository.StudyRepository;
-import org.project36.qualopt.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.project36.qualopt.QualOptApp;
+import org.project36.qualopt.domain.Study;
+import org.project36.qualopt.repository.StudyRepository;
+import org.project36.qualopt.repository.UserRepository;
+import org.project36.qualopt.service.StudyService;
+import org.project36.qualopt.web.rest.errors.ExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -19,13 +20,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -57,6 +58,9 @@ public class StudyResourceIntTest {
     private StudyRepository studyRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,10 +76,13 @@ public class StudyResourceIntTest {
 
     private Study study;
 
+    @Mock
+    private StudyService mockStudyService;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StudyResource studyResource = new StudyResource(studyRepository);
+        StudyResource studyResource = new StudyResource(studyRepository, mockStudyService, userRepository);
         this.restStudyMockMvc = MockMvcBuilders.standaloneSetup(studyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -310,5 +317,15 @@ public class StudyResourceIntTest {
         assertThat(study1).isNotEqualTo(study2);
         study1.setId(null);
         assertThat(study1).isNotEqualTo(study2);
+    }
+
+    @Test
+    @Transactional
+    public void sendStudy() throws Exception {
+        doNothing().when(mockStudyService).sendInvitationEmail(any(Study.class));
+        restStudyMockMvc.perform(post("/api/studies/send")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(study)))
+            .andExpect(status().isCreated());
     }
 }

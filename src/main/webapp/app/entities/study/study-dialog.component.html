@@ -1,67 +1,81 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-
-    <div class="modal-header">
-        <h4 class="modal-title" id="myStudyLabel">Create or edit a Study</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group">
-            <label class="form-control-label" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="study.name" required />
-            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.name?.errors?.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_description">Description</label>
-            <textarea class="form-control" name="description" id="field_description"
-                [(ngModel)]="study.description"  ></textarea>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_incentive">Incentive</label>
-            <textarea class="form-control" name="incentive" id="field_incentive"
-                [(ngModel)]="study.incentive"  ></textarea>
-        </div>
-        <div class="form-group">
-            <label for="field_participant">Participants</label>
-            <select class="form-control" id="field_participant" multiple name="participant" [(ngModel)]="study.participants">
-                <option [ngValue]="getSelected(study.participants, participantOption)" *ngFor="let participantOption of participants; trackBy: trackParticipantById">{{participantOption.email}}</option>
-            </select>
-        </div>
-    </div>
-    <div class="modal-header">
-        <h4 class="modal-title" id="myEmailLabel">Draft Invitation Email</h4>
-    </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label class="form-control-label" for="field_emailSubject">Subject</label>
-            <input type="text" class="form-control" name="emailSubject" id="field_emailSubject"
-                   [(ngModel)]="study.emailSubject" required />
-            <div [hidden]="!(editForm.controls.emailSubject?.dirty && editForm.controls.emailSubject?.invalid)">
-                <small class="form-text text-danger"
-                       [hidden]="!editForm.controls.emailSubject?.errors?.required">
-                    This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_emailBody">Body</label>
-            <textarea class="form-control" name="emailBody" id="field_emailBody"
-                      [(ngModel)]="study.emailBody"  ></textarea>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
-            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
-        </button>
-        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
-        </button>
-    </div>
+    <ngb-tabset>
+        <ngb-tab id="studyTab" title="Study Details">
+            <ng-template ngbTabContent>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myStudyLabel">{{getTitle()}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <jhi-alert-error></jhi-alert-error>
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_name">Title</label>
+                        <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="study.name" required />
+                        <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                            <small class="form-text text-danger" [hidden]="!editForm.controls.name?.errors?.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_description">Description</label>
+                        <textarea class="form-control" name="description" id="field_description" [(ngModel)]="study.description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_incentive">Incentive</label>
+                        <textarea class="form-control" name="incentive" id="field_incentive" [(ngModel)]="study.incentive"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="field_participant">Participants</label>
+                        <select class="form-control" id="field_participant" multiple name="participant" [(ngModel)]="study.participants">
+                            <option [ngValue]="getSelected(study.participants, participantOption)" *ngFor="let participantOption of participants; trackBy: trackParticipantById">{{participantOption.email}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeTab('emailTab')">
+                        <span>Next</span>
+                        <span class="fa fa-arrow-right"></span>&nbsp;
+                    </button>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="emailTab" title="Invitation Email">
+            <ng-template ngbTabContent>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myEmailLabel">Draft Invitation Email</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_emailSubject">Subject</label>
+                        <input type="text" class="form-control" name="emailSubject" id="field_emailSubject" [(ngModel)]="study.emailSubject" required
+                        />
+                        <div [hidden]="!(editForm.controls.emailSubject?.dirty && editForm.controls.emailSubject?.invalid)">
+                            <small class="form-text text-danger" [hidden]="!editForm.controls.emailSubject?.errors?.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_emailBody">Body</label>
+                        <textarea class="form-control email-body" name="emailBody" id="field_emailBody" [(ngModel)]="study.emailBody"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeTab('studyTab')">
+                        <span class="fa fa-arrow-left"></span>&nbsp;
+                        <span>Previous</span>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="clear()">
+                        <span class="fa fa-ban"></span>&nbsp;
+                        <span>Cancel</span>
+                    </button>
+                    <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                        <span class="fa fa-save"></span>&nbsp;
+                        <span>Save</span>
+                    </button>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
 </form>
