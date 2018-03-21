@@ -57,11 +57,6 @@ spring:
             client-id: 1703434426389778
             client-secret: 12a4ba62e573d9b78b4636d4dd3a497d
 
-        # see https://apps.twitter.com/app/
-        twitter:
-            client-id: xxx
-            client-secret: xxx
-
         # jhipster-needle-add-social-configuration
 
 security:
