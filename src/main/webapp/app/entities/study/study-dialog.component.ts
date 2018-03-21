@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
+import { NgForm } from '@angular/forms';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -25,6 +26,8 @@ export class StudyDialogComponent implements OnInit {
     users: User[];
 
     participants: Participant[];
+
+    @ViewChild('editForm') editForm: NgForm;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -66,8 +69,35 @@ export class StudyDialogComponent implements OnInit {
         }
     }
 
+    /*
+    * This method is called when the user tries to cancel out of the study form.
+    * If the user has unsaved changes there are ask whether they want to save the
+    * to the save the changes before exiting.
+    */
     clear() {
-        this.activeModal.dismiss('cancel');
+        if (this.hasUnsavedChanges()) {
+            this.activeModal.dismiss('cancel');
+        } else {
+            if (confirm('Changes you made have not been saved! Would you like the discard the changes?')) {
+                this.activeModal.dismiss('cancel');
+            }
+        }
+    }
+
+    /*
+    * This method listens for events such as the window being closed or refreshed.
+    * If the user has unsaved changes a message is displayed warning the user of
+    * the unsaved changes.
+    */
+    @HostListener('window:beforeunload', ['$event'])
+    unloadNotification($event: any) {
+        if (!this.hasUnsavedChanges()) {
+            $event.returnValue = true;
+        }
+    }
+
+    private hasUnsavedChanges(): boolean {
+      return this.editForm.submitted || !this.editForm.dirty;
     }
 
     save() {
