@@ -381,6 +381,13 @@
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-twitter</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/de.saly/javamail-mock2-fullmock -->
+        <dependency>
+            <groupId>de.saly</groupId>
+            <artifactId>javamail-mock2-fullmock</artifactId>
+            <version>0.5-beta4</version>
+            <scope>test</scope>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
     <build>

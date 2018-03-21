@@ -27,8 +27,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Study.
@@ -165,12 +165,15 @@ public class StudyResource {
     @PostMapping(path = "/studies/send",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity sendStudy(@Valid @RequestBody Study study) {
+    public ResponseEntity sendStudy(@Valid @RequestBody Study study) throws URISyntaxException {
         log.debug("REST request to send Study : {}", study);
-        if (Objects.isNull(study)){
+        if (study == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        studyService.sendInvitationEmail(study);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Set<String> bouncedMail = studyService.sendInvitationEmail(study);
+        return ResponseEntity
+            .created(new URI("/api/studies/send"))
+            .header("Sent: " + study.getName())
+            .body(bouncedMail);
     }
 }
