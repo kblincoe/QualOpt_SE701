@@ -111,11 +111,6 @@ export class StudyDialogComponent implements OnInit {
         }
     }
 
-    changeTab(tab) {
-        document.getElementById(tab).click();
-        console.log(document.getElementById(tab));
-    }
-
     private subscribeToSaveResponse(result: Observable<Study>) {
         result.subscribe((res: Study) =>
             this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
