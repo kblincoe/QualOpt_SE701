@@ -17,6 +17,9 @@ export class PasswordComponent implements OnInit {
     currentPassword: string; 
     confirmPassword: string;
     wrongPassword  : boolean; 
+    errorBlock1 : boolean;
+    errorBlock2 : boolean;
+    errorBlock3 : boolean;
     constructor(
         private loginService: LoginService,
         private passwordService: PasswordService,
@@ -28,6 +31,13 @@ export class PasswordComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+    }
+
+    // Set all input fields to null to remove previous input.
+    clearInputFields() {
+        this.currentPassword = null;
+        this.password = null;
+        this.confirmPassword = null;
     }
 
     changePassword() {
@@ -50,6 +60,10 @@ export class PasswordComponent implements OnInit {
                 this.passwordService.save(this.password).subscribe(() => {
                     this.error = null;
                     this.success = 'OK';
+                    this.clearInputFields();
+                    this.errorBlock1 = true; 
+                    this.errorBlock2 = true; 
+                    this.errorBlock3 = true; 
                 }, () => {
                     this.success = null;
                     this.error = 'ERROR';
@@ -58,9 +72,31 @@ export class PasswordComponent implements OnInit {
         // if password is invalid then throw error message
         }).catch(() => {
             this.success = null;
-            this.wrongPassword = true; 
+            this.wrongPassword = true;
+            this.clearInputFields();
+            this.errorBlock1 = true; 
+            this.errorBlock2 = true; 
+            this.errorBlock3 = true; 
         });
-
     }
 
+    // re-enables the mandatory input error message from showing for the input fields
+    unblockErrors(i){
+        switch(i){
+            case 1:
+                if(this.currentPassword.length!=null){
+                    this.errorBlock1 = false; 
+                }
+                break;
+            case 2:
+                if(this.password.length!=null){
+                    this.errorBlock2 = false; 
+                }
+                break; 
+            case 3:
+                if(this.confirmPassword.length!=null){
+                    this.errorBlock3 = false; 
+                }
+        }
+    }
 }
