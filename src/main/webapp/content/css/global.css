@@ -67,6 +67,10 @@ Generic styles
 .footer {
     border-top: 1px solid rgba(0,0,0,.125);
 }
+ /* Preserves whitespace and newlines in the text */
+.break-new-line {
+    white-space: pre-wrap;
+}
 
 /* ==========================================================================
 make sure browsers use the pointer cursor for anchors, even with no href

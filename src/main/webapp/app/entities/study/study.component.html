@@ -59,6 +59,12 @@
                       <span class="fa fa-remove"></span>
                       <span class="hidden-md-down">Delete</span>
                   </button>
+                  <button type="submit"
+                  [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSend'} }]"
+                  replaceUrl="true"
+                  class="btn btn-success btn-sm">
+                    <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
+                </button>
                 </td>
             </tr>
             </tbody>

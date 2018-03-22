@@ -43,6 +43,14 @@
                     <input class="form-control" type="number" id="filter_numberOfRepositories" name="numberOfRepositories" [(ngModel)]="filter.numberOfRepositories">
                 </div>
             </form>
+            <h5>Find More Participants</h5>
+            <button class="btn btn-primary float-left jh-create-entity send-github-participant-query" [routerLink]="['/', { outlets: { popup: ['github-query'] } }]">
+                <span class="fa fa-arrow-right"></span>
+                <span >
+                    Send GitHub API Query
+                </span>
+            </button>
+
         </div>
         <div class="col-9">
             <div class="table-responsive" *ngIf="participants">
