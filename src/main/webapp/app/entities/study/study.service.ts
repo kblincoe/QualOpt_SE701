@@ -48,8 +48,11 @@ export class StudyService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
-    send(study: Study): Observable<any> {
-        return this.http.post(`${this.resourceUrl}/send`, study);
+    send(study: Study): Observable<String[]> {
+        return this.http.post(`${this.resourceUrl}/send`, study)
+            .map((res: Response) => {
+                return res.json();
+            });
     }
 
     private convertResponse(res: Response): ResponseWrapper {
