@@ -16,6 +16,7 @@ import {
     StudyConfirmPopupComponent,
     studyRoute,
     studyPopupRoute,
+    StudyInfoComponent
 } from './';
 
 const ENTITY_STATES = [
@@ -37,7 +38,8 @@ const ENTITY_STATES = [
         StudyPopupComponent,
         StudyDeletePopupComponent,
         StudyConfirmDialogComponent,
-        StudyConfirmPopupComponent
+        StudyConfirmPopupComponent,
+        StudyInfoComponent
     ],
     entryComponents: [
         StudyComponent,
@@ -46,7 +48,8 @@ const ENTITY_STATES = [
         StudyConfirmDialogComponent,
         StudyDeleteDialogComponent,
         StudyDeletePopupComponent,
-        StudyConfirmPopupComponent
+        StudyConfirmPopupComponent,
+        StudyInfoComponent
     ],
     providers: [
         StudyService,
