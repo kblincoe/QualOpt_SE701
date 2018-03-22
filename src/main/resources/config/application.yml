@@ -52,10 +52,6 @@ spring:
             client-id: 409706338424-gpgeh591k6jku12eu0o31abscosngoal.apps.googleusercontent.com
             client-secret: 4mXwrXbgZ9qKM7EQyrwLaXKP
 
-        # see https://developers.facebook.com/docs/facebook-login/v2.2
-        facebook:
-            client-id: 1703434426389778
-            client-secret: 12a4ba62e573d9b78b4636d4dd3a497d
 
         # jhipster-needle-add-social-configuration
 
