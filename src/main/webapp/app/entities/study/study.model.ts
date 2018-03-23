@@ -8,6 +8,7 @@ export class Study implements BaseEntity {
         public description?: any,
         public incentive?: any,
         public status?: Status,
+        public bouncedMail?: string,
         public emailSubject?: string,
         public emailBody?: any,
         public faq?: string,

@@ -3,6 +3,7 @@ entity Study {
 	description TextBlob,
 	incentive TextBlob,
 	status String,
+	bouncedMail String,
 	emailSubject String required,
     emailBody TextBlob
 }

@@ -38,6 +38,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="bounced_mail" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="email_subject" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
