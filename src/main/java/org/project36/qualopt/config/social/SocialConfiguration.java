@@ -97,8 +97,8 @@ public class SocialConfiguration implements SocialConfigurer {
         }
 
         // Facebook configuration
-        String facebookClientId = environment.getProperty("spring.social.facebook.client-id");
-        String facebookClientSecret = environment.getProperty("spring.social.facebook.client-secret");
+        String facebookClientId = System.getenv("FACEBOOK_CLIENT_ID");
+        String facebookClientSecret = System.getenv("FACEBOOK_CLIENT_SECRET");
         if (facebookClientId != null && facebookClientSecret != null) {
             log.debug("Configuring FacebookConnectionFactory");
             connectionFactoryConfigurer.addConnectionFactory(
@@ -108,7 +108,7 @@ public class SocialConfiguration implements SocialConfigurer {
                 )
             );
         } else {
-            log.error("Cannot configure FacebookConnectionFactory id or secret null");
+            log.error("Cannot configure FacebookConnectionFactory id or secrets are null. Make sure that environment variables FACEBOOK_CLIENT_ID and FACEBOOK_CLIENT_SECRET are set.");
         }
 
         // Twitter configuration

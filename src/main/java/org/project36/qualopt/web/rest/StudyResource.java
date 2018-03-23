@@ -8,6 +8,7 @@ import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.StudyRepository;
 import org.project36.qualopt.repository.UserRepository;
 import org.project36.qualopt.service.StudyService;
+import org.project36.qualopt.service.dto.StudyInfoDTO;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
 import org.project36.qualopt.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -27,8 +28,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Study.
@@ -128,6 +129,25 @@ public class StudyResource {
     }
 
     /**
+     * GET  /studies/info/:id : get the study info with the specified id.
+     *
+     * @param id the id of the study, from which the study info will be retrieved
+     * @return the ResponseEntity with status 200 (OK) and with body the study, or with status 404 (Not Found)
+     */
+    @GetMapping("/studies/{id}/info")
+    @Timed
+    public ResponseEntity<StudyInfoDTO> getStudyInfo(@PathVariable Long id) {
+        log.debug("REST request to get study info: {}", id);
+        Study study = studyRepository.findOneWithEagerRelationships(id);
+        if(study==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        StudyInfoDTO studyInfo = new StudyInfoDTO(study);
+        return new ResponseEntity<>(studyInfo, HttpStatus.OK);
+    }
+
+    /**
      * DELETE  /studies/:id : delete the "id" study.
      *
      * @param id the id of the study to delete
@@ -165,12 +185,15 @@ public class StudyResource {
     @PostMapping(path = "/studies/send",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity sendStudy(@Valid @RequestBody Study study) {
+    public ResponseEntity sendStudy(@Valid @RequestBody Study study) throws URISyntaxException {
         log.debug("REST request to send Study : {}", study);
-        if (Objects.isNull(study)){
+        if (study == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        studyService.sendInvitationEmail(study);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Set<String> bouncedMail = studyService.sendInvitationEmail(study);
+        return ResponseEntity
+            .created(new URI("/api/studies/send"))
+            .header("Sent: " + study.getName())
+            .body(bouncedMail);
     }
 }

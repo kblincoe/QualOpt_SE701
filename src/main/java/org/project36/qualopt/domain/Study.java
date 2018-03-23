@@ -49,6 +49,9 @@ public class Study implements Serializable {
     @Column(name = "email_body")
     private String emailBody;
 
+    @Column(name = "faq")
+    private String faq;
+
     @ManyToOne
     private User user;
 
@@ -58,6 +61,10 @@ public class Study implements Serializable {
                joinColumns = @JoinColumn(name="studies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="participants_id", referencedColumnName="id"))
     private Set<Participant> participants = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "study_id")
+    private Set<Document> documents = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -136,6 +143,19 @@ public class Study implements Serializable {
         return emailBody;
     }
 
+    public String getFaq() {
+        return faq;
+    }
+
+    public Study faq(String faq) {
+        this.faq = faq;
+        return this;
+    }
+
+    public void setFaq(String faq) {
+        this.faq = faq;
+    }
+
     public Study emailBody(String emailBody) {
         this.emailBody = emailBody;
         return this;
@@ -183,6 +203,29 @@ public class Study implements Serializable {
         this.participants = participants;
     }
 
+    public Set<Document> getDocuments() {
+        return documents;
+    }
+
+    public Study documents(Set<Document> documents) {
+        this.documents = documents;
+        return this;
+    }
+
+    public Study addDocument(Document document) {
+        this.documents.add(document);
+        return this;
+    }
+
+    public Study removeDocument(Document document) {
+        this.documents.remove(document);
+        return this;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -211,6 +254,7 @@ public class Study implements Serializable {
             ", description='" + getDescription() + "'" +
             ", incentive='" + getIncentive() + "'" +
             ", status='" + getStatus() + "'" +
+            ", faq='" + getFaq() + "'" +
             ", emailSubject='" + getEmailSubject() + "'" +
             ", emailBody='" + getEmailBody() + "'" +
             "}";

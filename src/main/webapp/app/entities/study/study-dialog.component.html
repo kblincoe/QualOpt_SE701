@@ -26,6 +26,24 @@
                         <textarea class="form-control" name="incentive" id="field_incentive" [(ngModel)]="study.incentive"></textarea>
                     </div>
                     <div class="form-group">
+                        <label class="form-control-label" for="field_faq">FAQ</label>
+                        <textarea class="form-control" name="faq" id="field_faq"
+                            [(ngModel)]="study.faq"  ></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="field_document">Documents</label>
+                        <select class="form-control" id="field_document" multiple name="document" [(ngModel)]="selectedDocuments">
+                            <option [ngValue]="d" *ngFor="let d of study.documents;">{{d.filename}}</option>
+                        </select>
+                        <button type="button" class="btn btn-danger" (click)="clearSelectedDocuments()">
+                            <span class="fa fa-remove"></span>&nbsp;<span>Remove</span>
+                        </button>
+                        <label class="btn-primary fileButton">
+                            <span class="fa fa-upload"></span>&nbsp;<span>Upload</span>
+                            <input type="file" (change)="fileSelected($event)"/>
+                        </label>
+                    </div>
+                    <div class="form-group">
                         <label for="field_participant">Participants</label>
                         <select class="form-control" id="field_participant" multiple name="participant" [(ngModel)]="study.participants">
                             <option [ngValue]="getSelected(study.participants, participantOption)" *ngFor="let participantOption of participants; trackBy: trackParticipantById">{{participantOption.email}}</option>
