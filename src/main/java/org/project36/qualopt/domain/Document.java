@@ -24,6 +24,7 @@ public class Document implements Serializable {
     private String filename;
 
     @NotNull
+    @Lob
     @Column(name = "file_image")
     private String fileimage;
 
