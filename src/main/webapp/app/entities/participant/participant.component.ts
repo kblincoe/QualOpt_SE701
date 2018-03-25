@@ -57,6 +57,7 @@ export class ParticipantComponent implements OnInit, OnDestroy {
     reset() {
         this.page = 0;
         this.participants = [];
+        console.log(this);
         this.loadAll();
     }
 

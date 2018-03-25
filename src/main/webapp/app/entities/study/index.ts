@@ -10,3 +10,4 @@ export * from './study.component';
 export * from './study.route';
 export * from './study-confirm-invitation.component'; 
 export * from './study-info.component'
+export * from './study.pipe'
