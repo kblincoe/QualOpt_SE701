@@ -80,6 +80,10 @@ public class Study implements Serializable {
     @JoinColumn(name = "study_id")
     private Set<Document> documents = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "study_id")
+    private Set<Document> documents = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -232,6 +236,29 @@ public class Study implements Serializable {
     public void removeFromEmailAddressesHaveInvited(String emailAddress){
     	emailAddressesHaveInvited.remove(emailAddress);
     };
+
+    public Set<Document> getDocuments() {
+        return documents;
+    }
+
+    public Study documents(Set<Document> documents) {
+        this.documents = documents;
+        return this;
+    }
+
+    public Study addDocument(Document document) {
+        this.documents.add(document);
+        return this;
+    }
+
+    public Study removeDocument(Document document) {
+        this.documents.remove(document);
+        return this;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
+    }
 
     public Set<Document> getDocuments() {
         return documents;

@@ -21,10 +21,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.mail.MessagingException;
-<<<<<<< HEAD
 import javax.mail.internet.MimeMessage;
-=======
->>>>>>> aafca5c... Backend processes bounced emails.
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.internet.*;
@@ -38,8 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
-import static org.project36.qualopt.config.MailConfiguration.USER_EMAIL;
-
 import static org.project36.qualopt.config.MailConfiguration.USER_EMAIL;
 
 @RunWith(SpringRunner.class)

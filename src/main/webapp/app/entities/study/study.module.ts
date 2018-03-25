@@ -42,7 +42,7 @@ const ENTITY_STATES = [
         StudyConfirmToAllDialogComponent,
 	StudyConfirmToNewDialogComponent,
 	StudyConfirmToAllPopupComponent,
-	StudyConfirmToNewPopupComponent,
+	StudyConfirmToNewPopupComponent,\
         StudyInfoComponent
     ],
     entryComponents: [

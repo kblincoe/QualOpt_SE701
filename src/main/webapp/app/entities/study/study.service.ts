@@ -49,11 +49,17 @@ export class StudyService {
     }
 
     sendToAll(study: Study): Observable<any> {
-        return this.http.post(`${this.resourceUrl}/sendToAll`, study);
+        return this.http.post(`${this.resourceUrl}/sendToAll`, study)
+            .map((res: Response) => {
+                return res.json();
+            });
     }
 
     sendToNew(study: Study): Observable<any> {
-        return this.http.post(`${this.resourceUrl}/sendToNew`, study);
+        return this.http.post(`${this.resourceUrl}/sendToNew`, study)
+            .map((res: Response) => {
+                return res.json();
+            });
     }
 
     private convertResponse(res: Response): ResponseWrapper {

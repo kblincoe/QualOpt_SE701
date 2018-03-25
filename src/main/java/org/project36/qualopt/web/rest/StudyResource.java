@@ -200,7 +200,7 @@ public class StudyResource {
          * "EmailAddressesHaveInvited" list, so a update on that won't effect 
          * the result of "sendInvitationEmail"
          */
-        studyService.sendInvitationEmail(study, true);	
+        Set<String> bouncedMail = studyService.sendInvitationEmail(study, true);	
         
         /*
          * Next 4 lines: Mark this list of participants as "Have recieved email",
@@ -210,8 +210,10 @@ public class StudyResource {
         	study.addToEmailAddressesHaveInvited(singleParticipant.getEmail());
         }
         studyRepository.save(study);
-        
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity
+            .created(new URI("/api/studies/send"))
+            .header("Sent: " + study.getName())
+            .body(bouncedMail);
     }
     
     /**
@@ -223,7 +225,6 @@ public class StudyResource {
     @PostMapping(path = "/studies/sendToNew",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-<<<<<<< HEAD
     public ResponseEntity sendStudyToNew(@Valid @RequestBody Study study) {
     	
     	log.debug("REST request to send Study for sending emails to new participants only: {}", study);
@@ -239,7 +240,7 @@ public class StudyResource {
          * when "sendInvitationEmail" still running. 
          */
         Study copyStudy = studyRepository.save(study);
-        studyService.sendInvitationEmail(copyStudy, false); 
+        Set<String> bouncedMail = studyService.sendInvitationEmail(copyStudy, false); 
         
         /*
          * Next 4 lines: Mark this list of participants as "Have recieved email",
@@ -249,18 +250,10 @@ public class StudyResource {
         	study.addToEmailAddressesHaveInvited(singleParticipant.getEmail());
         }
         studyRepository.save(study);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-=======
-    public ResponseEntity sendStudy(@Valid @RequestBody Study study) throws URISyntaxException {
-        log.debug("REST request to send Study : {}", study);
-        if (study == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Set<String> bouncedMail = studyService.sendInvitationEmail(study);
         return ResponseEntity
             .created(new URI("/api/studies/send"))
             .header("Sent: " + study.getName())
             .body(bouncedMail);
->>>>>>> aafca5c... Backend processes bounced emails.
+
     }
 }

@@ -72,16 +72,16 @@ public class StudyService {
         this.userPop3Session = userPop3Session;
     }
 
-
-    @Async
-    public void sendInvitationEmail(Study study, boolean toAll){
-        log.debug("Sending invitation email for study '{}'", study);
-
-        String subject = study.getEmailSubject();
-        String content = Objects.isNull(study.getEmailBody()) ? "" : study.getEmailBody();
+    /**
+     * Attempts to send a study invitation out to all participants as a single email (i.e. with multiple recipients).
+     * Then returns a Set of any addresses that bounced back.
+     */
+    public ImmutableSet<String> sendInvitationEmail(Study study, boolean toAll) {
+        log.debug("Sending invitation email for study '{}'.", study.getName());
+        String subject = study.getEmailSubject() == null ? "" : study.getEmailSubject();
+        String content = study.getEmailBody() == null ? "" : study.getEmailBody();
         String userEmail = study.getUser().getEmail();
-        
-        /*Create a list of participants should be recieved email.
+	/*Create a list of participants should be recieved email.
          * When "ToAll" = true, add every single participants to the list.
          * When "ToAll" = false, add those the email address is not in the list of emailAddressesHaveInvited.
          */
@@ -95,33 +95,34 @@ public class StudyService {
         		}
         	}
         }
-        
-        //To avoid exception and save resource, check empty first
-        if(!(participantsToReceive.isEmpty())){
-	        try {
-	            javaMailSender.setSession(getUserEmailSession());
-	            MimeMessage message = javaMailSender.createMimeMessage();
-	            message.setFrom(new InternetAddress(userEmail));
-	            message.addRecipients(Message.RecipientType.TO, participantsToReceive
-	                .stream()
-	                .map(participant -> {
-	                    try {
-	                    	return new InternetAddress(participant.getEmail());
-	                    } catch (AddressException e) {
-	                        log.error("Failed to create internet address from participant email", e);
-	                        throw new RuntimeException(e);
-	                    }
-	                })
-	                .toArray(Address[]::new));
-	            message.setSubject(subject, CharEncoding.UTF_8);
-	            message.setText(content, CharEncoding.UTF_8);
-	            javaMailSender.send(message);
-	            log.debug("Sent invitation email for study '{}'", study);
-	        } catch (MessagingException e) {
-	            log.error("Failed to send invitation email", e);
-	        }
-        } else {
-        	log.error("No participants to send invitation email");
+        try {
+            javaMailSender.setSession(authenticatedUserSmtpSession);
+            MimeMessage message = javaMailSender.createMimeMessage();
+            message.setFrom(new InternetAddress(userEmail));
+            ImmutableSet<String> participantAddresses = participantsToReceive.stream()
+                .map(Participant::getEmail)
+                .collect(Collectors.collectingAndThen(Collectors.toSet(), ImmutableSet::copyOf));
+            message.addRecipients(Message.RecipientType.TO, participantAddresses.stream()
+                .map(participantEmail -> {
+                    try {
+                        return new InternetAddress(participantEmail);
+                    } catch (AddressException e) {
+                        log.error("Failed to create internet address from participant email.", e);
+                        throw new RuntimeException(e);
+                    }
+                })
+                .toArray(Address[]::new));
+            message.setSubject(subject, CharEncoding.UTF_8);
+            message.setText(content, CharEncoding.UTF_8);
+            javaMailSender.send(message);
+            log.debug("Sent invitation email for study '{}'.", study.getName());
+            ImmutableSet<String> bouncedAddresses = readAndCheckForBouncedMail();
+            bouncedAddresses.forEach(address -> log.debug("Bounced: '{}'", address));
+            // Only care about bounced emails from the participants of this study
+            return Sets.intersection(participantAddresses, bouncedAddresses).immutableCopy();
+        } catch (MessagingException e) {
+            log.error("Failed to send invitation email.", e);
+            return ImmutableSet.of();
         }
     }
 
