@@ -3,6 +3,7 @@ package org.project36.qualopt.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+import org.project36.qualopt.domain.Participant;
 import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.StudyRepository;
@@ -177,23 +178,82 @@ public class StudyResource {
     }
 
     /**
-     * POST  /studies/send : send the study.
+
+     * POST  /studies/sendToAll : send the study to all participants.
      *
      * @param study the study to send
      * @return the ResponseEntity with status 201 (Created) if the study was sent or 400 (Bad Request) if the study doesn't exist
      */
-    @PostMapping(path = "/studies/send",
+    @PostMapping(path = "/studies/sendToAll",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity sendStudy(@Valid @RequestBody Study study) throws URISyntaxException {
-        log.debug("REST request to send Study : {}", study);
-        if (study == null){
+    public ResponseEntity sendStudyToAll(@Valid @RequestBody Study study) {
+    	
+    	log.debug("REST request to send Study for sending emails to all participants: {}", study);
+        if (Objects.isNull(study)){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Set<String> bouncedMail = studyService.sendInvitationEmail(study);
+        
+        /* "true" mean "ToAll = True", send to all participants
+         * No need for working with a copy,
+         * Unlike "sendStudyToNew", "sendInvitationEmail" won't look at 
+         * "EmailAddressesHaveInvited" list, so a update on that won't effect 
+         * the result of "sendInvitationEmail"
+         */
+        Set<String> bouncedMail = studyService.sendInvitationEmail(study, true);	
+        
+        /*
+         * Next 4 lines: Mark this list of participants as "Have recieved email",
+         * by adding their email address into the list of EmailAddressesHaveInvited
+         */
+        for (Participant singleParticipant : study.getParticipants()){
+        	study.addToEmailAddressesHaveInvited(singleParticipant.getEmail());
+        }
+        studyRepository.save(study);
         return ResponseEntity
             .created(new URI("/api/studies/send"))
             .header("Sent: " + study.getName())
             .body(bouncedMail);
+    }
+    
+    /**
+     * POST  /studies/sendToNew : send the study to participants that haven't received emails
+     *
+     * @param study the study to send
+     * @return the ResponseEntity with status 201 (Created) if the study was sent or 400 (Bad Request) if the study doesn't exist
+     */
+    @PostMapping(path = "/studies/sendToNew",
+        produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @Timed
+    public ResponseEntity sendStudyToNew(@Valid @RequestBody Study study) {
+    	
+    	log.debug("REST request to send Study for sending emails to new participants only: {}", study);
+        if (Objects.isNull(study)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        /*
+         * "false" mean "ToAll = false", do not send to all participants,
+         * but those who haven't receive email only.
+         * It should work with a copy of the study because "sendInvitationEmail"
+         * is a @Async and "StudyResource" is trying to write on "Study" (In the next session of code)
+         * when "sendInvitationEmail" still running. 
+         */
+        Study copyStudy = studyRepository.save(study);
+        Set<String> bouncedMail = studyService.sendInvitationEmail(copyStudy, false); 
+        
+        /*
+         * Next 4 lines: Mark this list of participants as "Have recieved email",
+         * by adding their email address into the list of EmailAddressesHaveInvited
+         */
+        for (Participant singleParticipant : study.getParticipants()){
+        	study.addToEmailAddressesHaveInvited(singleParticipant.getEmail());
+        }
+        studyRepository.save(study);
+        return ResponseEntity
+            .created(new URI("/api/studies/send"))
+            .header("Sent: " + study.getName())
+            .body(bouncedMail);
+
     }
 }

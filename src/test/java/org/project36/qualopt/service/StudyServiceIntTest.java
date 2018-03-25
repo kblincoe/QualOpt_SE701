@@ -21,6 +21,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.internet.*;
@@ -94,7 +95,7 @@ public class StudyServiceIntTest {
      */
     @Test
     public void testSendInvitationEmail() throws Exception {
-        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy());
+        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy(), true);
         verify(javaMailSender).send((MimeMessage) messageCaptor.capture());
         MimeMessage message = (MimeMessage) messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");

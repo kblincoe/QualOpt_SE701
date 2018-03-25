@@ -5,6 +5,16 @@ import com.google.common.collect.Sets;
 import org.apache.commons.lang3.CharEncoding;
 import org.project36.qualopt.domain.Participant;
 import org.project36.qualopt.domain.Study;
+import org.project36.qualopt.domain.User;
+import org.project36.qualopt.repository.StudyRepository;
+import org.project36.qualopt.web.rest.StudyResource;
+import org.project36.qualopt.web.rest.util.HeaderUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -14,6 +24,16 @@ import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.Set;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
@@ -56,16 +76,30 @@ public class StudyService {
      * Attempts to send a study invitation out to all participants as a single email (i.e. with multiple recipients).
      * Then returns a Set of any addresses that bounced back.
      */
-    public ImmutableSet<String> sendInvitationEmail(Study study) {
+    public ImmutableSet<String> sendInvitationEmail(Study study, boolean toAll) {
         log.debug("Sending invitation email for study '{}'.", study.getName());
         String subject = study.getEmailSubject() == null ? "" : study.getEmailSubject();
         String content = study.getEmailBody() == null ? "" : study.getEmailBody();
         String userEmail = study.getUser().getEmail();
+	/*Create a list of participants should be recieved email.
+         * When "ToAll" = true, add every single participants to the list.
+         * When "ToAll" = false, add those the email address is not in the list of emailAddressesHaveInvited.
+         */
+        Set<Participant> participantsToReceive = new HashSet<>();
+        if(toAll){
+        	participantsToReceive = study.getParticipants();
+        } else {
+        	for(Participant single : study.getParticipants()){
+        		if(!(study.getEmailAddressesHaveInvited().contains(single.getEmail()))){
+        			participantsToReceive.add(single);
+        		}
+        	}
+        }
         try {
             javaMailSender.setSession(authenticatedUserSmtpSession);
             MimeMessage message = javaMailSender.createMimeMessage();
             message.setFrom(new InternetAddress(userEmail));
-            ImmutableSet<String> participantAddresses = study.getParticipants().stream()
+            ImmutableSet<String> participantAddresses = participantsToReceive.stream()
                 .map(Participant::getEmail)
                 .collect(Collectors.collectingAndThen(Collectors.toSet(), ImmutableSet::copyOf));
             message.addRecipients(Message.RecipientType.TO, participantAddresses.stream()

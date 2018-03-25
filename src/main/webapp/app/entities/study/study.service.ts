@@ -48,8 +48,15 @@ export class StudyService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
-    send(study: Study): Observable<String[]> {
-        return this.http.post(`${this.resourceUrl}/send`, study)
+    sendToAll(study: Study): Observable<any> {
+        return this.http.post(`${this.resourceUrl}/sendToAll`, study)
+            .map((res: Response) => {
+                return res.json();
+            });
+    }
+
+    sendToNew(study: Study): Observable<any> {
+        return this.http.post(`${this.resourceUrl}/sendToNew`, study)
             .map((res: Response) => {
                 return res.json();
             });

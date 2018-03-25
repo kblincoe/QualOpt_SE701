@@ -37,6 +37,7 @@
                 <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+
     </dl>
 
     <button type="submit"
@@ -61,11 +62,20 @@
 
     <button type="button"
             (click)="beginStudy()"
-            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSend'} }]"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSendToAll'} }]"
             replaceUrl="true"
             class="btn btn-success">
-        <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
+        <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation To All Participants</span>
     </button>
+
+    <button type="button"
+            (click)="beginStudy()"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSendToNew'} }]"
+            replaceUrl="true"
+            class="btn btn-success">
+        <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation To New Participants</span>
+    </button>
+
     <button *ngIf="this.study.status == status.ACTIVE" type="button"
             (click)="closeStudy()"
             class="btn btn-danger">

@@ -16,6 +16,7 @@ import { StudyService } from './study.service';
 import { User, UserService, ResponseWrapper, Principal, Account } from '../../shared';
 import { Participant, ParticipantService } from '../participant';
 import { Document } from '../document';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-study-dialog',
@@ -25,6 +26,7 @@ import { Document } from '../document';
         'study.css'
     ]
 })
+
 export class StudyDialogComponent implements OnInit {
 
     study: Study;
@@ -34,7 +36,6 @@ export class StudyDialogComponent implements OnInit {
 
     participants: Participant[];
     selectedDocuments: Document[];
-
 
     templates: EmailTemplate[];
     selectedTemplate: EmailTemplate;
@@ -48,6 +49,17 @@ export class StudyDialogComponent implements OnInit {
     currentUser: User;
     
     @ViewChild('editForm') editForm: NgForm;
+
+    templates: EmailTemplate[];
+    selectedTemplate: EmailTemplate;
+
+    saveTemplateName: string;
+    selectedManageTemplate: EmailTemplate;
+    manageTemplateSubject: string;
+    manageTemplateBody: string;
+
+    account: Account;
+    currentUser: User;
 
     constructor(
         public activeModal: NgbActiveModal,
