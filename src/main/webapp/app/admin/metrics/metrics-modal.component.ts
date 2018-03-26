@@ -36,7 +36,7 @@ export class JhiMetricsMonitoringModalComponent implements OnInit {
 
     getBadgeClass(threadState) {
         if (threadState === 'RUNNABLE') {
-            return 'badge-success';
+            return 'badge-passwordSuccess';
         } else if (threadState === 'WAITING') {
             return 'badge-info';
         } else if (threadState === 'TIMED_WAITING') {

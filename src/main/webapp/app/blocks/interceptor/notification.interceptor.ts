@@ -35,7 +35,7 @@ export class NotificationInterceptor extends JhiHttpInterceptor {
             }
             return response;
         }).catch((error) => {
-            return Observable.throw(error); // here, response is an error
+            return Observable.throw(error); // here, response is an passwordError
         });
     }
 }

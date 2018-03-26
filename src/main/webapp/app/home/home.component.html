@@ -1,61 +1,39 @@
-<div class="row">
-    <div class="col-md-3">
-        <span class="hipster img-fluid img-rounded"></span>
+
+<div class="title-background">
+    <h1 class="title-text">QualOpt</h1>
+    <p class="subtitle-text"> Quality Over Quantity. </p>
+</div>
+
+<div>
+    <h3 class="quote-text">"People That Aren't Used To Quality Always Chase Quantity."</h3>
+    <h3 class="sub-quote-text"> BUT WE AIN'T ABOUT THAT LIFE! </h3>
+</div>
+
+<div class="hr-line"></div>
+
+<div class="body-background" [ngSwitch]="isAuthenticated()">
+
+    <div class="user-section column left">
+        <span class="main-info">
+            <h1> Your fastest </br> way of gathering </br> research data </h1>
+            <p > Acquire important research data while </br> making users experience pleasant.</p>                       
+        </span>
+
+        <div *ngSwitchCase="true">
+            <span class="welcome-user-text" *ngIf="account"
+            > Welcome {{account.login}} </span>
+        </div>
+        
+        <div *ngSwitchCase="false">
+            <button class="button login" (click)="login()">LOG IN</button>
+            <button class="button register"  routerLink="register">SIGN UP</button>               
+        </div>
     </div>
-    <div class="col-md-9">
-        <button class="btn btn-primary float-right jh-create-entity create-participant" routerLink="../study">
-            <span class="fa fa-arrow-right"></span>
-            <span >
-            Go To Studies
-            </span>
-        </button>
-        <h1 class="display-4">QualOpt</h1>
-        <p class="lead">A Web Application to Support Qualitative Research</p>
 
-        <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span *ngIf="account"
-                   > You are logged in as user "{{account.login}}". </span>
-            </div>
-
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span>If you want to </span>
-                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default account:<br/>- User (login="user" and password="user").</span>
-            </div>
-
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span>You don't have an account yet?</span>
-                <a class="alert-link" routerLink="register">Register a new account</a>
-            </div>
-        </div>
-
-        <p>
-            QualOpt is a platform for software engineering researchers to manage survey invitations for their qualitative research studies, and find participants to send them to via GitHub.<br/>
-            The goal of this is to address the issue of GitHub users receiving too many unsolicited survey invitations via the GHTorrent project.<br/>
-            We do this by providing a centralized location for researchers to find GitHub users, and for GitHub users to manage who can find them.
-            <!-- TODO: More about QualOpt here -->
-        </p>
-
-        <div class="row">
-            <div class="col-6">
-                <h2>For Researchers</h2>
-                <p>
-                    Researchers can use this application to send out survey invitations in moderation.<br/>
-                    You can create a study on the application, with details of your survey and draft the email to be sent to your participants.<br/>
-                    Additionally, you can filter the participants who will receive the survey invitations using information from GitHub.<br/>
-                    This is great if you want easy contact to a tailored set of willing participants for your surveys.
-                    <!-- TODO: More researcher info here -->
-                </p>
-            </div>
-            <div class="col-6">
-                <h2>For GitHub Users</h2>
-                <p>
-                    GitHub users will be able to use this app to moderate the number of survey invitations they recieve.<br/>
-                    You will also have the benefit of being able to customise the types of surveys they recieve invitations for.<br/>
-                    We care about your privacy, so you're only giving out your email address to those who you want to see it.
-                    <!-- TODO: More participant info here -->
-                </p>
-            </div>
-        </div>
+    <div class="column middle">
+        <span class="circle create"><p> CREATE</p></span>
+        <div class="circle contribute"><p> CONTRIBUTE </p> </div>
+        <div class="circle develop"><p> DEVELOP </p></div>
+        <div class="circle learn"><p> LEARN </p></div>
     </div>
 </div>

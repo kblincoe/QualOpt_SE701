@@ -34,7 +34,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
                     const arr = Array.from(httpResponse.headers._headers);
                     const headers = [];
                     for (i = 0; i < arr.length; i++) {
-                        if (arr[i][0].endsWith('app-error') || arr[i][0].endsWith('app-params')) {
+                        if (arr[i][0].endsWith('app-passwordError') || arr[i][0].endsWith('app-params')) {
                             headers.push(arr[i][0]);
                         }
                     }

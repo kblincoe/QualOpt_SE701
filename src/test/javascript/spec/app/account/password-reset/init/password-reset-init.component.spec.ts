@@ -59,7 +59,7 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of success upon successful requestReset',
+        it('notifies of passwordSuccess upon successful requestReset',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
                 spyOn(service, 'save').and.returnValue(Observable.of({}));
                 comp.resetAccount.email = 'user@domain.com';
@@ -90,7 +90,7 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of error upon error response',
+        it('notifies of passwordError upon passwordError response',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
                 spyOn(service, 'save').and.returnValue(Observable.throw({
                     status: 503,

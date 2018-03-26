@@ -1,16 +1,33 @@
 import { BaseEntity, User } from './../../shared';
+import { Document } from '../document'
 
 export class Study implements BaseEntity {
     constructor(
         public id?: number,
         public name?: string,
         public description?: any,
-        public incentive?: any,
+        public incentiveType?: string,
+        public incentiveDetail?: any,
         public status?: Status,
+        public bouncedMail?: string,
         public emailSubject?: string,
         public emailBody?: any,
+        public faq?: string,
         public user?: User,
         public participants?: BaseEntity[],
+        public documents?: Document[]
+    ) {
+        if(this.documents===undefined) {
+            this.documents=[];
+        }
+    }
+}
+
+export class StudyInfo {
+    constructor(
+        public name?: string,
+        public faq?: string,
+        public documents?: Document[]
     ) {
     }
 }

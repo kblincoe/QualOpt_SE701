@@ -29,6 +29,10 @@ Generic styles
   border-left: 5px solid red;
 }
 
+.form-changed.ng-valid {
+    border-left: 5px solid yellow;
+}
+
 /* other generic styles */
 
 .jh-card {
@@ -66,6 +70,10 @@ Generic styles
 
 .footer {
     border-top: 1px solid rgba(0,0,0,.125);
+}
+ /* Preserves whitespace and newlines in the text */
+.break-new-line {
+    white-space: pre-wrap;
 }
 
 /* ==========================================================================

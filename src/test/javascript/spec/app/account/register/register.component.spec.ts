@@ -50,7 +50,7 @@ describe('Component Tests', () => {
             expect(comp.doNotMatch).toEqual('ERROR');
         });
 
-        it('should update success to OK after creating an account',
+        it('should update passwordSuccess to OK after creating an account',
             inject([Register],
                 fakeAsync((service: Register) => {
                     spyOn(service, 'save').and.returnValue(Observable.of({}));
@@ -111,7 +111,7 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should notify of generic error',
+        it('should notify of generic passwordError',
             inject([Register],
                 fakeAsync((service: Register) => {
                     spyOn(service, 'save').and.returnValue(Observable.throw({
