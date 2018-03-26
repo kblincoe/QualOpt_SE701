@@ -142,7 +142,7 @@ public class StudyResource {
         if(study==null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        
+
         StudyInfoDTO studyInfo = new StudyInfoDTO(study);
         return new ResponseEntity<>(studyInfo, HttpStatus.OK);
     }
