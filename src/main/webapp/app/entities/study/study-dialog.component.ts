@@ -26,7 +26,6 @@ import { Document } from '../document';
     ]
 })
 export class StudyDialogComponent implements OnInit {
-
     study: Study;
     isSaving: boolean;
 
