@@ -8,7 +8,8 @@ import { StudyService } from './study.service';
 
 @Component({
     selector: 'jhi-study-detail',
-    templateUrl: './study-detail.component.html'
+    templateUrl: './study-detail.component.html',
+    styleUrls:['./study-detail.component.css']
 })
 export class StudyDetailComponent implements OnInit, OnDestroy {
 
