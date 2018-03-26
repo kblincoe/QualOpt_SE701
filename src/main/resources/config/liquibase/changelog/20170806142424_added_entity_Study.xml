@@ -30,8 +30,16 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="incentive" type="clob">
+            <column name="incentive_type" type="clob">
                 <constraints nullable="true" />
+            </column>
+
+            <column name="incentive_detail" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="status" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
 
             <column name="email_subject" type="varchar(255)">
@@ -48,7 +56,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="study_participant">
             <column name="participants_id" type="bigint">
                 <constraints nullable="false"/>
@@ -59,6 +67,6 @@
         </createTable>
 
         <addPrimaryKey columnNames="studies_id, participants_id" tableName="study_participant"/>
-        
+
     </changeSet>
 </databaseChangeLog>

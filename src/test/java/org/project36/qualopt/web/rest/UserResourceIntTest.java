@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -336,7 +335,7 @@ public class UserResourceIntTest {
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.getOne(user.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
@@ -380,7 +379,7 @@ public class UserResourceIntTest {
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.getOne(user.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
@@ -435,7 +434,7 @@ public class UserResourceIntTest {
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.getOne(user.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
@@ -479,7 +478,7 @@ public class UserResourceIntTest {
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
-        User updatedUser = userRepository.findOne(user.getId());
+        User updatedUser = userRepository.getOne(user.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");

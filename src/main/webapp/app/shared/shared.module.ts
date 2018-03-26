@@ -15,18 +15,17 @@ import {
     HasAnyAuthorityDirective,
     JhiSocialComponent,
     SocialService,
-    JhiLoginModalComponent
+    JhiLoginModalComponent,
+    AutofocusDirective
 } from './';
 
 @NgModule({
-    imports: [
-        QualOptSharedLibsModule,
-        QualOptSharedCommonModule
-    ],
+    imports: [QualOptSharedLibsModule, QualOptSharedCommonModule],
     declarations: [
         JhiSocialComponent,
         JhiLoginModalComponent,
-        HasAnyAuthorityDirective
+        HasAnyAuthorityDirective,
+        AutofocusDirective
     ],
     providers: [
         LoginService,
@@ -38,7 +37,7 @@ import {
         AuthServerProvider,
         SocialService,
         UserService,
-        DatePipe
+        DatePipe,
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [
@@ -46,9 +45,9 @@ import {
         JhiSocialComponent,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
-        DatePipe
+        DatePipe,
+        AutofocusDirective
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
-
 })
 export class QualOptSharedModule {}

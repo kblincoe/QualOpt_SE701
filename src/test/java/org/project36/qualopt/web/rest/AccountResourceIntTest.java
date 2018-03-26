@@ -1,8 +1,29 @@
 package org.project36.qualopt.web.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.project36.qualopt.QualOptApp;
 import org.project36.qualopt.domain.Authority;
-import org.project36.qualopt.domain.PersistentToken;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.AuthorityRepository;
 import org.project36.qualopt.repository.PersistentTokenRepository;
@@ -13,12 +34,6 @@ import org.project36.qualopt.service.UserService;
 import org.project36.qualopt.service.dto.UserDTO;
 import org.project36.qualopt.web.rest.vm.KeyAndPasswordVM;
 import org.project36.qualopt.web.rest.vm.ManagedUserVM;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -29,20 +44,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the AccountResource REST controller.
@@ -69,7 +70,7 @@ public class AccountResourceIntTest {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private HttpMessageConverter[] httpMessageConverters;
+    private HttpMessageConverter<?>[] httpMessageConverters;
 
     @Mock
     private UserService mockUserService;
@@ -84,7 +85,7 @@ public class AccountResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(mockMailService).sendActivationEmail(anyObject());
+        doNothing().when(mockMailService).sendActivationEmail(any());
 
         AccountResource accountResource =
             new AccountResource(userRepository, userService, mockMailService, persistentTokenRepository);
@@ -414,7 +415,9 @@ public class AccountResourceIntTest {
         Optional<User> userDup = userRepository.findOneByLogin("badguy");
         assertThat(userDup.isPresent()).isTrue();
         assertThat(userDup.get().getAuthorities()).hasSize(1)
-            .containsExactly(authorityRepository.findOne(AuthoritiesConstants.USER));
+            .containsExactly(authorityRepository.findById(AuthoritiesConstants.USER).orElseGet(() -> {
+                return null;
+            }));
     }
 
     @Test
@@ -676,60 +679,6 @@ public class AccountResourceIntTest {
 
         User updatedUser = userRepository.findOneByLogin("change-password-empty").orElse(null);
         assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("current-sessions")
-    public void testGetCurrentSessions()  throws Exception {
-        User user = new User();
-        user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("current-sessions");
-        user.setEmail("current-sessions@example.com");
-        userRepository.saveAndFlush(user);
-
-        PersistentToken token = new PersistentToken();
-        token.setSeries("current-sessions");
-        token.setUser(user);
-        token.setTokenValue("current-session-data");
-        token.setTokenDate(LocalDate.of(2017, 3, 23));
-        token.setIpAddress("127.0.0.1");
-        token.setUserAgent("Test agent");
-        persistentTokenRepository.saveAndFlush(token);
-
-        restMvc.perform(get("/api/account/sessions"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.[*].series").value(hasItem(token.getSeries())))
-            .andExpect(jsonPath("$.[*].ipAddress").value(hasItem(token.getIpAddress())))
-            .andExpect(jsonPath("$.[*].userAgent").value(hasItem(token.getUserAgent())))
-            .andExpect(jsonPath("$.[*].tokenDate").value(hasItem(token.getTokenDate().toString())));
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("invalidate-session")
-    public void testInvalidateSession() throws Exception {
-        User user = new User();
-        user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("invalidate-session");
-        user.setEmail("invalidate-session@example.com");
-        userRepository.saveAndFlush(user);
-
-        PersistentToken token = new PersistentToken();
-        token.setSeries("invalidate-session");
-        token.setUser(user);
-        token.setTokenValue("invalidate-data");
-        token.setTokenDate(LocalDate.of(2017, 3, 23));
-        token.setIpAddress("127.0.0.1");
-        token.setUserAgent("Test agent");
-        persistentTokenRepository.saveAndFlush(token);
-
-        assertThat(persistentTokenRepository.findByUser(user)).hasSize(1);
-
-        restMvc.perform(delete("/api/account/sessions/invalidate-session"))
-            .andExpect(status().isOk());
-
-        assertThat(persistentTokenRepository.findByUser(user)).isEmpty();
     }
 
     @Test

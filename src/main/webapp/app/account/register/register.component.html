@@ -49,14 +49,14 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="Your email"
+                    <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="Your email" ngModel [email]="true"
                             [(ngModel)]="registerAccount.email" minlength=5 maxlength=100 required>
                     <div *ngIf="email.dirty && email.invalid">
                         <small class="form-text text-danger" *ngIf="email.errors.required"
                                >
                             Your email is required.
                         </small>
-                        <small class="form-text text-danger" *ngIf="email.errors.invalid"
+                        <small class="form-text text-danger" *ngIf="email.errors.email && !email.errors.minlength && !email.errors.maxlength && !email.errors.required"
                               >
                             Your email is invalid.
                         </small>
@@ -73,7 +73,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="password">New password</label>
                     <input type="password" class="form-control" id="password" name="password" #password="ngModel" placeholder="New password"
-                            [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required>
+                            [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required validateEqual="confirmPassword" editingNew="true">
                     <div *ngIf="password.dirty && password.invalid">
                         <small class="form-text text-danger" *ngIf="password.errors.required"
                                >
@@ -93,19 +93,20 @@
                 <div class="form-group">
                     <label class="form-control-label" for="confirmPassword">New password confirmation</label>
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" #confirmPasswordInput="ngModel" placeholder="Confirm the new password"
-                            [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required>
+                            [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required validateEqual="password">
                     <div *ngIf="confirmPasswordInput.dirty && confirmPasswordInput.invalid">
-                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required"
-                              >
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required">
                             Your confirmation password is required.
                         </small>
-                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.minlength"
-                             >
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.minlength">
                             Your confirmation password is required to be at least 4 characters.
                         </small>
-                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.maxlength"
-                              >
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.maxlength">
                             Your confirmation password cannot be longer than 50 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                            *ngIf="confirmPasswordInput.invalid && !confirmPasswordInput.errors.minlength && !confirmPasswordInput.errors.maxlength">
+                            Your confirmation password does not match the password you have entered.
                         </small>
                     </div>
                 </div>
@@ -113,16 +114,16 @@
                 <button type="submit" [disabled]="registerForm.form.invalid" class="btn btn-primary">Register</button>
             </form>
             <p></p>
-            <div class="alert alert-warning">
+            <div class="alert alert-warning" *ngIf="!success">
                 <span>If you want to </span>
                 <a class="alert-link" (click)="openLogin()">sign in</a><span>, you can try the default account:<br/>- User (login="user" and password="user").</span>
             </div>
         </div>
         <div class="col-md-4">
             <br/>
-            <jhi-social provider="google"></jhi-social>
-            <jhi-social provider="facebook"></jhi-social>
-            <jhi-social provider="twitter"></jhi-social>
+            <jhi-social *ngIf="!success" provider="google"></jhi-social>
+            <jhi-social *ngIf="!success" provider="facebook"></jhi-social>
+            <jhi-social *ngIf="!success" provider="twitter"></jhi-social>
             <!-- jhipster-needle-add-social-button -->
         </div>
     </div>

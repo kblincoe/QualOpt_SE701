@@ -32,7 +32,7 @@ Before you can build this project, you must install and configure the following 
 2. [Yarn][]: We use Yarn to manage Node dependencies.
    Depending on your system, you can install Yarn either from source or as a pre-packaged bundle.
 
-**Warning QualOpt cannot be run on Java 9 as there is an error with Spring. Jave 8 or earlier required.**
+**Warning QualOpt cannot be run on Java 7 or earlier. The supported versions of Java are 8 and 9.**
 
 After installing Node, you should be able to run the following command to install development tools (try `npm install` if you have problems).
 You will only need to run this command when dependencies change in [package.json](package.json).
@@ -45,7 +45,7 @@ We use yarn scripts and [Webpack][] as our build system.
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
-    ./mvnw [just mvnw on cmd enviroments]
+    ./mvnw [just mvnw on cmd environments]
     yarn start
 
 [Yarn][] is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
@@ -167,7 +167,7 @@ Then run:
 
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
-## Continuous Integration (optional, not currently impletmented)
+## Continuous Integration (optional, not currently implemented)
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.*;
 /**
  * Spring Data JPA repository for the Participant entity.
  */
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 @Repository
 public interface ParticipantRepository extends JpaRepository<Participant,Long> {
     

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { Study } from './study.model';
+import { Study, StudyInfo } from './study.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
@@ -32,6 +32,12 @@ export class StudyService {
         });
     }
 
+    getStudyInfo(id: number): Observable<StudyInfo> {
+        return this.http.get(`${this.resourceUrl}/${id}/info`).map((res: Response) => {
+            return res.json();
+        });
+    }
+
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
@@ -40,6 +46,13 @@ export class StudyService {
 
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
+    }
+
+    send(study: Study): Observable<String[]> {
+        return this.http.post(`${this.resourceUrl}/send`, study)
+            .map((res: Response) => {
+                return res.json();
+            });
     }
 
     private convertResponse(res: Response): ResponseWrapper {

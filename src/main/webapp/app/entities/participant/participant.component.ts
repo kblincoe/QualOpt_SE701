@@ -43,6 +43,32 @@ export class ParticipantComponent implements OnInit, OnDestroy {
         this.reverse = true;
     }
 
+    /**
+     * This function returns the highest number of Repositories that any user has for limiting values in the
+     * participant filtering system.
+     * */
+    getMaxRepositories(){
+        return this.getMax(this.participants.map(p => p.numberOfRepositories));
+    }
+
+    /**
+     * This function returns the highest number of contributions that any user has for limiting values in the
+     * participant filtering system.
+     * */
+    getMaxContributions(){
+        return this.getMax(this.participants.map(p => p.numberOfContributions));
+    }
+
+    getMax(array: number[] ){
+        let  highestFound = 0;
+        for (let value of array){
+            if(value > highestFound){
+                highestFound = value;
+            }
+        }
+        return highestFound
+    }
+
     loadAll() {
         this.participantService.query({
             page: this.page,

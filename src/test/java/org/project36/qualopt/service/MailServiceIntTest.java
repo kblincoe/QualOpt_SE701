@@ -16,7 +16,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -45,7 +45,7 @@ public class MailServiceIntTest {
     private JavaMailSenderImpl javaMailSender;
 
     @Captor
-    private ArgumentCaptor messageCaptor;
+    private ArgumentCaptor<?> messageCaptor;
 
     private MailService mailService;
 

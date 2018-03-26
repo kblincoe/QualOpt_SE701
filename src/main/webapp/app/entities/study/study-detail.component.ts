@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager , JhiDataUtils } from 'ng-jhipster';
 
-import { Study } from './study.model';
+import {Status, Study} from './study.model';
 import { StudyService } from './study.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     study: Study;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
+    status = Status;
 
     constructor(
         private eventManager: JhiEventManager,
@@ -36,6 +37,7 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
             this.study = study;
         });
     }
+
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -43,8 +45,19 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
     }
+
     previousState() {
         window.history.back();
+    }
+    // Changes the status of the study to active.
+    beginStudy() {
+        this.study.status = Status.ACTIVE;
+        this.studyService.update(this.study).subscribe();
+    }
+    // Changes the status of the study to Completed.
+    closeStudy() {
+        this.study.status = Status.COMPLETED;
+        this.studyService.update(this.study).subscribe();
     }
 
     ngOnDestroy() {

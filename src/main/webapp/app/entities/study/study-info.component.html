@@ -1,0 +1,33 @@
+<div *ngIf="studyInfo">
+    <h1>{{studyInfo.name}}</h1>
+    <div>
+        <h2>FAQ</h2>
+        <p [innerHTML]="studyInfo.faq"></p>
+    </div>
+    <div>
+        <h2>Documents</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                <th><span>File name</span> <span class="fa fa-sort"></span></th>
+                <th><span>File type</span> <span class="fa fa-sort"></span></th>
+                <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let document of studyInfo.documents">
+                    <td>{{document.filename}}</td>
+                    <td>{{getFileExtension(document.filename)}}</td>
+                    <td class="text-right">
+                        <a [attr.href]="downloadFileUrl(document.id)" download>
+                            <span class="fa fa-download"></span>
+                            <span class="hidden-md-down">Download</span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -220,7 +220,7 @@ public class ParticipantResourceIntTest {
         int databaseSizeBeforeUpdate = participantRepository.findAll().size();
 
         // Update the participant
-        Participant updatedParticipant = participantRepository.findOne(participant.getId());
+        Participant updatedParticipant = participantRepository.getOne(participant.getId());
         updatedParticipant
             .email(UPDATED_EMAIL)
             .occupation(UPDATED_OCCUPATION)

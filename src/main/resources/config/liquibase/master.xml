@@ -10,5 +10,7 @@
     <include file="config/liquibase/changelog/20170820142039_added_entity_Email.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20170806142424_added_entity_constraints_Study.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180312180235_added_entity_columns_Study.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180314100212_added_entity_Document.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

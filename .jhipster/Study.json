@@ -30,7 +30,12 @@
             "fieldTypeBlobContent": "text"
         },
         {
-            "fieldName": "incentive",
+            "fieldName": "incentiveType",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "incentiveDetail",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "text"
         },
@@ -45,6 +50,10 @@
             "fieldName": "emailBody",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170806142424",
