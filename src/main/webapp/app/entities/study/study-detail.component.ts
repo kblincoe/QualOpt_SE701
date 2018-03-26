@@ -13,9 +13,9 @@ import { StudyService } from './study.service';
 export class StudyDetailComponent implements OnInit, OnDestroy {
 
     study: Study;
+    status = Status;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
-    status = Status;
 
     constructor(
         private eventManager: JhiEventManager,
@@ -47,16 +47,22 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     }
 
     previousState() {
-        window.history.back();
+        history.back();
     }
+
     // Changes the status of the study to active.
     beginStudy() {
         this.study.status = Status.ACTIVE;
-        this.studyService.update(this.study).subscribe();
+        this.updateStudy();
     }
+
     // Changes the status of the study to Completed.
     closeStudy() {
         this.study.status = Status.COMPLETED;
+        this.updateStudy();
+    }
+
+    updateStudy(){
         this.studyService.update(this.study).subscribe();
     }
 

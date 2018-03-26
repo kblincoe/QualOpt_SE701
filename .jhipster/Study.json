@@ -54,6 +54,10 @@
         {
             "fieldName": "status",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "bouncedMail",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170806142424",

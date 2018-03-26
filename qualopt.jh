@@ -4,6 +4,7 @@ entity Study {
 	incentiveType TextBlob,
 	incentiveDetail TextBlob,
 	status String,
+	bouncedMail String,
 	emailSubject String required,
   emailBody TextBlob
 }
