@@ -21,6 +21,10 @@ public class Participant implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //Default values for participant details
+    private static final int DEFAULT_NUMBER_OF_INVITATIONS = 5;
+    private static final String DEFAULT_INCENTIVE_CHOICE = "ONE_OFF";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,8 +48,19 @@ public class Participant implements Serializable {
     @Column(name = "number_of_repositories")
     private Integer numberOfRepositories;
 
+    @Column(name = "has_opted_in")
+    private boolean hasOptedIn = true;
+
+    @Column(name = "number_of_invitations_requested")
+    private Integer numberOfInvitationsRequested = DEFAULT_NUMBER_OF_INVITATIONS;
+
+    @Column(name = "incentive_choice")
+    private String incentiveChoice = DEFAULT_INCENTIVE_CHOICE; //Currently a string, need to change to an enum when Issue 5 is pulled in
+
+    @Column(name = "incentive_details")
+    private String incentiveDetails;
+
     @ManyToMany(mappedBy = "participants")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Study> studies = new HashSet<>();
 
@@ -152,12 +167,43 @@ public class Participant implements Serializable {
 
     public Participant removeStudy(Study study) {
         this.studies.remove(study);
-        study.getParticipants().remove(this);
         return this;
     }
 
     public void setStudies(Set<Study> studies) {
         this.studies = studies;
+    }
+
+    public boolean getOptedIn() {
+        return this.hasOptedIn;
+    }
+
+    public void setOptedIn(boolean optedInStatus) {
+        this.hasOptedIn = optedInStatus;
+    }
+
+    public Integer getNumberOfInvitationsRequested() {
+        return this.numberOfInvitationsRequested;
+    }
+
+    public void setNumberOfInvitationsRequested(Integer number) {
+       this.numberOfInvitationsRequested = number;
+    }
+
+    public String getIncentiveChoice() {
+        return this.incentiveChoice;
+    }
+
+    public void setIncentiveChoice(String choice) {
+       this.incentiveChoice = choice;
+    }
+
+    public String getIncentiveDetails() {
+        return this.incentiveDetails;
+    }
+
+    public void setIncentiveDetails(String details) {
+       this.incentiveDetails = details;
     }
 
     @Override
@@ -190,6 +236,10 @@ public class Participant implements Serializable {
             ", programmingLanguage='" + getProgrammingLanguage() + "'" +
             ", numberOfContributions='" + getNumberOfContributions() + "'" +
             ", numberOfRepositories='" + getNumberOfRepositories() + "'" +
+            ", optedIn='" + getOptedIn() + "'" +
+            ", numberOfInvitationsRequested='" + getNumberOfInvitationsRequested() + "'" +
+            ", incentiveChoice='" + getIncentiveChoice() + "'" +
+            ", incentiveDetails='" + getIncentiveDetails() + "'" +
             "}";
     }
 }

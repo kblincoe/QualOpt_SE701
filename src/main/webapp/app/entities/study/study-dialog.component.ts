@@ -322,6 +322,14 @@ export class StudyDialogComponent implements OnInit {
             return 'Create Study';
         }
     }
+
+    filterOptedInParticipants() {
+        if (!this.participants) {
+            return [];
+        } else {
+            return this.participants.filter((participant) => participant.optedIn === true);
+        }
+    }
 }
 
 @Component({

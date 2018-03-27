@@ -10,6 +10,8 @@ import org.project36.qualopt.security.AuthoritiesConstants;
 import org.project36.qualopt.security.SecurityUtils;
 import org.project36.qualopt.service.util.RandomUtil;
 import org.project36.qualopt.service.dto.UserDTO;
+import org.project36.qualopt.repository.ParticipantRepository;
+import org.project36.qualopt.domain.Participant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,12 +47,15 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, PersistentTokenRepository persistentTokenRepository, AuthorityRepository authorityRepository) {
+    private final ParticipantRepository participantRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, PersistentTokenRepository persistentTokenRepository, AuthorityRepository authorityRepository, ParticipantRepository participantRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialService = socialService;
         this.persistentTokenRepository = persistentTokenRepository;
         this.authorityRepository = authorityRepository;
+        this.participantRepository = participantRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -92,10 +97,18 @@ public class UserService {
         String imageUrl, String langKey) {
 
         User newUser = new User();
-        Authority authority = authorityRepository.findById(AuthoritiesConstants.USER)
-        .orElseGet(() -> {
-            return null;
-        });
+        Authority authority;
+        if (checkIfParticipantExists(email)) {
+            authority = authorityRepository.findById(AuthoritiesConstants.PARTICIPANT)
+            .orElseGet(() -> {
+                return null;
+            });
+        } else {
+            authority = authorityRepository.findById(AuthoritiesConstants.USER)
+            .orElseGet(() -> {
+                return null;
+            });
+        }
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
@@ -272,5 +285,15 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    /**
+     * This is a helper method to see if a participant exists in the database using a given email.
+     * @param email - The string representation of the email that may be associated with the participant.
+     * @return - A boolean variable that is true if the participant exists.
+     */
+    private boolean checkIfParticipantExists(String email) {
+        Participant participant = participantRepository.findOneByEmail(email);
+        return (participant != null ? true : false);
     }
 }

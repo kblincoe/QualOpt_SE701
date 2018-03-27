@@ -215,7 +215,6 @@ public class Study implements Serializable {
 
     public Study removeParticipant(Participant participant) {
         this.participants.remove(participant);
-        participant.getStudies().remove(this);
         return this;
     }
 
