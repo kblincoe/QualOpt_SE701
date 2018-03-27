@@ -10,6 +10,37 @@ Main page styles
     background-size: contain;
 }
 
+.title-background {
+    background: url("../../content/images/title_background.png") no-repeat center top;
+    background-size: cover;
+}
+
+.title-text {
+    color: rgb(0, 0, 0);
+    font-size: 80px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    padding-left: 20px;
+}
+
+.subtitle-text {
+    color: indigo;
+    font-family: Cambria;
+    font-style: italic;
+    padding-left: 20px;
+}
+
+.quote-text {
+    color: indigo;
+    text-align: center;
+    font-style: oblique;
+}
+
+.sub-quote-text {
+    padding-top: 10px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
 only screen and (-webkit-min-device-pixel-ratio: 2),
@@ -23,4 +54,226 @@ only screen and (                min-resolution: 2dppx) {
         background-size: contain;
     }
 }
+
+.hr-line {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    height: 10px;
+    width: 100%;
+    border-bottom: 1px solid #7A7A7A;
+}
+
+.body-background {
+    background: url("../../content/images/body_background.png") no-repeat center top;
+    background-size: cover;
+    height: 900px;
+    max-height: 100%;
+}
+
+/* Splits the screen into 3 parts so the components can resize propely.
+When the screen resizes, the components will stack up on top of each other, rather than overlap. */
+.column {
+    float: left;
+    position: relative;
+}
+
+.left {
+    width: 70%;
+    float: left;
+}
+
+.right {
+    width: 30%;
+    float: right;
+}
+
+.middle {
+    display: inline;
+}
+
+.column:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+/* ------------------------------- */
+
+/* Creates transparent blue circles on the right side. */
+.circle {
+	width: 200px;
+	height: 200px;
+	background: rgb(72, 198, 212);
+	-moz-border-radius: 100px;
+	-webkit-border-radius: 100px;
+    border-radius: 100px;
+    display: block;
+    text-align:center;
+
+    -moz-box-shadow: 0 0 10px  rgba(0,0,0,0.6);
+    -webkit-box-shadow: 0 0 10px  rgba(0,0,0,0.6);
+    -o-box-shadow: 0 0 10px  rgba(0,0,0,0.6);
+}
+
+/* Defines properties for text inside the circle. 
+Positions it in the center, and sets font colour to white with black shading. */
+.circle > p {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    color: white;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 35px;
+    margin-top: -30px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+}
+
+/* Defines position of the each circle based on their text. */
+.create {
+    position: relative;
+    background: rgba(72, 198, 212,0.5);
+    margin-top: 10px;
+    margin-left: -50px;
+}
+
+.contribute {
+    position: relative;
+    background: rgba(72, 198, 212,0.5);
+    margin-top: 10px;
+}
+
+.develop {
+    position: relative;
+    background: rgba(72, 198, 212,0.5);
+    margin-top: 10px;
+}
+
+.learn {
+    position: relative;
+    background: rgba(72, 198, 212,0.5);
+    margin-top: 10px;
+    margin-left: -50px;
+}
+/* -------------------------------------------- */
+
+/* Defines position of the text, and user message or login/logout buttons */
+.user-section {
+    float: left;
+    width: 50%;
+    position: relative;
+    top: 20px;
+    margin-left: 50px;
+}
+
+.welcome-user-text {
+    font-size: 60px;
+    color: white;
+    top: 100px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+}
+
+/* Defines prpoperties of the text for header and paragraph */
+.main-info > h1 {
+    resize: horizontal;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: white;
+    margin-top: 20px;
+    font-size: 60px;
+}
+
+.main-info > p {
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+/* -------------------------------------------------------- */
+
+/* Defines size and style of the buttons.
+Makes both buttons change colour when hovered over.
+Adds gradient colours to the button.
+Also adds effect of button being pressed when clicked on. */
+.button {
+	position: relative;
+	width:300px;
+    height:50px;
+    max-width: 90%;
+    max-height: 100%;
+	text-align:center;
+	color:#FFF;
+    text-decoration:none;
+    font-size: 18px;
+	line-height:43px;
+	font-family:'Oswald', Helvetica;
+	display: block;
+    margin: 10px;
+}
+
+.button:active {
+	-webkit-box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset;
+	top:5px;
+}
+
+.login {
+	text-shadow:-1px -1px 0 rgb(163, 58, 79);
+	background: rgb(163, 58, 79);
+	border:1px solid rgb(163, 58, 79);
+	
+	background-image:-webkit-linear-gradient(top, rgb(163, 58, 79), rgb(163, 58, 79));
+	background-image:-moz-linear-gradient(top, rgb(163, 58, 79), rgb(163, 58, 79));
+	background-image:-ms-linear-gradient(top, rgb(163, 58, 79), rgb(163, 58, 79));
+	background-image:-o-linear-gradient(top, rgb(163, 58, 79), rgb(163, 58, 79));
+	background-image:linear-gradient(to bottom, rgb(163, 58, 79), rgb(163, 58, 79));
+	
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	
+	-webkit-box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #AD4257, 0 4px 2px rgba(0, 0, 0, .5);
+	-moz-box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #AD4257, 0 4px 2px rgba(0, 0, 0, .5);
+	box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #AD4257, 0 4px 2px rgba(0, 0, 0, .5);
+}
+
+.login:hover {
+	background: rgb(246, 108, 123);
+	background-image:-webkit-linear-gradient(top, rgb(246, 108, 123), rgb(246, 108, 123));
+	background-image:-moz-linear-gradient(top, rgb(246, 108, 123), rgb(246, 108, 123));
+	background-image:-ms-linear-gradient(top, rgb(246, 108, 123), rgb(246, 108, 123));
+	background-image:-o-linear-gradient(top, rgb(246, 108, 123), rgb(246, 108, 123));
+	background-image:linear-gradient(top, rgb(246, 108, 123), rgb(246, 108, 123));
+}
+
+/* Referes to SignUp button */
+.register {
+	text-shadow:-1px -1px 0 rgb(28, 98, 105);
+	background: rgb(28, 98, 105);
+	border:1px solid rgb(55, 154, 165);
+	background-image:-webkit-linear-gradient(top, rgb(28, 98, 105), rgb(28, 98, 105));
+	background-image:-moz-linear-gradient(top, rgb(28, 98, 105), rgb(28, 98, 105));
+	background-image:-ms-linear-gradient(top, rgb(28, 98, 105), rgb(28, 98, 105));
+	background-image:-o-linear-gradient(top, rgb(28, 98, 105), rgb(28, 98, 105));
+	background-image:linear-gradient(top, rgb(28, 98, 105), rgb(28, 98, 105));
+	
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	
+	-webkit-box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #338A94, 0 4px 2px rgba(0, 0, 0, .5);
+	-moz-box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #338A94, 0 4px 2px rgba(0, 0, 0, .5);
+	box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #338A94, 0 4px 2px rgba(0, 0, 0, .5);
+}
+
+.register:hover {
+	background: rgb(72, 198, 212);
+	background-image:-webkit-linear-gradient(top, rgb(62, 172, 186), rgb(72, 198, 212));
+	background-image:-moz-linear-gradient(top, rgb(62, 172, 186), rgb(72, 198, 212));
+	background-image:-ms-linear-gradient(top, rgb(62, 172, 186), rgb(72, 198, 212));
+	background-image:-o-linear-gradient(top, rgb(62, 172, 186), rgb(72, 198, 212));
+	background-image:linear-gradient(top, rgb(62, 172, 186), rgb(72, 198, 212));
+}
+/* --------------------------------------------------------------------------- */
+
 

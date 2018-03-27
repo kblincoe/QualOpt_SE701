@@ -21,7 +21,11 @@
             <span>{{study.emailSubject}}</span>
         </dd>
         <dd>
-            <span>{{study.emailBody}}</span>
+            <span class="break-new-line">{{study.emailBody}}</span>
+        </dd>
+        <dt><span>FAQ</span></dt>
+        <dd>
+            <span>{{study.faq}}</span>
         </dd>
         <dt><span>Participants</span></dt>
         <dd>
@@ -29,6 +33,12 @@
                 <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+        <div *ngIf="study.bouncedMail">
+        <dt><span>Bounced Participant Email Addresses</span></dt>
+        <dd>
+            <span>{{study.bouncedMail}}</span>
+        </dd>
+        </div>
     </dl>
 
     <button type="submit"

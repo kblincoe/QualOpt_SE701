@@ -8,6 +8,7 @@ import { ParticipantComponent } from './participant.component';
 import { ParticipantDetailComponent } from './participant-detail.component';
 import { ParticipantPopupComponent } from './participant-dialog.component';
 import { ParticipantDeletePopupComponent } from './participant-delete-dialog.component';
+import { GitHubQueryPopupComponent } from './githubAPI/participant-github-query-dialog.component';
 
 export const participantRoute: Routes = [
     {
@@ -56,6 +57,16 @@ export const participantPopupRoute: Routes = [
         data: {
             authorities: ['ROLE_ADMIN'],
             pageTitle: 'Participants'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'github-query',
+        component: GitHubQueryPopupComponent,
+        data: {
+            authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+            pageTitle: 'GitHub User Search Query'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'

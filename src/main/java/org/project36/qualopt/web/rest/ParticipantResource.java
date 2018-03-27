@@ -108,8 +108,8 @@ public class ParticipantResource {
     @Timed
     public ResponseEntity<Participant> getParticipant(@PathVariable Long id) {
         log.debug("REST request to get Participant : {}", id);
-        Participant participant = participantRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(participant));
+        Optional<Participant> participant = participantRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(participant);
     }
 
     /**
@@ -122,7 +122,7 @@ public class ParticipantResource {
     @Timed
     public ResponseEntity<Void> deleteParticipant(@PathVariable Long id) {
         log.debug("REST request to delete Participant : {}", id);
-        participantRepository.delete(id);
+        participantRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

@@ -98,8 +98,8 @@ public class EmailResource {
     @Timed
     public ResponseEntity<Email> getEmail(@PathVariable Long id) {
         log.debug("REST request to get Email : {}", id);
-        Email email = emailRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(email));
+        Optional<Email> email = emailRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(email);
     }
 
     /**
@@ -112,7 +112,7 @@ public class EmailResource {
     @Timed
     public ResponseEntity<Void> deleteEmail(@PathVariable Long id) {
         log.debug("REST request to delete Email : {}", id);
-        emailRepository.delete(id);
+        emailRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

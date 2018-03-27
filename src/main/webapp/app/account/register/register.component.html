@@ -73,7 +73,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="password">New password</label>
                     <input type="password" class="form-control" id="password" name="password" #password="ngModel" placeholder="New password"
-                            [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required>
+                            [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required validateEqual="confirmPassword" editingNew="true">
                     <div *ngIf="password.dirty && password.invalid">
                         <small class="form-text text-danger" *ngIf="password.errors.required"
                                >
@@ -93,19 +93,20 @@
                 <div class="form-group">
                     <label class="form-control-label" for="confirmPassword">New password confirmation</label>
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" #confirmPasswordInput="ngModel" placeholder="Confirm the new password"
-                            [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required>
+                            [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required validateEqual="password">
                     <div *ngIf="confirmPasswordInput.dirty && confirmPasswordInput.invalid">
-                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required"
-                              >
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required">
                             Your confirmation password is required.
                         </small>
-                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.minlength"
-                             >
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.minlength">
                             Your confirmation password is required to be at least 4 characters.
                         </small>
-                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.maxlength"
-                              >
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.maxlength">
                             Your confirmation password cannot be longer than 50 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                            *ngIf="confirmPasswordInput.invalid && !confirmPasswordInput.errors.minlength && !confirmPasswordInput.errors.maxlength">
+                            Your confirmation password does not match the password you have entered.
                         </small>
                     </div>
                 </div>
