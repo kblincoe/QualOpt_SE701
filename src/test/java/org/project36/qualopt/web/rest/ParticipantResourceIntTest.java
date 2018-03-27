@@ -160,7 +160,6 @@ public class ParticipantResourceIntTest {
         participant.setEmail(null);
 
         // Create the Participant, which fails.
-
         restParticipantMockMvc.perform(post("/api/participants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(participant)))
@@ -324,7 +323,7 @@ public class ParticipantResourceIntTest {
         .andExpect(jsonPath("$.numberOfContributions").value(DEFAULT_NUMBER_OF_CONTRIBUTIONS))
         .andExpect(jsonPath("$.numberOfRepositories").value(DEFAULT_NUMBER_OF_REPOSITORIES));
     }
-    
+
     /**
     * This is a test to see if a participant that is created is defaulted to be opted-in to future
     * studies. The participant is saved, queried from the database and then the value is checked.
@@ -334,7 +333,7 @@ public class ParticipantResourceIntTest {
     public void testDefaultOptIn() throws Exception {
         // Initialize the database
         participantRepository.saveAndFlush(participant);
-        
+
         // Check that the participant has default opted-in
         restParticipantMockMvc.perform(get("/api/participants/{id}", participant.getId()))
         .andExpect(status().isOk())

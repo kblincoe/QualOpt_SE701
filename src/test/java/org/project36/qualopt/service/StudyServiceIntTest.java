@@ -154,4 +154,45 @@ public class StudyServiceIntTest {
         assertThat(bouncedMail.size()).isEqualTo(2);
         assertThat(bouncedMail).isEqualTo(participants.stream().map(Participant::getEmail).collect(Collectors.toSet()));
     }
+
+    @Test
+    public void testSendCustomInvitationEmail() throws Exception {
+        User user = new User();
+        user.setEmail("user@email.com");
+        Participant participant = new Participant().email("participant@email.com");
+        participant.setFirstName("John");
+        participant.setLastName("Smith");
+        participant.setLocation("Auckland");
+        participant.setOccupation("Software Engineer");
+        participant.setProgrammingLanguage("Java");
+        participant.setNumberOfContributions(23);
+        participant.setNumberOfRepositories(1);
+        studyService.sendInvitationEmail(new Study()
+            .user(user)
+            .emailSubject(StudyService.CUSTOM_FIRST_NAME + ", " +
+                StudyService.CUSTOM_LAST_NAME + ", " +
+                StudyService.CUSTOM_LOCATION + ", " +
+                StudyService.CUSTOM_OCCUPATION + ", " +
+                StudyService.CUSTOM_PROGRAMMING_LANGUAGE + ", " +
+                StudyService.CUSTOM_NUMBER_OF_CONTRIBUTIONS + ", " +
+                StudyService.CUSTOM_NUMBER_OF_REPOSITORIES + ", " +
+                "testSubject")
+            .emailBody(StudyService.CUSTOM_FIRST_NAME + ", " +
+            StudyService.CUSTOM_LAST_NAME + ", " +
+            StudyService.CUSTOM_LOCATION + ", " +
+            StudyService.CUSTOM_OCCUPATION + ", " +
+            StudyService.CUSTOM_PROGRAMMING_LANGUAGE + ", " +
+            StudyService.CUSTOM_NUMBER_OF_CONTRIBUTIONS + ", " +
+            StudyService.CUSTOM_NUMBER_OF_REPOSITORIES + ", " +
+            "testContent")
+            .participants(ImmutableSet.of(participant)));
+        verify(javaMailSender).send((MimeMessage) messageCaptor.capture());
+        MimeMessage message = (MimeMessage) messageCaptor.getValue();
+        assertThat(message.getSubject()).isEqualTo("John, Smith, Auckland, Software Engineer, Java, 23, 1, testSubject");
+        assertThat(message.getAllRecipients()[0].toString()).isEqualTo("participant@email.com");
+        assertThat(message.getFrom()[0].toString()).isEqualTo("user@email.com");
+        assertThat(message.getContent()).isInstanceOf(String.class);
+        assertThat(message.getContent().toString()).isEqualTo("John, Smith, Auckland, Software Engineer, Java, 23, 1, testContent");
+        assertThat(message.getDataHandler().getContentType()).isEqualTo("text/plain; charset=UTF-8");
+    }
 }

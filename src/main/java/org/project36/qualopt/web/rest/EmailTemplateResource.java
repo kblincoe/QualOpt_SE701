@@ -23,9 +23,9 @@ import com.codahale.metrics.annotation.Timed;
 
 /**
  * REST controller for managing Email Templates.
- * 
+ *
  * Supported operation:
- * 
+ *
  * POST: 		create an email template
  * PUT:			update an email template
  * GET:			gets all the email template
@@ -37,7 +37,7 @@ import com.codahale.metrics.annotation.Timed;
 public class EmailTemplateResource {
 
     private final Logger log = LoggerFactory.getLogger(EmailTemplateResource.class);
-    
+
     private static final String ENTITY_NAME = "email_template";
 
     private final EmailTemplateRepository emailTemplateRepository;
@@ -50,7 +50,7 @@ public class EmailTemplateResource {
      * POST  /emailTemplates : Create a new email Template.
      *
      * @param emailTemplate the email template to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new email template, 
+     * @return the ResponseEntity with status 201 (Created) and with body the new email template,
      * 			or with status 400 (Bad Request) if the email has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
@@ -82,12 +82,12 @@ public class EmailTemplateResource {
         if (emailTemplate.getId() == null) {
             return createEmail(emailTemplate);
         }
-        
+
         if (emailTemplate.getName() == null){
         	return ResponseEntity.badRequest().build();
         }
-        
-        
+
+
         EmailTemplate result = emailTemplateRepository.save(emailTemplate);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, emailTemplate.getId().toString()))

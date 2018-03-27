@@ -282,6 +282,7 @@ public class Study implements Serializable {
             ", incentiveType='" + getIncentiveType() + "'" +
             ", incentiveDetails='" + getIncentiveDetail() + "'" +
             ", status='" + getStatus() + "'" +
+            ", faq='" + getFaq() + "'" +
             ", emailSubject='" + getEmailSubject() + "'" +
             ", emailBody='" + getEmailBody() + "'" +
             ", bouncedMail='" + getBouncedMail() + "'" +

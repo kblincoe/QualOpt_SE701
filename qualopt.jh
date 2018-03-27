@@ -11,6 +11,8 @@ entity Study {
 
 entity Participant {
 	email String required,
+	firstName String,
+	lastName String,
     occupation String,
     location String,
 	programmingLanguage String,

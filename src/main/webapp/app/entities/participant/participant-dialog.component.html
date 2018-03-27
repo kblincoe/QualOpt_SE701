@@ -24,6 +24,16 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" for="field_occupation">First Name</label>
+            <input type="text" class="form-control" name="occupation" id="field_firstName"
+                   [(ngModel)]="participant.firstName"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_occupation">Last Name</label>
+            <input type="text" class="form-control" name="occupation" id="field_lastName"
+                   [(ngModel)]="participant.lastName"  />
+        </div>
+        <div class="form-group">
             <label class="form-control-label" for="field_occupation">Occupation</label>
             <input type="text" class="form-control" name="occupation" id="field_occupation"
                 [(ngModel)]="participant.occupation"  />

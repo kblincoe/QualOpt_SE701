@@ -18,6 +18,14 @@
             ]
         },
         {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "occupation",
             "fieldType": "String"
         },
