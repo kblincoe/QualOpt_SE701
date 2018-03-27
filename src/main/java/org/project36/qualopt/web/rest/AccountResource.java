@@ -68,7 +68,7 @@ public class AccountResource {
     @PostMapping(path = "/register",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity<?> registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -140,7 +140,7 @@ public class AccountResource {
      */
     @PostMapping("/account")
     @Timed
-    public ResponseEntity saveAccount(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> saveAccount(@Valid @RequestBody UserDTO userDTO) {
         final String userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
@@ -151,7 +151,7 @@ public class AccountResource {
             .map(u -> {
                 userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
                     userDTO.getLangKey(), userDTO.getImageUrl());
-                return new ResponseEntity(HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
@@ -165,7 +165,7 @@ public class AccountResource {
     @PostMapping(path = "/account/change_password",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
-    public ResponseEntity changePassword(@RequestBody String password) {
+    public ResponseEntity<?> changePassword(@RequestBody String password) {
         if (!checkPasswordLength(password)) {
             return new ResponseEntity<>(CHECK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
         }
@@ -182,7 +182,7 @@ public class AccountResource {
     @PostMapping(path = "/account/reset_password/init",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
-    public ResponseEntity requestPasswordReset(@RequestBody String mail) {
+    public ResponseEntity<?> requestPasswordReset(@RequestBody String mail) {
         return userService.requestPasswordReset(mail)
             .map(user -> {
                 mailService.sendPasswordResetMail(user);

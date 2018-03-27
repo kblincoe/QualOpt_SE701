@@ -208,7 +208,7 @@ public class EmailTemplateResourceIntTest {
         int databaseSizeBeforeUpdate = emailTemplateRepository.findAll().size();
 
         // Update the email
-        EmailTemplate updatedEmailTemplate = emailTemplateRepository.findOne(emailTemplate.getId());
+        EmailTemplate updatedEmailTemplate = emailTemplateRepository.getOne(emailTemplate.getId());
 
         restEmailMockMvc.perform(put("/api/emailTemplates")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)

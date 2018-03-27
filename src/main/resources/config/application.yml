@@ -22,6 +22,8 @@ management:
         mail:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
 spring:
+    aop:
+        proxy-target-class: false
     application:
         name: QualOpt
     profiles:
@@ -44,7 +46,7 @@ spring:
         favicon:
             enabled: false
     thymeleaf:
-        mode: XHTML
+        mode: HTML
     social:
         # Google API Keys created under the email: wmol664@aucklanduni.ac.nz and product name: QualOpt
         # see https://developers.google.com/+/web/signin/server-side-flow#step_1_create_a_client_id_and_client_secret
@@ -55,14 +57,15 @@ spring:
 
         # jhipster-needle-add-social-configuration
 
-security:
-    basic:
-        enabled: false
+# security:
+#     basic:
+#         enabled: false
 
 server:
-    session:
-        cookie:
-            http-only: true
+    servlet:
+        session:
+            cookie:
+                http-only: true
 
 info:
     project:
@@ -114,4 +117,4 @@ jhipster:
 # https://jhipster.github.io/common-application-properties/
 # ===================================================================
 
-application:
+# application:

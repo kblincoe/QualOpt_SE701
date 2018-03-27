@@ -1,19 +1,20 @@
 package org.project36.qualopt.config;
 
-import io.github.jhipster.config.JHipsterProperties;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
 import org.ehcache.config.builders.CacheConfigurationBuilder;
+import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.expiry.Duration;
-import org.ehcache.expiry.Expirations;
 import org.ehcache.jsr107.Eh107Configuration;
-
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.github.jhipster.config.JHipsterProperties;
 
 @Configuration
 @EnableCaching
@@ -30,7 +31,10 @@ public class CacheConfiguration {
         jcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
             CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
                 ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
-                .withExpiry(Expirations.timeToLiveExpiration(Duration.of(ehcache.getTimeToLiveSeconds(), TimeUnit.SECONDS)))
+                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(
+                    Duration.of(
+                        (long) ehcache.getTimeToLiveSeconds(), 
+                        ChronoUnit.SECONDS)))
                 .build());
     }
 
@@ -41,7 +45,8 @@ public class CacheConfiguration {
             cm.createCache(org.project36.qualopt.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.PersistentToken.class.getName(), jcacheConfiguration);
-            cm.createCache(org.project36.qualopt.domain.User.class.getName() + ".persistentTokens", jcacheConfiguration);
+            cm.createCache(org.project36.qualopt.domain.User.class.getName() + ".persistentTokens",
+                    jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.SocialUserConnection.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.Study.class.getName(), jcacheConfiguration);
             cm.createCache(org.project36.qualopt.domain.Study.class.getName() + ".participants", jcacheConfiguration);

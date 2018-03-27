@@ -1,11 +1,8 @@
 package org.project36.qualopt.config.social;
 
-import org.project36.qualopt.repository.SocialUserConnectionRepository;
 import org.project36.qualopt.repository.CustomSocialUsersConnectionRepository;
+import org.project36.qualopt.repository.SocialUserConnectionRepository;
 import org.project36.qualopt.security.social.CustomSignInAdapter;
-
-import io.github.jhipster.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +25,7 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
-import java.lang.*;
+import io.github.jhipster.config.JHipsterProperties;
 
 // jhipster-needle-add-social-connection-factory-import-package
 

@@ -5,8 +5,8 @@ import org.project36.qualopt.config.Constants;
 import org.project36.qualopt.domain.Authority;
 import org.project36.qualopt.domain.User;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import javax.validation.constraints.*;
 import java.time.Instant;

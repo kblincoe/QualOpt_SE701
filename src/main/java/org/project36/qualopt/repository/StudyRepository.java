@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the Study entity.
  */
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
