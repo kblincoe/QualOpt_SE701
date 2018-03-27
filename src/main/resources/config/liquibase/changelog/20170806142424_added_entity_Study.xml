@@ -30,7 +30,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="incentive_type" type="clob">
+            <column name="incentive_type" type="blob">
                 <constraints nullable="true" />
             </column>
 

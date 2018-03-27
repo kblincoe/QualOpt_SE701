@@ -38,7 +38,7 @@ public class Study implements Serializable {
     private Status status = Status.Inactive;
 
     @Lob
-    @Column(name = "incentive_type")
+    @Column(name = "incentive_type", columnDefinition = "blob")
     private IncentiveType incentiveType;
 
     @Lob
