@@ -8,7 +8,8 @@ import { StudyComponent } from './study.component';
 import { StudyDetailComponent } from './study-detail.component';
 import { StudyPopupComponent } from './study-dialog.component';
 import { StudyDeletePopupComponent } from './study-delete-dialog.component';
-import { StudyConfirmPopupComponent } from './study-confirm-invitation.component';
+import { StudyConfirmToAllPopupComponent } from './study-confirm-invitation-ToAll.component'; 
+import { StudyConfirmToNewPopupComponent } from './study-confirm-invitation-ToNew.component'; 
 import { StudyInfoComponent } from './study-info.component';
 
 export const studyRoute: Routes = [
@@ -81,8 +82,18 @@ export const studyPopupRoute: Routes = [
         outlet: 'popup'
     },
     {
-        path: 'study/:id/confirmSend',
-        component: StudyConfirmPopupComponent,
+        path: 'study/:id/confirmSendToAll',
+        component: StudyConfirmToAllPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Studies'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'study/:id/confirmSendToNew',
+        component: StudyConfirmToNewPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Studies'

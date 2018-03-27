@@ -1,8 +1,12 @@
 package org.project36.qualopt.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.ImmutableSet;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+
+import org.project36.qualopt.domain.Participant;
 import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.StudyRepository;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -177,23 +182,96 @@ public class StudyResource {
     }
 
     /**
-     * POST  /studies/send : send the study.
+     * POST  /studies/sendToAll : send the study to all participants
      *
      * @param study the study to send
      * @return the ResponseEntity with status 201 (Created) if the study was sent or 400 (Bad Request) if the study doesn't exist
      */
-    @PostMapping(path = "/studies/send",
+    @PostMapping(path = "/studies/sendToAll",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity<Object> sendStudy(@Valid @RequestBody Study study) throws URISyntaxException {
-        log.debug("REST request to send Study : {}", study);
+    public ResponseEntity sendStudyToAll(@Valid @RequestBody Study study) throws URISyntaxException {
+        log.debug("REST request to send Study to all participants: {}", study);
         if (study == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Set<String> bouncedMail = studyService.sendInvitationEmail(study);
+        Set<String> bouncedMail = studyService.sendInvitationEmail(
+        		study.getName(),
+        		study.getEmailSubject(),
+        		study.getEmailBody(),
+        		study.getUser().getEmail(),
+        		study.getParticipants()
+        		);
         return ResponseEntity
             .created(new URI("/api/studies/send"))
             .header("Sent: " + study.getName())
             .body(bouncedMail);
+    }
+    
+    /**
+     * POST  /studies/sendToNew : send the study to new participants only
+     *
+     * @param study the study to send
+     * @return the ResponseEntity with status 201 (Created) if the study was sent or 400 (Bad Request) if the study doesn't exist
+     */
+    @PostMapping(path = "/studies/sendToNew",
+        produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @Timed
+    public ResponseEntity sendStudyToNew(@Valid @RequestBody Study study) throws URISyntaxException {
+        log.debug("REST request to send Study to new participants: {}", study);
+        if (study == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Study studyFromDB = studyRepository.findOneWithEagerRelationships(study.getId());
+        //Find those who haven't receive a inviatation emails
+        Set<Participant> participantsToReceive = new HashSet<>();
+        for(Participant single : study.getParticipants()){
+    		if(!(studyFromDB.getEmailAddressesHaveInvited().contains(single.getEmail()))){
+    			participantsToReceive.add(single);
+    		}
+    	}
+        
+        Set<String> bouncedMail = studyService.sendInvitationEmail(
+        		study.getName(),
+        		study.getEmailSubject(),
+        		study.getEmailBody(),
+        		study.getUser().getEmail(),
+        		participantsToReceive
+        		);
+        return ResponseEntity
+            .created(new URI("/api/studies/send"))
+            .header("Sent: " + study.getName())
+            .body(bouncedMail);
+    }
+    
+
+    /**
+     * PUT  /studies/markAllInvited : add all the participants into EmailAddressesHaveInvited list in an existing study.
+     *
+     *These code normally run after each time some emails have been sent
+     *
+     * @param study the study to update EmailAddressesHaveInvited
+     * @return the ResponseEntity with status 200 (OK) and with body the updated study,
+     * or with status 400 (Bad Request) if the study is not valid,
+     * or with status 500 (Internal Server Error) if the study couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/studies/markAllInvited")
+    @Timed
+    public ResponseEntity<Study> addToInvitedEmail(@Valid @RequestBody Study study) throws URISyntaxException {
+        log.debug("REST request to update Study's EmailAddressesHaveInvited list : {}", study);
+        if (study.getId() == null) {
+            return createStudy(study);
+        }
+        
+        //Add every single participants into the list of EmailAddressesHaveInvited
+        for (Participant singleParticipant : study.getParticipants()){
+        	study.addToEmailAddressesHaveInvited(singleParticipant.getEmail());
+        }
+        
+        Study result = studyRepository.save(study);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, study.getName()))
+            .body(result);
     }
 }

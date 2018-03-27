@@ -15,7 +15,8 @@ export class Study implements BaseEntity {
         public faq?: string,
         public user?: User,
         public participants?: BaseEntity[],
-        public documents?: Document[]
+        public documents?: Document[],
+	public emailAddressesHaveInvited?: string[]
     ) {
         if(this.documents===undefined) {
             this.documents=[];

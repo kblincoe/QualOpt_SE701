@@ -26,6 +26,13 @@ export class StudyService {
         });
     }
 
+    addToInvitedEmail(study: Study): Observable<Study> {
+        const copy = this.convert(study);
+        return this.http.put(`${this.resourceUrl}//markAllInvited`, copy).map((res: Response) => {
+            return res.json();
+        });
+    }
+
     find(id: number): Observable<Study> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             return res.json();
@@ -48,8 +55,15 @@ export class StudyService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
-    send(study: Study): Observable<String[]> {
-        return this.http.post(`${this.resourceUrl}/send`, study)
+    sendToAll(study: Study): Observable<String[]> {
+        return this.http.post(`${this.resourceUrl}/sendToAll`, study)
+            .map((res: Response) => {
+                return res.json();
+            });
+    }
+
+    sendToNew(study: Study): Observable<String[]> {
+        return this.http.post(`${this.resourceUrl}/sendToNew`, study)
             .map((res: Response) => {
                 return res.json();
             });

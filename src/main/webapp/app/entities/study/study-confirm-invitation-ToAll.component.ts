@@ -15,9 +15,9 @@ const swal: SweetAlert = _swal as any;
 
 @Component({
     selector: 'jhi-study-confirm-dialog',
-    templateUrl: './study-confirm-invitation.component.html'
+    templateUrl: './study-confirm-invitation-ToAll.component.html'
 })
-export class StudyConfirmDialogComponent {
+export class StudyConfirmToAllDialogComponent {
 
     study: Study;
 
@@ -31,13 +31,14 @@ export class StudyConfirmDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmSend() {
+    confirmSendToAll() {
         console.log('Sending invitation email ...');
-        this.studyService.send(this.study).subscribe(bouncedMail => {
+        this.studyService.sendToAll(this.study).subscribe(bouncedMail => {
             console.log(`Bounced: ${bouncedMail}`);
             this.study.bouncedMail = bouncedMail.join(', ');
-            this.studyService.update(this.study).subscribe(() =>
-                this.eventManager.broadcast({ name: 'studyListModification', content: 'OK' }));
+            this.studyService.update(this.study).subscribe(() =>{
+                this.eventManager.broadcast({ name: 'studyListModification', content: 'OK' });
+		this.studyService.addToInvitedEmail(this.study).subscribe()});
             if (bouncedMail.length > 0){
                 this.showBouncedMailAlert(bouncedMail);
             }
@@ -69,7 +70,7 @@ export class StudyConfirmDialogComponent {
     selector: 'jhi-study-confirm-popup',
     template: ''
 })
-export class StudyConfirmPopupComponent implements OnInit, OnDestroy {
+export class StudyConfirmToAllPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
@@ -81,7 +82,7 @@ export class StudyConfirmPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             this.studyPopupService
-                .open(StudyConfirmDialogComponent as Component, params['id']);
+                .open(StudyConfirmToAllDialogComponent as Component, params['id']);
         });
     }
 
