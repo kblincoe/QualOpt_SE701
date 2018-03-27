@@ -48,7 +48,7 @@ public class StudyServiceIntTest {
     private JavaMailSenderImpl javaMailSender;
 
     @Captor
-    private ArgumentCaptor messageCaptor;
+    private ArgumentCaptor<MimeMessage> messageCaptor;
 
     @Autowired
     private Session authenticatedUserSmtpSession;

@@ -100,7 +100,9 @@ public class EmailResourceIntTest {
         // Validate the Email in the database
         List<Email> emailList = emailRepository.findAll();
         assertThat(emailList).hasSize(databaseSizeBeforeCreate + 1);
+        
         Email testEmail = emailList.get(emailList.size() - 1);
+        assertThat(testEmail).isNotNull();
     }
 
     @Test
@@ -164,7 +166,7 @@ public class EmailResourceIntTest {
         int databaseSizeBeforeUpdate = emailRepository.findAll().size();
 
         // Update the email
-        Email updatedEmail = emailRepository.findOne(email.getId());
+        Email updatedEmail = emailRepository.getOne(email.getId());
 
         restEmailMockMvc.perform(put("/api/emails")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -175,6 +177,7 @@ public class EmailResourceIntTest {
         List<Email> emailList = emailRepository.findAll();
         assertThat(emailList).hasSize(databaseSizeBeforeUpdate);
         Email testEmail = emailList.get(emailList.size() - 1);
+        assertThat(testEmail).isNotNull();
     }
 
     @Test

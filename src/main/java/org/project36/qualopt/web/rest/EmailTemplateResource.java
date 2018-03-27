@@ -131,7 +131,7 @@ public class EmailTemplateResource {
     @Timed
     public ResponseEntity<Void> deleteEmail(@PathVariable Long id) {
         log.debug("REST request to delete Email Template: {}", id);
-        emailTemplateRepository.delete(id);
+        emailTemplateRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

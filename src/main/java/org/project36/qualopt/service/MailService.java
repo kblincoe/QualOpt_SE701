@@ -1,6 +1,9 @@
 package org.project36.qualopt.service;
 
-import io.github.jhipster.config.JHipsterProperties;
+import java.util.Locale;
+
+import javax.mail.internet.MimeMessage;
+
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.project36.qualopt.domain.User;
@@ -12,10 +15,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.mail.internet.MimeMessage;
-import java.util.Locale;
+import io.github.jhipster.config.JHipsterProperties;
 
 /**
  * Service for sending emails.
