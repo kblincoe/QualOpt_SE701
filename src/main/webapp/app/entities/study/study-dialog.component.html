@@ -60,13 +60,22 @@
                     </div>
                     <div class="form-group">
                         <label for="field_participant">Participants</label>
-                        <select class="form-control" id="field_participant" multiple name="participant"
-                                [(ngModel)]="study.participants">
-                            <option [ngValue]="getSelected(study.participants, participantOption)"
-                                    *ngFor="let participantOption of filterOptedInParticipants(); trackBy: trackParticipantById">
-                                {{participantOption.email}}
-                            </option>
-                        </select>
+                        <div class="form-control" id="field_participant">
+                            <div class="my-3 container row">
+                                <button type="button" class="col-2 btn btn-primary mr-3" (click)="selectAllParticipants()">Select all</button>
+                                <button type="button" class="col-2 btn btn-primary" (click)="deselectAllParticipants()">Deselect all</button>
+                                <div class="col-6"></div>
+                            </div>
+                            <div *ngFor="let participant of participants; let i = index">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="participant - {{participant.email}}"
+                                        [(ngModel)]="study.participants[i].checked"/>
+                                    {{participant.email}}
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
