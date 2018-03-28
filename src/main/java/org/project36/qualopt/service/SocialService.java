@@ -25,6 +25,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import javax.annotation.PostConstruct;
 
+import org.project36.qualopt.domain.Participant;
+import org.project36.qualopt.repository.ParticipantRepository;
+
 @Service
 public class SocialService {
 
@@ -40,15 +43,18 @@ public class SocialService {
 
     private final MailService mailService;
 
+    private final ParticipantRepository participantRepository;
+
     public SocialService(UsersConnectionRepository usersConnectionRepository, AuthorityRepository authorityRepository,
             PasswordEncoder passwordEncoder, UserRepository userRepository,
-            MailService mailService) {
+            MailService mailService, ParticipantRepository participantRepository) {
 
         this.usersConnectionRepository = usersConnectionRepository;
         this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.participantRepository = participantRepository;
     }
 
     public void deleteUserSocialConnection(String login) {
@@ -68,12 +74,36 @@ public class SocialService {
         UserProfile userProfile = connection.fetchUserProfile();
         String providerId = connection.getKey().getProviderId();
         String imageUrl = connection.getImageUrl();
-        User user = createUserIfNotExist(userProfile, langKey, providerId, imageUrl);
+
+        //In the future, this can be adapted to hold more authorities (e.g. Researcher and Participant at the same time)
+        Set<Authority> authorities = new HashSet<>(1);
+        boolean isEmailAssociatedWithParticipant = checkIfParticipantExists(userProfile.getEmail());  
+
+        //If this email is associated with a participant, then assign the ROLE: PARTICIPANT
+        if (isEmailAssociatedWithParticipant) {
+            authorities.add(authorityRepository.findById("ROLE_PARTICIPANT").orElseGet(() -> {
+                return null;
+            }));
+        } else {
+            //Currently, if you are using github, you are assumed to be a participant rather than a researcher
+            if (connection.getKey().getProviderId() == "github") {
+                authorities.add(authorityRepository.findById("ROLE_PARTICIPANT").orElseGet(() -> {
+                    return null;
+                }));
+                createParticipant(userProfile.getEmail());
+            } else {
+                authorities.add(authorityRepository.findById("ROLE_USER").orElseGet(() -> {
+                    return null;
+                }));
+            }
+        }
+
+        User user = createUserIfNotExist(userProfile, langKey, providerId, imageUrl, authorities);
         createSocialConnection(user.getLogin(), connection);
         mailService.sendSocialRegistrationValidationEmail(user, providerId);
     }
 
-    private User createUserIfNotExist(UserProfile userProfile, String langKey, String providerId, String imageUrl) {
+    private User createUserIfNotExist(UserProfile userProfile, String langKey, String providerId, String imageUrl, Set<Authority> authorities) {
         String email = userProfile.getEmail();
         String userName = userProfile.getUsername();
         if (!StringUtils.isBlank(userName)) {
@@ -97,11 +127,6 @@ public class SocialService {
 
         String login = getLoginDependingOnProviderId(userProfile, providerId);
         String encryptedPassword = passwordEncoder.encode(RandomStringUtils.random(10));
-        Set<Authority> authorities = new HashSet<>(1);
-        authorities.add(authorityRepository.findById("ROLE_USER")
-        .orElseGet(() -> {
-            return null;
-        }));
 
         User newUser = new User();
         newUser.setLogin(login);
@@ -115,6 +140,27 @@ public class SocialService {
         newUser.setImageUrl(imageUrl);
 
         return userRepository.save(newUser);
+    }
+
+    /**
+     * This is a helper method to create a participant with a given email. The participant created will have
+     * default values other than the email and then will be saved to the database. 
+     * @param email - The string representation of the email to be associated with the participant
+     */
+    private void createParticipant(String email) {
+        Participant newParticipant = new Participant();
+        newParticipant.setEmail(email);
+        participantRepository.save(newParticipant);
+    }
+
+    /**
+     * This is a helper method to see if a participant exists in the database using a given email.
+     * @param email - The string representation of the email that may be associated with the participant.
+     * @return - A boolean variable that is true if the participant exists.
+     */
+    private boolean checkIfParticipantExists(String email) {
+        Participant participant = participantRepository.findOneByEmail(email);
+        return (participant != null ? true : false);
     }
 
     /**

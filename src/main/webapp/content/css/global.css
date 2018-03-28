@@ -234,6 +234,18 @@ Social Buttons
     border-color: rgba(0, 0, 0, 0.2);
     color: #fff;
 }
+
+.jh-btn-github {
+    background-color: #767676;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.jh-btn-github:hover, .jh-btn-github:focus, .jh-btn-github:active, .jh-btn-github.active, .open > .dropdown-toggle.jh-btn-github {
+    background-color: #333;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
 /* jhipster-needle-css-add-main JHipster will add new css style */
 
 /* ==========================================================================
@@ -241,4 +253,19 @@ Create Study Modal
 ========================================================================== */
 .email-body{
     height: 300px;
+}
+
+/* ==========================================================================
+Participant-Settings styles
+========================================================================== */
+#opted-in-form {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.radio-selection {
+    margin-right: 25px;
+    margin-left: 5px;
 }
