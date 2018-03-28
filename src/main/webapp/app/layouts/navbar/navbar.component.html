@@ -29,6 +29,18 @@
                     <span>Participants</span>
                 </a>
             </li>
+            <li *jhiHasAnyAuthority="'ROLE_PARTICIPANT'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="participant-studies" (click)="collapseNavbar()">
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    <span>Studies Opted Into</span>
+                </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_PARTICIPANT'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="participant-settings" (click)="collapseNavbar()">
+                    <i class="fa fa-address-book" aria-hidden="true"></i>
+                    <span>Participant Settings</span>
+                </a>
+            </li>
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="about" (click)="collapseNavbar()">
                     <i class="fa fa-info-circle" aria-hidden="true"></i>

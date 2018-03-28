@@ -10,6 +10,7 @@ export class Participant implements BaseEntity {
         public numberOfContributions?: number,
         public numberOfRepositories?: number,
         public studies?: BaseEntity[],
+        public optedIn?: boolean,
     ) {
     }
 }
