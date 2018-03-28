@@ -8,5 +8,6 @@ export * from './study-delete-dialog.component';
 export * from './study-detail.component';
 export * from './study.component';
 export * from './study.route';
-export * from './study-confirm-invitation.component'; 
+export * from './study-confirm-invitation-ToAll.component'; 
+export * from './study-confirm-invitation-ToNew.component'; 
 export * from './study-info.component'

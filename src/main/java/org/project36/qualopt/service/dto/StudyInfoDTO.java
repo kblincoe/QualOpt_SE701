@@ -11,11 +11,14 @@ public class StudyInfoDTO {
     private String faq;
 
     private Set<Document> documents;
+    
+    private Set<String> emailAddressesHaveInvited;
 
     public StudyInfoDTO(Study study) {
         this.name = study.getName();
         this.faq = study.getFaq();
         this.documents = study.getDocuments();
+        this.emailAddressesHaveInvited = study.getEmailAddressesHaveInvited();
     }
 
     public String getName() {
@@ -40,5 +43,13 @@ public class StudyInfoDTO {
 
     public void setDocuments(Set<Document> documents) {
         this.documents = documents;
+    }
+    
+    public Set<String> getEmailAddressesHaveInvited() {
+        return this.emailAddressesHaveInvited;
+    }
+
+    public void setEmailAddressesHaveInvited(Set<String> emailAddresses) {
+        this.emailAddressesHaveInvited = emailAddresses;
     }
 }

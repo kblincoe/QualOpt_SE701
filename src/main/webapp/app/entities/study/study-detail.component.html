@@ -46,34 +46,41 @@
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
-    <div *jhiHasAnyAuthority="'ROLE_USER','ROLE_ADMIN'">
-        <div  style="display: inline-block;" *ngIf="this.study.status != status.COMPLETED">
-            <button type="button"
-                    [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
-                    replaceUrl="true"
-                    class="btn btn-primary">
-                <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-            </button>
-        
-            <button *jhiHasAnyAuthority="'ROLE_USER','ROLE_ADMIN'" type="submit"
-                    [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/delete'} }]"
-                    replaceUrl="true"
-                    class="btn btn-danger">
-                <span class="fa fa-remove"></span>&nbsp;<span class="hidden-md-down">Delete</span>
-            </button>
-        
-            <button type="button"
-                    (click)="beginStudy()"
-                    [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSend'} }]"
-                    replaceUrl="true"
-                    class="btn btn-success">
-                <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
-            </button>
-            <button *ngIf="this.study.status == status.ACTIVE" type="button"
-                    (click)="closeStudy()"
-                    class="btn btn-danger">
-                <span class="fa fa-flag-checkered"></span>&nbsp;<span> End Study</span>
-            </button>
-        </div>
+    <div  style="display: inline-block;" *ngIf="this.study.status != status.COMPLETED">
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+
+    <button type="submit"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/delete'} }]"
+            replaceUrl="true"
+            class="btn btn-danger">
+        <span class="fa fa-remove"></span>&nbsp;<span class="hidden-md-down">Delete</span>
+    </button>
+
+    <button type="button"
+            (click)="beginStudy()"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSendToAll'} }]"
+            replaceUrl="true"
+            class="btn btn-success">
+        <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation To All Participants</span>
+    </button>
+
+    <button type="button"
+            (click)="beginStudy()"
+            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSendToNew'} }]"
+            replaceUrl="true"
+            class="btn btn-success">
+        <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation To New Participants</span>
+    </button>
+
+    <button *ngIf="this.study.status == status.ACTIVE" type="button"
+            (click)="closeStudy()"
+            class="btn btn-danger">
+        <span class="fa fa-flag-checkered"></span>&nbsp;<span> End Study</span>
+    </button>
     </div>
 </div>

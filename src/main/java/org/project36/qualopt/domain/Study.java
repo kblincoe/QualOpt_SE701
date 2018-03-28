@@ -2,6 +2,7 @@ package org.project36.qualopt.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.project36.qualopt.web.rest.StudyResource;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -10,6 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * A Study.
  */
@@ -72,6 +77,18 @@ public class Study implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "study_id")
     private Set<Document> documents = new HashSet<>();
+    
+    /*
+     * 	Save list of email addresses that have receive e-mail, 
+     *  so that the researcher can send to the email addresses that haven't recieve email only 
+     */
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name="study_invited",
+            joinColumns=@JoinColumn(name="studies_id")
+      )
+      @Column(name="email")
+    private Set<String> emailAddressesHaveInvited = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -215,6 +232,10 @@ public class Study implements Serializable {
 
     public Study removeParticipant(Participant participant) {
         this.participants.remove(participant);
+        participant.getStudies().remove(this);
+        if (!(emailAddressesHaveInvited != null)){
+        	emailAddressesHaveInvited.remove(participant.getEmail());
+        }
         return this;
     }
 
@@ -252,6 +273,24 @@ public class Study implements Serializable {
     public void setBouncedMail(String bouncedMail) {
         this.bouncedMail = bouncedMail;
     }
+    
+    public Set<String> getEmailAddressesHaveInvited(){
+    	if (emailAddressesHaveInvited == null){
+    		emailAddressesHaveInvited = new HashSet<>();
+    	}
+    	return emailAddressesHaveInvited;
+    };
+    
+    public void setEmailAddressesHaveInvited(Set<String> emailList){
+    	emailAddressesHaveInvited = emailList;
+    };
+    
+    public void addToEmailAddressesHaveInvited(String emailAddress){
+    	if (emailAddressesHaveInvited == null){
+    		emailAddressesHaveInvited = new HashSet<>();
+    	}
+    	emailAddressesHaveInvited.add(emailAddress);	
+    };
 
     @Override
     public boolean equals(Object o) {
