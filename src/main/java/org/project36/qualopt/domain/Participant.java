@@ -1,15 +1,14 @@
 package org.project36.qualopt.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Participant.
@@ -35,6 +34,12 @@ public class Participant implements Serializable {
 
     @Column(name = "occupation")
     private String occupation;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "location")
     private String location;
@@ -86,7 +91,7 @@ public class Participant implements Serializable {
     }
 
     public String getOccupation() {
-        return occupation;
+        return getStringNonNull(occupation);
     }
 
     public Participant occupation(String occupation) {
@@ -99,7 +104,7 @@ public class Participant implements Serializable {
     }
 
     public String getLocation() {
-        return location;
+        return getStringNonNull(location);
     }
 
     public Participant location(String location) {
@@ -112,7 +117,7 @@ public class Participant implements Serializable {
     }
 
     public String getProgrammingLanguage() {
-        return programmingLanguage;
+        return getStringNonNull(programmingLanguage);
     }
 
     public Participant programmingLanguage(String programmingLanguage) {
@@ -174,7 +179,27 @@ public class Participant implements Serializable {
         this.studies = studies;
     }
 
-    public boolean getOptedIn() {
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return getStringNonNull(firstName);
+    }
+
+    public String getLastName() {
+        return getStringNonNull(lastName);
+    }
+
+    private String getStringNonNull(String s) {
+        return Objects.isNull(s) ? "" : s;
+    }
+
+      public boolean getOptedIn() {
         return this.hasOptedIn;
     }
 
@@ -229,7 +254,9 @@ public class Participant implements Serializable {
     @Override
     public String toString() {
         return "Participant{" +
-            "id=" + getId() +
+            "id=" + getId() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
             ", occupation='" + getOccupation() + "'" +
             ", location='" + getLocation() + "'" +

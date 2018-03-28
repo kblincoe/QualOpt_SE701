@@ -25,6 +25,7 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
+import java.lang.*;
 import io.github.jhipster.config.JHipsterProperties;
 
 import org.springframework.social.github.connect.GitHubConnectionFactory;

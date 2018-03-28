@@ -26,6 +26,14 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="occupation" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

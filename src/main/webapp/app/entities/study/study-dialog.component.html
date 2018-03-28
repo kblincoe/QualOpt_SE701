@@ -92,6 +92,23 @@
                     <h4 class="modal-title" id="myEmailLabel">Draft Invitation Email</h4>
                 </div>
                 <div class="modal-body">
+                    <button type="button" (click)="showCustomInfo()" class="btn">
+                        <span class="fa fa-info-circle"></span>&nbsp;
+                        <span>Customise</span>
+                    </button>
+                    <div [hidden]="hidingCustomInfo">
+                        <p class="form-text" >
+                            You can personalise the invitation email for each participant by using the following tags:
+                        </p>
+                        <ul>
+                            <li>--firstName</li>
+                            <li>--lastName</li>
+                            <li>--occupation</li>
+                            <li>--programmingLanguage</li>
+                            <li>--numberOfContributions</li>
+                            <li>--numberOfRepositories</li>
+                        </ul>
+                    </div>
                     <div class="form-group">
                         <label class="form-control-label" for="field_emailSubject">Subject</label>
                         <input type="text" class="form-control" name="emailSubject" id="field_emailSubject"

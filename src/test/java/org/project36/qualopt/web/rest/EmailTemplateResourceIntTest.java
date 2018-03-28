@@ -1,20 +1,5 @@
 package org.project36.qualopt.web.rest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +21,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 /**
  * Test class for the EmailResource REST controller.
  *
@@ -47,7 +41,7 @@ public class EmailTemplateResourceIntTest {
 
     @Autowired
     private EmailTemplateRepository emailTemplateRepository;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -69,7 +63,7 @@ public class EmailTemplateResourceIntTest {
     private User defaultUser ;
 
     private static final String BADUSERLOGIN = "0";
-    
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -85,38 +79,35 @@ public class EmailTemplateResourceIntTest {
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     * 
+     *
      * Associate the email template to user 4;
      */
     public static EmailTemplate createEntity(EntityManager em) {
         EmailTemplate emailTemplate = new EmailTemplate();
         //Email template name cannot be null.
         emailTemplate.setName("testTemplate");
-        
+
         return emailTemplate;
     }
-    
+
     /**
      * Create a default user for testing purpose.
-     * 
+     *
      * The user has all of its mandatory field set.
-     * @param id
-     * @return
      */
     public static User createDefaultUser() {
     	User user = new User();
     	user.setLogin("AAAA");
-    	//the password field is a hash of 60 characters. 
+    	//the password field is a hash of 60 characters.
     	user.setPassword("$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K");
     	user.setActivated(true);
-    	
     	return user;
     }
 
     @Before
     public void initTest() {
         emailTemplate = createEntity(em);
-        
+
     	User user = createDefaultUser();
     	defaultUser = userRepository.saveAndFlush(user);
         emailTemplate.setUser(defaultUser);
@@ -177,13 +168,13 @@ public class EmailTemplateResourceIntTest {
         emailTemplateRepository.saveAndFlush(emailTemplate);
 
         String userLogin = emailTemplateRepository.findAll().iterator().next().getUser().getLogin();
-        
+
         // Get the email template list
         restEmailMockMvc.perform(get("/api/emailTemplates/{userLogin}", userLogin))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(emailTemplate.getId().intValue())));
-        
+
         List<EmailTemplate> emailTemplateListForAnotherUser = emailTemplateRepository.findAllByUserLogin(BADUSERLOGIN);
         List<EmailTemplate> emailTemplateListForOnlyUser = emailTemplateRepository.findAllByUserLogin(userLogin);
         assertThat(emailTemplateListForAnotherUser).hasSize(0);

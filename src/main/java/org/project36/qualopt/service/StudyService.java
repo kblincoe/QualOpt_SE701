@@ -11,7 +11,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -40,6 +39,14 @@ public class StudyService {
 
     private static final Logger log = LoggerFactory.getLogger(StudyService.class);
 
+    public static final String CUSTOM_LAST_NAME = "--lastName";
+    public static final String CUSTOM_FIRST_NAME = "--firstName";
+    public static final String CUSTOM_LOCATION = "--location";
+    public static final String CUSTOM_OCCUPATION = "--occupation";
+    public static final String CUSTOM_PROGRAMMING_LANGUAGE = "--programmingLanguage";
+    public static final String CUSTOM_NUMBER_OF_CONTRIBUTIONS = "--numberOfContributions";
+    public static final String CUSTOM_NUMBER_OF_REPOSITORIES = "--numberOfRepositories";
+
     private final JavaMailSenderImpl javaMailSender;
 
     private final Session authenticatedUserSmtpSession;
@@ -58,50 +65,66 @@ public class StudyService {
      */
     public ImmutableSet<String> sendInvitationEmail(Study study) {
         log.debug("Sending invitation email for study '{}'.", study.getName());
-        String subject = study.getEmailSubject() == null ? "" : study.getEmailSubject();
-        String content = study.getEmailBody() == null ? "" : study.getEmailBody();
-        String userEmail = study.getUser().getEmail();
+        javaMailSender.setSession(authenticatedUserSmtpSession);
+        study.getParticipants().forEach(p -> sendStudy(p, study));
+        ImmutableSet<String> bouncedAddresses = readAndCheckForBouncedMail();
+        bouncedAddresses.forEach(address -> log.debug("Bounced: '{}'", address));
+        ImmutableSet<String> participantAddresses = study.getParticipants().stream()
+            .map(Participant::getEmail)
+            .collect(Collectors.collectingAndThen(Collectors.toSet(), ImmutableSet::copyOf));
+        // Only care about bounced emails from the participants of this study
+        return Sets.intersection(participantAddresses, bouncedAddresses).immutableCopy();
+    }
+
+    private void sendStudy(Participant participant, Study study) {
         try {
-            javaMailSender.setSession(authenticatedUserSmtpSession);
+            String subject = study.getEmailSubject() == null ? "" : study.getEmailSubject();
+            String content = study.getEmailBody() == null ? "" : study.getEmailBody();
+            String userEmail = study.getUser().getEmail();
             MimeMessage message = javaMailSender.createMimeMessage();
             message.setFrom(new InternetAddress(userEmail));
-            ImmutableSet<String> participantAddresses = study.getParticipants().stream()
-                .map(Participant::getEmail)
-                .collect(Collectors.collectingAndThen(Collectors.toSet(), ImmutableSet::copyOf));
-            message.addRecipients(Message.RecipientType.TO, participantAddresses.stream()
-                .map(participantEmail -> {
-                    try {
-                        return new InternetAddress(participantEmail);
-                    } catch (AddressException e) {
-                        log.error("Failed to create internet address from participant email.", e);
-                        throw new RuntimeException(e);
-                    }
-                })
-                .toArray(Address[]::new));
-            message.setSubject(subject, CharEncoding.UTF_8);
-            message.setText(content, CharEncoding.UTF_8);
+            InternetAddress participantEmailAddress;
+            participantEmailAddress = new InternetAddress(participant.getEmail());
+            message.addRecipient(Message.RecipientType.TO, participantEmailAddress);
+            String customisedContent = customiseEmailText(participant, content);
+            String customisedSubject = customiseEmailText(participant, subject);
+            message.setSubject(customisedSubject, CharEncoding.UTF_8);
+            message.setText(customisedContent, CharEncoding.UTF_8);
             javaMailSender.send(message);
-            log.debug("Sent invitation email for study '{}'.", study.getName());
-            ImmutableSet<String> bouncedAddresses = readAndCheckForBouncedMail();
-            bouncedAddresses.forEach(address -> log.debug("Bounced: '{}'", address));
-            // Only care about bounced emails from the participants of this study
-            return Sets.intersection(participantAddresses, bouncedAddresses).immutableCopy();
+            log.debug("Sent invitation email for study '{}' to '{}'", study, participant);
         } catch (MessagingException e) {
-            log.error("Failed to send invitation email.", e);
-            return ImmutableSet.of();
+            log.error("Failed to create internet address from participant email", e);
         }
     }
 
-    private ImmutableSet<String> readAndCheckForBouncedMail() throws MessagingException {
-        Store store = userPop3Session.getStore("pop3s");
-        store.connect("pop.gmail.com", USER_EMAIL, USER_PASSWORD);
-        Folder folder = store.getFolder("INBOX");
-        folder.open(Folder.READ_ONLY);
-        Message[] messages = folder.getMessages();
-        ImmutableSet<String> bouncedMail = checkMessagesForBouncedMail(messages);
-        folder.close(true);
-        store.close();
-        return bouncedMail;
+    /**
+     * This method goes through text and customises it with the participants personal details.
+     */
+    private String customiseEmailText(Participant participant, String content) {
+        return content.replaceAll(CUSTOM_FIRST_NAME, participant.getFirstName())
+            .replaceAll(CUSTOM_LAST_NAME, participant.getLastName())
+            .replaceAll(CUSTOM_LOCATION, participant.getLocation())
+            .replaceAll(CUSTOM_OCCUPATION, participant.getOccupation())
+            .replaceAll(CUSTOM_PROGRAMMING_LANGUAGE, participant.getProgrammingLanguage())
+            .replaceAll(CUSTOM_NUMBER_OF_CONTRIBUTIONS, participant.getNumberOfContributions() + "")
+            .replaceAll(CUSTOM_NUMBER_OF_REPOSITORIES, participant.getNumberOfRepositories() + "");
+    }
+
+    private ImmutableSet<String> readAndCheckForBouncedMail() {
+        try {
+            Store store = userPop3Session.getStore("pop3s");
+            store.connect("pop.gmail.com", USER_EMAIL, USER_PASSWORD);
+            Folder folder = store.getFolder("INBOX");
+            folder.open(Folder.READ_ONLY);
+            Message[] messages = folder.getMessages();
+            ImmutableSet<String> bouncedMail = checkMessagesForBouncedMail(messages);
+            folder.close(true);
+            store.close();
+            return bouncedMail;
+        } catch (MessagingException e) {
+            log.error("Failed to get bounced mail.", e);
+            return ImmutableSet.of();
+        }
     }
 
     /**
