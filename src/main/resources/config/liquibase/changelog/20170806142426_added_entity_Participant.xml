@@ -26,6 +26,9 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="occupation" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -43,6 +46,13 @@
             </column>
 
             <column name="number_of_repositories" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="followers" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="following" type="integer">
                 <constraints nullable="true" />
             </column>
 

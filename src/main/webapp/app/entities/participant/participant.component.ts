@@ -59,6 +59,22 @@ export class ParticipantComponent implements OnInit, OnDestroy {
         return this.getMax(this.participants.map(p => p.numberOfContributions));
     }
 
+    /**
+     * This function returns the highest number of followers that any user has for limiting values in the
+     * participant filtering system.
+     * */
+    getMaxFollowers() {
+        return this.getMax(this.participants.map(p => p.followers));
+    }
+
+    /**
+     * This function returns the highest number of following that any user has for limiting values in the
+     * participant filtering system.
+     * */
+    getMaxFollowing() {
+        return this.getMax(this.participants.map(p => p.following));
+    }
+
     getMax(array: number[] ){
         let  highestFound = 0;
         for (let value of array){

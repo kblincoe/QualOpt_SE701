@@ -23,6 +23,10 @@
             <h5>Filter Participants</h5>
             <form>
                 <div class="form-group">
+                    <label for="filter_name">Name</label>
+                    <input class="form-control" type="text" id="filter_name" name="name" [(ngModel)]="filter.name">
+                </div>
+                <div class="form-group">
                     <label for="filter_occupation">Occupation</label>
                     <input class="form-control" type="text" id="filter_occupation" name="occupation" [(ngModel)]="filter.occupation">
                 </div>
@@ -42,6 +46,14 @@
                     <label for="filter_numberOfRepositories">Minimum number of repositories</label>
                     <input class="form-control" type="number" id="filter_numberOfRepositories" name="numberOfRepositories" min=0 max={{getMaxRepositories()}} [(ngModel)]="filter.numberOfRepositories">
                 </div>
+                <div class="form-group">
+                    <label for="filter_followers">Minimum number of followers</label>
+                    <input class="form-control" type="number" id="filter_followers" name="followers" min=0 max={{getMaxFollowers()}} [(ngModel)]="filter.followers">
+                </div>
+                <div class="form-group">
+                    <label for="filter_following">Minimum number of following</label>
+                    <input class="form-control" type="number" id="filter_following" name="following" min=0 max={{getMaxFollowing()}} [(ngModel)]="filter.following">
+                </div>
             </form>
             <h5>Find More Participants</h5>
             <button class="btn btn-primary float-left jh-create-entity send-github-participant-query" [routerLink]="['/', { outlets: { popup: ['github-query'] } }]">
@@ -58,22 +70,28 @@
                     <thead>
                     <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
                         <th jhiSortBy="email"><span>Email</span> <span class="fa fa-sort"></span></th>
+                        <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
                         <th jhiSortBy="occupation"><span>Occupation</span> <span class="fa fa-sort"></span></th>
                         <th jhiSortBy="location"><span>Location</span> <span class="fa fa-sort"></span></th>
                         <th jhiSortBy="programmingLanguage"><span>Programming Language</span> <span class="fa fa-sort"></span></th>
                         <th jhiSortBy="numberOfContributions"><span>Number Of Contributions</span> <span class="fa fa-sort"></span></th>
                         <th jhiSortBy="numberOfRepositories"><span>Number Of Repositories</span> <span class="fa fa-sort"></span></th>
+                        <th jhiSortBy="followers"><span>Number Of Followers</span> <span class="fa fa-sort"></span></th>
+                        <th jhiSortBy="following"><span>Number Of Following</span> <span class="fa fa-sort"></span></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
                     <tr *ngFor="let participant of participants | participant:filter ;trackBy: trackId">
                         <td><a [routerLink]="['../participant', participant.id ]">{{participant.email}}</a></td>
+                        <td>{{participant.name}}</td>
                         <td>{{participant.occupation}}</td>
                         <td>{{participant.location}}</td>
                         <td>{{participant.programmingLanguage}}</td>
                         <td>{{participant.numberOfContributions}}</td>
                         <td>{{participant.numberOfRepositories}}</td>
+                        <td>{{participant.followers}}</td>
+                        <td>{{participant.following}}</td>
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
