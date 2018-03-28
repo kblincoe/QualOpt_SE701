@@ -1,10 +1,12 @@
 entity Study {
 	name String required,
 	description TextBlob,
-	incentive TextBlob,
+	incentiveType TextBlob,
+	incentiveDetail TextBlob,
 	status String,
+	bouncedMail String,
 	emailSubject String required,
-    emailBody TextBlob
+  emailBody TextBlob
 }
 
 entity Participant {

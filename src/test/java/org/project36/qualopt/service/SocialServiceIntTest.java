@@ -5,6 +5,7 @@ import org.project36.qualopt.domain.Authority;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.AuthorityRepository;
 import org.project36.qualopt.repository.UserRepository;
+import org.project36.qualopt.repository.ParticipantRepository;
 import org.project36.qualopt.service.MailService;
 
 import org.junit.Before;
@@ -40,6 +41,9 @@ public class SocialServiceIntTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ParticipantRepository participantRepository;
+
     @Mock
     private MailService mockMailService;
 
@@ -54,12 +58,12 @@ public class SocialServiceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(mockMailService).sendSocialRegistrationValidationEmail(anyObject(), anyString());
-        doNothing().when(mockConnectionRepository).addConnection(anyObject());
+        doNothing().when(mockMailService).sendSocialRegistrationValidationEmail(any(), anyString());
+        doNothing().when(mockConnectionRepository).addConnection(any());
         when(mockUsersConnectionRepository.createConnectionRepository(anyString())).thenReturn(mockConnectionRepository);
 
         socialService = new SocialService(mockUsersConnectionRepository, authorityRepository,
-                passwordEncoder, userRepository, mockMailService);
+                passwordEncoder, userRepository, mockMailService, participantRepository);
     }
 
     @Test
@@ -189,7 +193,9 @@ public class SocialServiceIntTest {
         User user = userRepository.findOneByEmail("mail@mail.com").get();
         assertThat(user.getActivated()).isEqualTo(true);
         assertThat(user.getPassword()).isNotEmpty();
-        Authority userAuthority = authorityRepository.findOne("ROLE_USER");
+        Authority userAuthority = authorityRepository.findById("ROLE_USER").orElseGet(() -> {
+            return null;
+        });
         assertThat(user.getAuthorities().toArray()).containsExactly(userAuthority);
 
         // Teardown
@@ -349,7 +355,7 @@ public class SocialServiceIntTest {
         socialService.createSocialUser(connection, "fr");
 
         //Verify
-        verify(mockMailService, times(1)).sendSocialRegistrationValidationEmail(anyObject(), anyString());
+        verify(mockMailService, times(1)).sendSocialRegistrationValidationEmail(any(), anyString());
 
         // Teardown
         User userToDelete = userRepository.findOneByEmail("mail@mail.com").get();

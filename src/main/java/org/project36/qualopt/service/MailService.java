@@ -1,23 +1,23 @@
 package org.project36.qualopt.service;
 
-import org.project36.qualopt.domain.User;
+import java.util.Locale;
 
-import io.github.jhipster.config.JHipsterProperties;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
+import org.project36.qualopt.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.apache.commons.lang3.StringUtils;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.mail.internet.MimeMessage;
-import java.util.Locale;
+import io.github.jhipster.config.JHipsterProperties;
 
 /**
  * Service for sending emails.
@@ -35,14 +35,14 @@ public class MailService {
 
     private final JHipsterProperties jHipsterProperties;
 
-    private final JavaMailSender javaMailSender;
+    private final JavaMailSenderImpl javaMailSender;
 
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailService(JHipsterProperties jHipsterProperties, JavaMailSenderImpl javaMailSender,
+                       MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
@@ -83,7 +83,6 @@ public class MailService {
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
-
     }
 
     @Async

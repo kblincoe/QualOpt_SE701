@@ -30,12 +30,20 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="incentive" type="clob">
+            <column name="incentive_type" type="blob">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="incentive_detail" type="clob">
                 <constraints nullable="true" />
             </column>
 
             <column name="status" type="varchar(255)">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="bounced_mail" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
 
             <column name="email_subject" type="varchar(255)">

@@ -1,9 +1,10 @@
 <div>
     <h2>
         <span>Studies</span>
-        <button class="btn btn-primary float-right jh-create-entity create-study" [routerLink]="['/', { outlets: { popup: ['study-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-study"
+                [routerLink]="['/', { outlets: { popup: ['study-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span >
+            <span>
             Create new Study
             </span>
         </button>
@@ -16,19 +17,22 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="incentive"><span>Incentive</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="emailSubject"><span>Email Subject</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
-            <th></th>
+                <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="description"><span>Description</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="incentiveType"><span>Incentive Type</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="incentiveDetail"><span>Incentive Detail</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="emailSubject"><span>Email Subject</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
+                <th></th>
             </tr>
             </thead>
-            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
             <tr *ngFor="let study of studies ;trackBy: trackId">
                 <td><a [routerLink]="['../study', study.id ]">{{study.name}}</a></td>
                 <td>{{study.description}}</td>
-                <td>{{study.incentive}}</td>
+                <td>{{convertToReadableIncentiveType(study.incentiveType)}}</td>
+                <td>{{study.incentiveDetail}}</td>
                 <td>{{study.emailSubject}}</td>
                 <td>{{study.status}}</td>
                 <td class="text-right">

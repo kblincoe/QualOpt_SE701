@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
+import java.time.Instant;
 
 /**
  * An implementation of Spring Boot's AuditEventRepository.
@@ -33,31 +33,12 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     }
 
     @Override
-    public List<AuditEvent> find(Date after) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents =
-            persistenceAuditEventRepository.findByAuditEventDateAfter(after.toInstant());
-        return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
-    }
-
-    @Override
-    public List<AuditEvent> find(String principal, Date after) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents;
-        if (principal == null && after == null) {
-            persistentAuditEvents = persistenceAuditEventRepository.findAll();
-        } else if (after == null) {
-            persistentAuditEvents = persistenceAuditEventRepository.findByPrincipal(principal);
-        } else {
-            persistentAuditEvents =
-                persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfter(principal, after.toInstant());
-        }
-        return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
-    }
-
-    @Override
-    public List<AuditEvent> find(String principal, Date after, String type) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents =
-            persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfterAndAuditEventType(principal, after.toInstant(), type);
-        return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
+    public List<AuditEvent> find(String principal, Instant after, String type) {
+        List<PersistentAuditEvent> repoEvents = persistenceAuditEventRepository.findAll();
+        repoEvents.removeIf((event) -> {
+            return event == null || !isMatch(principal, after, type, event);
+        });
+        return auditEventConverter.convertToAuditEvent(repoEvents);
     }
 
     @Override
@@ -69,9 +50,18 @@ public class CustomAuditEventRepository implements AuditEventRepository {
             PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
             persistentAuditEvent.setPrincipal(event.getPrincipal());
             persistentAuditEvent.setAuditEventType(event.getType());
-            persistentAuditEvent.setAuditEventDate(event.getTimestamp().toInstant());
+            persistentAuditEvent.setAuditEventDate(event.getTimestamp());
             persistentAuditEvent.setData(auditEventConverter.convertDataToStrings(event.getData()));
             persistenceAuditEventRepository.save(persistentAuditEvent);
         }
     }
+
+    private boolean isMatch(String principal, Instant after, String type,
+			PersistentAuditEvent event) {
+		boolean match = true;
+		match = match && (principal == null || event.getPrincipal().equals(principal));
+		match = match && (after == null || event.getAuditEventDate().isAfter(after));
+		match = match && (type == null || event.getAuditEventType().equals(type));
+		return match;
+	}
 }

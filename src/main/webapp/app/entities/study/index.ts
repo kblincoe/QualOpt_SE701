@@ -1,4 +1,6 @@
 export * from './study.model';
+export * from './emailTemplate/emailTemplate.model';
+export * from './emailTemplate/emailTemplate.service';
 export * from './study-popup.service';
 export * from './study.service';
 export * from './study-dialog.component';
@@ -7,3 +9,4 @@ export * from './study-detail.component';
 export * from './study.component';
 export * from './study.route';
 export * from './study-confirm-invitation.component'; 
+export * from './study-info.component'

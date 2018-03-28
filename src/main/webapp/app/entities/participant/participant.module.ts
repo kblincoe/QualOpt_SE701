@@ -13,6 +13,14 @@ import {
     ParticipantDeleteDialogComponent,
     participantRoute,
     participantPopupRoute,
+    ParticipantSettingsComponent,
+    participantSettingsRoute,
+    participantStudiesRoute,
+    ParticipantStudiesComponent,
+    ParticipantStudiesOptOutComponent,
+    ParticipantStudiesOptOutPopupComponent,
+    participantStudiesPopupRoute,
+    ParticipantOptOutPopupService,
 } from './';
 import { ParticipantPipe } from './participant.pipe';
 import { GitHubBackendCall } from './githubAPI/github-backend-call.service';
@@ -21,7 +29,10 @@ import { GitHubPopupService } from './githubAPI/participant-github-popup.service
 
 const ENTITY_STATES = [
     ...participantRoute,
-    ...participantPopupRoute
+    ...participantPopupRoute,
+    participantSettingsRoute,
+    participantStudiesRoute,
+    ...participantStudiesPopupRoute,
 ];
 
 @NgModule({
@@ -38,7 +49,11 @@ const ENTITY_STATES = [
         ParticipantDeletePopupComponent,
         ParticipantPipe,
         GitHubQueryDialogComponent,
-        GitHubQueryPopupComponent
+        GitHubQueryPopupComponent,
+        ParticipantSettingsComponent,
+        ParticipantStudiesComponent,
+        ParticipantStudiesOptOutComponent,
+        ParticipantStudiesOptOutPopupComponent,
     ],
     entryComponents: [
         ParticipantComponent,
@@ -47,13 +62,16 @@ const ENTITY_STATES = [
         ParticipantDeleteDialogComponent,
         ParticipantDeletePopupComponent,
         GitHubQueryDialogComponent,
-        GitHubQueryPopupComponent
+        GitHubQueryPopupComponent,
+        ParticipantStudiesOptOutComponent,
+        ParticipantStudiesOptOutPopupComponent,
     ],
     providers: [
         ParticipantService,
         ParticipantPopupService,
         GitHubPopupService,
-        GitHubBackendCall
+        GitHubBackendCall,
+        ParticipantOptOutPopupService, 
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
