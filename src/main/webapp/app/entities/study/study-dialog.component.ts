@@ -1,20 +1,20 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
-import { NgForm } from '@angular/forms';
+import {Component, OnInit, OnDestroy, HostListener, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Response} from '@angular/http';
+import {NgForm} from '@angular/forms';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils, JhiParseLinks } from 'ng-jhipster';
 
-import { EmailTemplate } from './emailTemplate/emailTemplate.model' 
-import { EmailTemplateService } from './emailTemplate/emailTemplate.service' 
+import { EmailTemplate } from './emailTemplate/emailTemplate.model'
+import { EmailTemplateService } from './emailTemplate/emailTemplate.service'
 
 import { Study } from './study.model';
 import { StudyPopupService } from './study-popup.service';
 import { StudyService } from './study.service';
-import { User, UserService, ResponseWrapper, Principal, Account } from '../../shared';
-import { Participant, ParticipantService } from '../participant';
+import { User, UserService, Principal, ResponseWrapper, Account, ITEMS_PER_PAGE } from '../../shared';
+import { Participant, ParticipantService, ParticipantComponent } from '../participant';
 import { Document } from '../document';
 
 @Component({
@@ -28,9 +28,7 @@ import { Document } from '../document';
 export class StudyDialogComponent implements OnInit {
     study: Study;
     isSaving: boolean;
-
     users: User[];
-
     participants: Participant[];
     selectedDocuments: Document[];
 
@@ -45,7 +43,10 @@ export class StudyDialogComponent implements OnInit {
 
     account: Account;
     currentUser: User;
-    
+
+    participantFilter: ParticipantComponent;
+    filter: Participant = new Participant;
+    selectedParticipants: Map<number, boolean>;
     @ViewChild('editForm') editForm: NgForm;
 
     constructor(
@@ -57,17 +58,33 @@ export class StudyDialogComponent implements OnInit {
         private userService: UserService,
         private participantService: ParticipantService,
         private eventManager: JhiEventManager,
-        private principal: Principal,
+        private parseLinks: JhiParseLinks,
+        private principal: Principal
     ) {
+        this.participantFilter = new ParticipantComponent(this.participantService, this.alertService, this.eventManager, this.parseLinks, this.principal);
+        this.participantFilter.participants = [];
+        this.participantFilter.itemsPerPage = ITEMS_PER_PAGE;
+        this.participantFilter.page = 0;
+        this.participantFilter.links = {
+            last: 0
+        };
+        this.participantFilter.predicate = 'id';
+        this.participantFilter.reverse = true;
+        this.selectedParticipants = new Map<number, boolean>();
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.userService.query()
-            .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: ResponseWrapper) => {
+                this.users = res.json;
+            }, (res: ResponseWrapper) => this.onError(res.json));
         this.participantService.query()
-            .subscribe((res: ResponseWrapper) => { this.participants = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-
+            .subscribe((res: ResponseWrapper) => {
+                this.participants = res.json;
+                // Initialise the study's participants as unselected.
+                this.study.participants = res.json.map(participant => ({...participant, "checked": false}));
+            }, (res: ResponseWrapper) => this.onError(res.json));
         //retrieve account information of current user
         this.principal.identity().then((account) => {
             this.account = account;
@@ -103,7 +120,7 @@ export class StudyDialogComponent implements OnInit {
     clearSelectedDocuments() {
         this.selectedDocuments.forEach((selectedDocument): void => {
             let index = this.study.documents.findIndex((studyDocument: Document): boolean => {
-                if(studyDocument.filename==selectedDocument.filename) {
+                if (studyDocument.filename == selectedDocument.filename) {
                     return true;
                 }
                 return false;
@@ -113,15 +130,15 @@ export class StudyDialogComponent implements OnInit {
     }
 
     fileSelected(event: EventTarget) {
-        let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
-        let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+        let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
+        let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
 
         let file = target.files[0];
         let fileReader = new FileReader();
         fileReader.readAsDataURL(file);
-        
+
         let self = this;
-        fileReader.onload = function() {
+        fileReader.onload = function () {
             let document = new Document();
             document.filename = file.name;
             document.fileimage = this.result.split(',').pop();
@@ -157,10 +174,32 @@ export class StudyDialogComponent implements OnInit {
     }
 
     private hasUnsavedChanges(): boolean {
-      return this.editForm.submitted || !this.editForm.dirty;
+        return this.editForm.submitted || !this.editForm.dirty;
     }
 
+    // Sets all participants on the current model to selected.
+    selectAllParticipants = () => {
+        this.study.participants =
+            this.study.participants.map(participant => ({...participant, "checked": true}))
+    };
+
+    // Sets all participants on the current model to deselected.
+    deselectAllParticipants = () => {
+        this.study.participants =
+            this.study.participants.map(participant => ({...participant, "checked": false}))
+    };
+
     save() {
+        // On form submission, the set of selected participants is added to the set of participants associated with the study
+        this.participants = [];
+        for (let key in this.selectedParticipants) {
+            let value = this.selectedParticipants[key];
+            if (value == true) {
+                this.participants.push(this.participantFilter.participants[parseInt(key) - 1]);
+            }
+        }
+        this.study.participants = this.participants;
+
         this.isSaving = true;
         if (this.study.id !== undefined) {
             this.subscribeToSaveResponse(
@@ -185,7 +224,7 @@ export class StudyDialogComponent implements OnInit {
             this.selectedTemplate = this.templates[0];
             this.selectedManageTemplate = this.templates[0];
             let defaultTemplate = new EmailTemplate
-                (0, "default", "Hi from QualOpt", "Dear participant: \n\n     We ask you kindly to join our study. \n\nYour QualOpt Team")
+            (0, "default", "Hi from QualOpt", "Dear participant: \n\n     We ask you kindly to join our study. \n\nYour QualOpt Team")
             this.templates.splice(1, 0, defaultTemplate);
         });
     }
@@ -195,7 +234,7 @@ export class StudyDialogComponent implements OnInit {
         this.manageTemplateBody = "";
     }
 
-    updateTemplateOperationStatusMessage(message: string){
+    updateTemplateOperationStatusMessage(message: string) {
         (<HTMLLabelElement>document.getElementById("statusMessage")).innerHTML = message;
         //clear the message after 3 seconds.
         setTimeout(function () {
@@ -211,22 +250,22 @@ export class StudyDialogComponent implements OnInit {
         this.study.emailBody = newValue.body;
     }
 
-    onManageTemplateChange(newValue: EmailTemplate){
+    onManageTemplateChange(newValue: EmailTemplate) {
         this.selectedManageTemplate = newValue;
         this.manageTemplateSubject = newValue.subject;
         this.manageTemplateBody = newValue.body;
     }
-    
+
     saveTemplate() {
         //check for empty name
-        if (this.saveTemplateName === undefined || this.saveTemplateName.trim() === ""){
+        if (this.saveTemplateName === undefined || this.saveTemplateName.trim() === "") {
             this.updateTemplateOperationStatusMessage("A template must be saved with a name.");
             return;
         }
-        
+
         //check for existing name
         let existingNames = this.templates.map(t => t.name);
-        if (existingNames.indexOf(this.saveTemplateName) > -1){
+        if (existingNames.indexOf(this.saveTemplateName) > -1) {
             this.updateTemplateOperationStatusMessage("This template name has already been used.");
             return;
         }
@@ -239,15 +278,15 @@ export class StudyDialogComponent implements OnInit {
         this.saveTemplateName = undefined;
     }
 
-    updateTemplate(){
+    updateTemplate() {
         //Do not attempt to update non-existing template or the "none" template.
-        if (this.selectedManageTemplate.id < 1 || this.selectedManageTemplate.id === undefined){
+        if (this.selectedManageTemplate.id < 1 || this.selectedManageTemplate.id === undefined) {
             this.updateTemplateOperationStatusMessage("Cannot update default or non-existing template.");
             return;
         }
 
         let updatedEmailTemplate = new EmailTemplate
-            (this.selectedManageTemplate.id, this.selectedManageTemplate.name, this.manageTemplateSubject, this.manageTemplateBody, this.currentUser);
+        (this.selectedManageTemplate.id, this.selectedManageTemplate.name, this.manageTemplateSubject, this.manageTemplateBody, this.currentUser);
 
         this.emailTemplateService.update(updatedEmailTemplate).subscribe((response) => {
             this.getAndUpdateEmailTemplate();
@@ -255,8 +294,8 @@ export class StudyDialogComponent implements OnInit {
     }
 
     deleteTemplate() {
-        //Do not attempt to delete non-existing template or the "none" template.
-        if (this.selectedManageTemplate.id < 1 || this.selectedManageTemplate.id === undefined){
+        // Do not attempt to delete non-existing template or the "none" template.
+        if (this.selectedManageTemplate.id < 1 || this.selectedManageTemplate.id === undefined) {
             this.updateTemplateOperationStatusMessage("Cannot delete default or non-existing template.");
             return;
         }
@@ -267,13 +306,20 @@ export class StudyDialogComponent implements OnInit {
         });
     }
 
+    // Used to load participants table in modal
+    onTabChange(event){
+        if (event.nextId === "participantsTab"){
+            this.participantFilter.reset();
+        }
+    }
+
     private subscribeToSaveResponse(result: Observable<Study>) {
         result.subscribe((res: Study) =>
             this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
     private onSaveSuccess(result: Study) {
-        this.eventManager.broadcast({ name: 'studyListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'studyListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -316,10 +362,18 @@ export class StudyDialogComponent implements OnInit {
     }
 
     getTitle() {
-        if ( this.study.id != null ) {
+        if (this.study.id != null) {
             return 'Edit Study';
-        }else {
+        } else {
             return 'Create Study';
+        }
+    }
+
+    filterOptedInParticipants() {
+        if (!this.participants) {
+            return [];
+        } else {
+            return this.participants.filter((participant) => participant.optedIn === true);
         }
     }
 }
@@ -331,21 +385,20 @@ export class StudyDialogComponent implements OnInit {
 export class StudyPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
-
     constructor(
         private route: ActivatedRoute,
         private studyPopupService: StudyPopupService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
+            if (params['id']) {
                 if (this.route.snapshot.data.copy) {
                     this.studyPopupService
-                    .copy(StudyDialogComponent as Component, params['id'])
+                        .copy(StudyDialogComponent as Component, params['id'])
                 } else {
                     this.studyPopupService
-                    .open(StudyDialogComponent as Component, params['id']);
+                        .open(StudyDialogComponent as Component, params['id']);
                 }
             } else {
                 this.studyPopupService

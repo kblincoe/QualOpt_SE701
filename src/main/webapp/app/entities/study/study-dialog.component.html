@@ -1,5 +1,5 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab id="studyTab" title="Study Details">
             <ng-template ngbTabContent>
                 <div class="modal-header">
@@ -12,8 +12,7 @@
                     <jhi-alert-error></jhi-alert-error>
                     <div class="form-group">
                         <label class="form-control-label" for="field_name">Title</label>
-                        <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="study.name"
-                               required/>
+                        <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="study.name" required/>
                         <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                             <small class="form-text text-danger" [hidden]="!editForm.controls.name?.errors?.required">
                                 This field is required.
@@ -22,28 +21,24 @@
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" for="field_description">Description</label>
-                        <textarea class="form-control" name="description" id="field_description"
-                                  [(ngModel)]="study.description"></textarea>
+                        <textarea class="form-control" name="description" id="field_description" [(ngModel)]="study.description"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" for="field_incentive_type">Incentive Type</label>
-                        <select class="form-control" [(ngModel)]="study.incentiveType"
-                                name="incentiveType" id="field_incentive_type">
+                        <select class="form-control" [(ngModel)]="study.incentiveType" name="incentiveType" id="field_incentive_type">
                             <option value="ONEOFFPAYMENT">One-off payment</option>
                             <option value="RANDOMLYALLOCATED">Randomly allocated</option>
                             <option value="OTHER">Other</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" for="field_incentive_detail">Incentive Details (ie
-                            amount)</label>
-                        <textarea class="form-control" name="incentiveDetail" id="field_incentive_detail"
-                                  [(ngModel)]="study.incentiveDetail"></textarea>
+                        <label class="form-control-label" for="field_incentive_detail">Incentive Details (ie amount)
+                        </label>
+                        <textarea class="form-control" name="incentiveDetail" id="field_incentive_detail" [(ngModel)]="study.incentiveDetail"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" for="field_faq">FAQ</label>
-                        <textarea class="form-control" name="faq" id="field_faq"
-                            [(ngModel)]="study.faq"  ></textarea>
+                        <textarea class="form-control" name="faq" id="field_faq" [(ngModel)]="study.faq"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="field_document">Documents</label>
@@ -51,25 +46,114 @@
                             <option [ngValue]="d" *ngFor="let d of study.documents;">{{d.filename}}</option>
                         </select>
                         <button type="button" class="btn btn-danger" (click)="clearSelectedDocuments()">
-                            <span class="fa fa-remove"></span>&nbsp;<span>Remove</span>
+                            <span class="fa fa-remove"></span>&nbsp;
+                            <span>Remove</span>
                         </button>
                         <label class="btn-primary fileButton">
-                            <span class="fa fa-upload"></span>&nbsp;<span>Upload</span>
-                            <input type="file" (change)="fileSelected($event)"/>
+                            <span class="fa fa-upload"></span>&nbsp;
+                            <span>Upload</span>
+                            <input type="file" (change)="fileSelected($event)" />
                         </label>
                     </div>
-                    <div class="form-group">
-                        <label for="field_participant">Participants</label>
-                        <select class="form-control" id="field_participant" multiple name="participant"
-                                [(ngModel)]="study.participants">
-                            <option [ngValue]="getSelected(study.participants, participantOption)"
-                                    *ngFor="let participantOption of participants; trackBy: trackParticipantById">
-                                {{participantOption.email}}
-                            </option>
-                        </select>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeTab('participantsTab')">
+                            <span>Next</span>
+                            <span class="fa fa-arrow-right"></span>&nbsp;
+                        </button>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="participantsTab" title="Participants">
+            <ng-template ngbTabContent>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="participantTitle">Filter Participants</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <jhi-alert-error></jhi-alert-error>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="filter_occupation">Occupation</label>
+                            <input class="form-control" type="text" id="filter_occupation" name="occupation" [(ngModel)]="participantFilter.filter.occupation">
+                        </div>
+                        <div class="col-4">
+                            <label for="filter_location">Location</label>
+                            <input class="form-control" type="text" id="filter_location" name="location" [(ngModel)]="participantFilter.filter.location">
+                        </div>
+                        <div class="col-4">
+                            <label for="filter_programmingLanguage">Programming Language</label>
+                            <input class="form-control" type="text" id="filter_programmingLanguage" name="programmingLanguage" [(ngModel)]="participantFilter.filter.programmingLanguage">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="filter_numberOfContributions">Minimum number of contributions</label>
+                            <input class="form-control" type="number" id="filter_numberOfContributions" name="numberOfContributions" [(ngModel)]="participantFilter.filter.numberOfContributions">
+                        </div>
+                        <div class="col-6">
+                            <label for="filter_numberOfRepositories">Minimum number of repositories</label>
+                            <input class="form-control" type="number" id="filter_numberOfRepositories" name="numberOfRepositories" [(ngModel)]="participantFilter.filter.numberOfRepositories">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="table-responsive" *ngIf="participants">
+                            <table class="table table-striped col-6">
+                                <thead>
+                                    <tr jhiSort [(predicate)]="participantFilter.predicate" [(ascending)]="participantFilter.reverse" [callback]="participantFilter.reset.bind(participantFilter)">
+                                        <th>
+                                            <h6>Select</h6>
+                                        </th>
+                                        <th jhiSortBy="email">
+                                            <h6>Email</h6>
+                                            <span class="fa fa-sort" id="emailHeader"></span>
+                                        </th>
+                                        <th jhiSortBy="occupation">
+                                            <h6>Occupation</h6>
+                                            <span class="fa fa-sort"></span>
+                                        </th>
+                                        <th jhiSortBy="location">
+                                            <h6>Location</h6>
+                                            <span class="fa fa-sort"></span>
+                                        </th>
+                                        <th jhiSortBy="programmingLanguage">
+                                            <h6>Programming Language</h6>
+                                            <span class="fa fa-sort"></span>
+                                        </th>
+                                        <th jhiSortBy="numberOfContributions">
+                                            <h6>Number Of Contributions</h6>
+                                            <span class="fa fa-sort"></span>
+                                        </th>
+                                        <th jhiSortBy="numberOfRepositories">
+                                            <h6>Number Of Repositories</h6>
+                                            <span class="fa fa-sort"></span>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody infinite-scroll (scrolled)="participantFilter.loadPage(participantFilter.page +1)" [infiniteScrollDisabled]="participantFilter.page>= participantFilter.links['last']"
+                                    [infiniteScrollDistance]="0">
+                                    <tr *ngFor="let participant of participantFilter.participants | participant:participantFilter.filter ;trackBy: trackId">
+                                        <td>
+                                            <input type="checkbox" name="{{'participant-' + participant.id}}" [(ngModel)]="selectedParticipants[participant.id]" id="{{ 'selectedParticipant-' + participant.id }}">
+                                        </td>
+                                        <td>{{participant.email}}</td>
+                                        <td>{{participant.occupation}}</td>
+                                        <td>{{participant.location}}</td>
+                                        <td>{{participant.programmingLanguage}}</td>
+                                        <td>{{participant.numberOfContributions}}</td>
+                                        <td>{{participant.numberOfRepositories}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeTab('studyTab')">
+                        <span>Previous</span>
+                        <span class="fa fa-arrow-left"></span>&nbsp;
+                    </button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeTab('emailTab')">
                         <span>Next</span>
                         <span class="fa fa-arrow-right"></span>&nbsp;
@@ -85,28 +169,24 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-control-label" for="field_emailSubject">Subject</label>
-                        <input type="text" class="form-control" name="emailSubject" id="field_emailSubject"
-                               [(ngModel)]="study.emailSubject" required
+                        <input type="text" class="form-control" name="emailSubject" id="field_emailSubject" [(ngModel)]="study.emailSubject" required
                         />
-                        <div
-                            [hidden]="!(editForm.controls.emailSubject?.dirty && editForm.controls.emailSubject?.invalid)">
-                            <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.emailSubject?.errors?.required">
+                        <div [hidden]="!(editForm.controls.emailSubject?.dirty && editForm.controls.emailSubject?.invalid)">
+                            <small class="form-text text-danger" [hidden]="!editForm.controls.emailSubject?.errors?.required">
                                 This field is required.
                             </small>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" for="field_emailBody">Body</label>
-                        <textarea class="form-control email-body" name="emailBody" id="field_emailBody"
-                                  [(ngModel)]="study.emailBody"></textarea>
+                        <textarea class="form-control email-body" name="emailBody" id="field_emailBody" [(ngModel)]="study.emailBody"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-6">
-                            <label class="control-label" for="templateList">Applying the template:</label>
+                                <label class="control-label" for="templateList">Applying the template:</label>
                                 <select [ngModel]="selectedTemplate" (ngModelChange)="onTemplateChange($event)" name="templateList">
                                     <option [ngValue]="i" *ngFor="let i of templates">{{i.name}}</option>
                                 </select>
@@ -155,7 +235,7 @@
                             <div class="col-lg-10">
                                 <div class="row">
                                     <input type="text" class="form-control col-lg-6" [(ngModel)]="saveTemplateName" name="saveTemplateName" placeholder="To save the template, enter a name here."
-                                    maxlength="20"/>
+                                        maxlength="20" />
                                     <button type="button" class="btn btn-primary col-lg-3" data-dismiss="modal" (click)="saveTemplate()">
                                         <span class="fa fa-save"></span>
                                         <span>Save Template</span>

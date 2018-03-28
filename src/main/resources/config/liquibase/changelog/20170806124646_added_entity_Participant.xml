@@ -46,8 +46,24 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="has_opted_in" type="boolean">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="number_of_invitations_requested" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="incentive_choice" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="incentive_details" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>
