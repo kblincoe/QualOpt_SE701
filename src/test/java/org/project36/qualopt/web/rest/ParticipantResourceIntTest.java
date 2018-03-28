@@ -4,6 +4,7 @@ import org.project36.qualopt.QualOptApp;
 
 import org.project36.qualopt.domain.Participant;
 import org.project36.qualopt.repository.ParticipantRepository;
+import org.project36.qualopt.repository.StudyRepository;
 import org.project36.qualopt.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -59,6 +60,9 @@ public class ParticipantResourceIntTest {
     private ParticipantRepository participantRepository;
 
     @Autowired
+    private StudyRepository studyRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -77,7 +81,7 @@ public class ParticipantResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ParticipantResource participantResource = new ParticipantResource(participantRepository);
+        ParticipantResource participantResource = new ParticipantResource(participantRepository,studyRepository);
         this.restParticipantMockMvc = MockMvcBuilders.standaloneSetup(participantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -220,7 +224,7 @@ public class ParticipantResourceIntTest {
         int databaseSizeBeforeUpdate = participantRepository.findAll().size();
 
         // Update the participant
-        Participant updatedParticipant = participantRepository.findOne(participant.getId());
+        Participant updatedParticipant = participantRepository.getOne(participant.getId());
         updatedParticipant
             .email(UPDATED_EMAIL)
             .occupation(UPDATED_OCCUPATION)
@@ -294,5 +298,74 @@ public class ParticipantResourceIntTest {
         assertThat(participant1).isNotEqualTo(participant2);
         participant1.setId(null);
         assertThat(participant1).isNotEqualTo(participant2);
+    }
+
+    /**
+    * This is a test to see if the query to get the particpant via email works as intended. The database
+    * is intialised with a participant and then a REST call is made to get the participant via the email
+    * that was given. This should return a 200 OK and the values of the participant should be the default
+    * values.
+    */
+    @Test
+    @Transactional
+    public void getParticipantByEmail() throws Exception {
+        // Initialize the database
+        participantRepository.saveAndFlush(participant);
+
+        // Get the participant via email
+        restParticipantMockMvc.perform(get("/api/participants/email/{email}", participant.getEmail()))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        .andExpect(jsonPath("$.id").value(participant.getId().intValue()))
+        .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+        .andExpect(jsonPath("$.occupation").value(DEFAULT_OCCUPATION.toString()))
+        .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()))
+        .andExpect(jsonPath("$.programmingLanguage").value(DEFAULT_PROGRAMMING_LANGUAGE.toString()))
+        .andExpect(jsonPath("$.numberOfContributions").value(DEFAULT_NUMBER_OF_CONTRIBUTIONS))
+        .andExpect(jsonPath("$.numberOfRepositories").value(DEFAULT_NUMBER_OF_REPOSITORIES));
+    }
+    
+    /**
+    * This is a test to see if a participant that is created is defaulted to be opted-in to future
+    * studies. The participant is saved, queried from the database and then the value is checked.
+    */
+    @Test
+    @Transactional
+    public void testDefaultOptIn() throws Exception {
+        // Initialize the database
+        participantRepository.saveAndFlush(participant);
+        
+        // Check that the participant has default opted-in
+        restParticipantMockMvc.perform(get("/api/participants/{id}", participant.getId()))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        .andExpect(jsonPath("$.optedIn").value(true));
+    }
+
+    /**
+    * This is a test to see if a participant can opt-out of future studies. A participant is made, then
+    * the field is set to false - so that the participant will be opted out from future studies. Then, the
+    * Participant is queried from the database to see if the field is still false.
+    */
+    @Test
+    @Transactional
+    public void testOptOutToFutureStudies() throws Exception {
+        // Initialize the database
+        participantRepository.saveAndFlush(participant);
+
+        // Update the participant
+        Participant updatedParticipant = participantRepository.getOne(participant.getId());
+        updatedParticipant.setOptedIn(false);
+
+        restParticipantMockMvc.perform(put("/api/participants")
+        .contentType(TestUtil.APPLICATION_JSON_UTF8)
+        .content(TestUtil.convertObjectToJsonBytes(updatedParticipant)))
+        .andExpect(status().isOk());
+
+        // Check that the participant has been updated
+        restParticipantMockMvc.perform(get("/api/participants/{id}", participant.getId()))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        .andExpect(jsonPath("$.optedIn").value(false));
     }
 }

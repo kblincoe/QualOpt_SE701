@@ -38,8 +38,12 @@ public class Study implements Serializable {
     private Status status = Status.Inactive;
 
     @Lob
-    @Column(name = "incentive")
-    private String incentive;
+    @Column(name = "incentive_type", columnDefinition = "blob")
+    private IncentiveType incentiveType;
+
+    @Lob
+    @Column(name = "incentive_detail")
+    private String incentiveDetail;
 
     @NotNull
     @Column(name = "email_subject", nullable = false)
@@ -49,8 +53,14 @@ public class Study implements Serializable {
     @Column(name = "email_body")
     private String emailBody;
 
+    @Column(name = "faq")
+    private String faq;
+
     @ManyToOne
     private User user;
+
+    @Column(name = "bounced_mail")
+    private String bouncedMail;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -58,6 +68,10 @@ public class Study implements Serializable {
                joinColumns = @JoinColumn(name="studies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="participants_id", referencedColumnName="id"))
     private Set<Participant> participants = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "study_id")
+    private Set<Document> documents = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -106,17 +120,30 @@ public class Study implements Serializable {
         this.description = description;
     }
 
-    public String getIncentive() {
-        return incentive;
+    public IncentiveType getIncentiveType() {
+        return incentiveType;
     }
 
-    public Study incentive(String incentive) {
-        this.incentive = incentive;
+    public Study incentiveType(IncentiveType incentiveType) {
+        this.incentiveType = incentiveType;
         return this;
     }
 
-    public void setIncentive(String incentive) {
-        this.incentive = incentive;
+    public void setIncentiveType(IncentiveType incentiveType) {
+        this.incentiveType = incentiveType;
+    }
+
+    public String getIncentiveDetail() {
+        return incentiveDetail;
+    }
+
+    public Study incentiveDetail(String incentiveDetail) {
+        this.incentiveDetail = incentiveDetail;
+        return this;
+    }
+
+    public void setIncentiveDetail(String incentiveDetail) {
+        this.incentiveDetail = incentiveDetail;
     }
 
     public String getEmailSubject() {
@@ -134,6 +161,19 @@ public class Study implements Serializable {
 
     public String getEmailBody() {
         return emailBody;
+    }
+
+    public String getFaq() {
+        return faq;
+    }
+
+    public Study faq(String faq) {
+        this.faq = faq;
+        return this;
+    }
+
+    public void setFaq(String faq) {
+        this.faq = faq;
     }
 
     public Study emailBody(String emailBody) {
@@ -175,12 +215,42 @@ public class Study implements Serializable {
 
     public Study removeParticipant(Participant participant) {
         this.participants.remove(participant);
-        participant.getStudies().remove(this);
         return this;
     }
 
     public void setParticipants(Set<Participant> participants) {
         this.participants = participants;
+    }
+
+    public Set<Document> getDocuments() {
+        return documents;
+    }
+
+    public Study documents(Set<Document> documents) {
+        this.documents = documents;
+        return this;
+    }
+
+    public Study addDocument(Document document) {
+        this.documents.add(document);
+        return this;
+    }
+
+    public Study removeDocument(Document document) {
+        this.documents.remove(document);
+        return this;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
+    }
+
+    public String getBouncedMail() {
+        return bouncedMail;
+    }
+
+    public void setBouncedMail(String bouncedMail) {
+        this.bouncedMail = bouncedMail;
     }
 
     @Override
@@ -209,10 +279,12 @@ public class Study implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", incentive='" + getIncentive() + "'" +
+            ", incentiveType='" + getIncentiveType() + "'" +
+            ", incentiveDetails='" + getIncentiveDetail() + "'" +
             ", status='" + getStatus() + "'" +
             ", emailSubject='" + getEmailSubject() + "'" +
             ", emailBody='" + getEmailBody() + "'" +
+            ", bouncedMail='" + getBouncedMail() + "'" +
             "}";
     }
 }

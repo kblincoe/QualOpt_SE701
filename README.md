@@ -32,7 +32,7 @@ Before you can build this project, you must install and configure the following 
 2. [Yarn][]: We use Yarn to manage Node dependencies.
    Depending on your system, you can install Yarn either from source or as a pre-packaged bundle.
 
-**Warning QualOpt cannot be run on Java 9 as there is an error with Spring. Java 8 or earlier required.**
+**Warning QualOpt cannot be run on Java 7 or earlier. The supported versions of Java are 8 and 9.**
 
 After installing Node, you should be able to run the following command to install development tools (try `npm install` if you have problems).
 You will only need to run this command when dependencies change in [package.json](package.json).

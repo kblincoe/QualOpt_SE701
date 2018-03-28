@@ -3,6 +3,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { QualOptStudyModule } from './study/study.module';
 import { QualOptParticipantModule } from './participant/participant.module';
 import { QualOptAboutModule } from './about/about.module';
+import { QualOptDocumentModule } from './document/document.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -10,6 +11,7 @@ import { QualOptAboutModule } from './about/about.module';
         QualOptStudyModule,
         QualOptParticipantModule,
         QualOptAboutModule,
+        QualOptDocumentModule
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

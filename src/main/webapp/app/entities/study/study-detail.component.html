@@ -1,4 +1,3 @@
-
 <div *ngIf="study">
     <h2>{{study.name}}</h2>
     <hr>
@@ -23,45 +22,77 @@
         <dd>
             <span class="break-new-line">{{study.emailBody}}</span>
         </dd>
-        <dt><span>Participants</span></dt>
+        <dt><span>FAQ</span></dt>
         <dd>
+            <span>{{study.faq}}</span>
+        </dd>
+        <dt *jhiHasAnyAuthority="'ROLE_USER','ROLE_ADMIN'"><span>Participants</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_USER','ROLE_ADMIN'">
             <span *ngFor="let participant of study.participants; let last = last">
                 <a [routerLink]="['/participant', participant?.id ]">{{participant.email}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+        <div *ngIf="study.bouncedMail">
+        <dt><span>Bounced Participant Email Addresses</span></dt>
+        <dd>
+            <span>{{study.bouncedMail}}</span>
+        </dd>
+        </div>
     </dl>
 
-    <button type="submit"
+    <form>
+        <input id="sendNow" type="radio" name="radioGroup" (click)="onButtonClicked(true)" checked> <strong>Send Email Immediately</strong>
+        </br>
+        <input id="sendLater" type="radio" name="radioGroup" (click)="onButtonClicked(false)"> <strong>Preset Date and Time</strong>
+        <p></p>
+    
+        <div *ngIf="presetSend">
+            <label for="setDate"> Choose a date and time in the future to send the email:</label>
+            </br>
+            <input id="setDate" type="datetime-local" name="sendMailDate"
+                    min={{currentTimeStamp}} 
+                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" [(ngModel)]="currentTimeStamp" #ctrl="ngModel" required>                            
+            <span class="validity"></span>
+            <label for="timezone"> <strong> Time Zone: {{currentTimeZone}} </strong></label>
+            <p></p>
+        </div>
+    </form>
+
+    <button style="float: left; margin-right: 5px;" type="submit"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
     </button>
-    <div  style="display: inline-block;" *ngIf="this.study.status != status.COMPLETED">
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
-            replaceUrl="true"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-    </button>
-
-    <button type="submit"
-            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/delete'} }]"
-            replaceUrl="true"
-            class="btn btn-danger">
-        <span class="fa fa-remove"></span>&nbsp;<span class="hidden-md-down">Delete</span>
-    </button>
-
-    <button type="button"
-            (click)="beginStudy()"
-            [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSend'} }]"
-            replaceUrl="true"
-            class="btn btn-success">
-        <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
-    </button>
-    <button *ngIf="this.study.status == status.ACTIVE" type="button"
-            (click)="closeStudy()"
-            class="btn btn-danger">
-        <span class="fa fa-flag-checkered"></span>&nbsp;<span> End Study</span>
-    </button>
+    <div *jhiHasAnyAuthority="'ROLE_USER','ROLE_ADMIN'">
+        <div  style="display: inline-block;" *ngIf="this.study.status != status.COMPLETED">
+            <button type="button"
+                    [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/edit'} }]"
+                    replaceUrl="true"
+                    class="btn btn-primary">
+                <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+            </button>
+        
+            <button *jhiHasAnyAuthority="'ROLE_USER','ROLE_ADMIN'" type="submit"
+                    [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/delete'} }]"
+                    replaceUrl="true"
+                    class="btn btn-danger">
+                <span class="fa fa-remove"></span>&nbsp;<span class="hidden-md-down">Delete</span>
+            </button>
+        
+            <button type="button"
+                    (click)="beginStudy()"
+                    [routerLink]="['/', { outlets: { popup: 'study/'+ study.id + '/confirmSend'} }]"
+                    replaceUrl="true"
+                    class="btn btn-success">
+                <span class="fa fa-paper-plane"></span>&nbsp;<span> Send Invitation</span>
+            </button>
+            <button *ngIf="this.study.status == status.ACTIVE" type="button"
+                    (click)="closeStudy()"
+                    class="btn btn-danger">
+                <span class="fa fa-flag-checkered"></span>&nbsp;<span> End Study</span>
+            </button>
+        </div>
     </div>
 </div>
+
+

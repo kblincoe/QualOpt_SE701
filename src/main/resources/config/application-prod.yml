@@ -53,9 +53,8 @@ spring:
             ssl.trust: smtp.gmail.com
     thymeleaf:
         cache: true
-
-liquibase:
-    contexts: prod
+    liquibase:
+        contexts: prod
 
 # ===================================================================
 # To enable SSL, generate a certificate using:
@@ -132,4 +131,4 @@ jhipster:
 # https://jhipster.github.io/common-application-properties/
 # ===================================================================
 
-application:
+# application:

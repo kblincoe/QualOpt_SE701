@@ -9,6 +9,7 @@ import { StudyDetailComponent } from './study-detail.component';
 import { StudyPopupComponent } from './study-dialog.component';
 import { StudyDeletePopupComponent } from './study-delete-dialog.component';
 import { StudyConfirmPopupComponent } from './study-confirm-invitation.component'; 
+import { StudyInfoComponent } from './study-info.component';
 
 export const studyRoute: Routes = [
     {
@@ -23,8 +24,15 @@ export const studyRoute: Routes = [
         path: 'study/:id',
         component: StudyDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_USER', 'ROLE_PARTICIPANT'],
             pageTitle: 'Studies'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'study/:id/info',
+        component: StudyInfoComponent,
+        data: {
+            pageTitle: 'Study Information'
         },
         canActivate: [UserRouteAccessService]
     }

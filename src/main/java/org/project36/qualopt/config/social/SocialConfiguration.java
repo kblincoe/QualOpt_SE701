@@ -1,11 +1,8 @@
 package org.project36.qualopt.config.social;
 
-import org.project36.qualopt.repository.SocialUserConnectionRepository;
 import org.project36.qualopt.repository.CustomSocialUsersConnectionRepository;
+import org.project36.qualopt.repository.SocialUserConnectionRepository;
 import org.project36.qualopt.security.social.CustomSignInAdapter;
-
-import io.github.jhipster.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +25,9 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
-import java.lang.*;
+import io.github.jhipster.config.JHipsterProperties;
 
+import org.springframework.social.github.connect.GitHubConnectionFactory;
 // jhipster-needle-add-social-connection-factory-import-package
 
 /**
@@ -97,8 +95,8 @@ public class SocialConfiguration implements SocialConfigurer {
         }
 
         // Facebook configuration
-        String facebookClientId = environment.getProperty("spring.social.facebook.client-id");
-        String facebookClientSecret = environment.getProperty("spring.social.facebook.client-secret");
+        String facebookClientId = System.getenv("FACEBOOK_CLIENT_ID");
+        String facebookClientSecret = System.getenv("FACEBOOK_CLIENT_SECRET");
         if (facebookClientId != null && facebookClientSecret != null) {
             log.debug("Configuring FacebookConnectionFactory");
             connectionFactoryConfigurer.addConnectionFactory(
@@ -108,7 +106,22 @@ public class SocialConfiguration implements SocialConfigurer {
                 )
             );
         } else {
-            log.error("Cannot configure FacebookConnectionFactory id or secret null");
+            log.error("Cannot configure FacebookConnectionFactory id or secrets are null. Make sure that environment variables FACEBOOK_CLIENT_ID and FACEBOOK_CLIENT_SECRET are set.");
+        }
+
+        // GitHub configuration
+        String githubClientId = System.getenv("GITHUB_CLIENT_ID");
+        String githubClientSecret = System.getenv("GITHUB_CLIENT_SECRET");
+        if (githubClientId != null && githubClientSecret != null) {
+            log.debug("Configuring GitHubConnectionFactory");
+            connectionFactoryConfigurer.addConnectionFactory(
+                new GitHubConnectionFactory(
+                    githubClientId,
+                    githubClientSecret
+                )
+            );
+        } else {
+            log.error("Cannot configure GitHubConnectionFactory id or secrets are null, make sure GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET evnivronment variables are set");
         }
 
         // Twitter configuration

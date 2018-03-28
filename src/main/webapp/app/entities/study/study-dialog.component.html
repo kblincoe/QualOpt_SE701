@@ -4,13 +4,16 @@
             <ng-template ngbTabContent>
                 <div class="modal-header">
                     <h4 class="modal-title" id="myStudyLabel">{{getTitle()}}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">
+                        &times;
+                    </button>
                 </div>
                 <div class="modal-body">
                     <jhi-alert-error></jhi-alert-error>
                     <div class="form-group">
                         <label class="form-control-label" for="field_name">Title</label>
-                        <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="study.name" required />
+                        <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="study.name"
+                               required/>
                         <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                             <small class="form-text text-danger" [hidden]="!editForm.controls.name?.errors?.required">
                                 This field is required.
@@ -19,16 +22,50 @@
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" for="field_description">Description</label>
-                        <textarea class="form-control" name="description" id="field_description" [(ngModel)]="study.description"></textarea>
+                        <textarea class="form-control" name="description" id="field_description"
+                                  [(ngModel)]="study.description"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" for="field_incentive">Incentive</label>
-                        <textarea class="form-control" name="incentive" id="field_incentive" [(ngModel)]="study.incentive"></textarea>
+                        <label class="form-control-label" for="field_incentive_type">Incentive Type</label>
+                        <select class="form-control" [(ngModel)]="study.incentiveType"
+                                name="incentiveType" id="field_incentive_type">
+                            <option value="ONEOFFPAYMENT">One-off payment</option>
+                            <option value="RANDOMLYALLOCATED">Randomly allocated</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_incentive_detail">Incentive Details (ie
+                            amount)</label>
+                        <textarea class="form-control" name="incentiveDetail" id="field_incentive_detail"
+                                  [(ngModel)]="study.incentiveDetail"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_faq">FAQ</label>
+                        <textarea class="form-control" name="faq" id="field_faq"
+                            [(ngModel)]="study.faq"  ></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="field_document">Documents</label>
+                        <select class="form-control" id="field_document" multiple name="document" [(ngModel)]="selectedDocuments">
+                            <option [ngValue]="d" *ngFor="let d of study.documents;">{{d.filename}}</option>
+                        </select>
+                        <button type="button" class="btn btn-danger" (click)="clearSelectedDocuments()">
+                            <span class="fa fa-remove"></span>&nbsp;<span>Remove</span>
+                        </button>
+                        <label class="btn-primary fileButton">
+                            <span class="fa fa-upload"></span>&nbsp;<span>Upload</span>
+                            <input type="file" (change)="fileSelected($event)"/>
+                        </label>
                     </div>
                     <div class="form-group">
                         <label for="field_participant">Participants</label>
-                        <select class="form-control" id="field_participant" multiple name="participant" [(ngModel)]="study.participants">
-                            <option [ngValue]="getSelected(study.participants, participantOption)" *ngFor="let participantOption of participants; trackBy: trackParticipantById">{{participantOption.email}}</option>
+                        <select class="form-control" id="field_participant" multiple name="participant"
+                                [(ngModel)]="study.participants">
+                            <option [ngValue]="getSelected(study.participants, participantOption)"
+                                    *ngFor="let participantOption of filterOptedInParticipants(); trackBy: trackParticipantById">
+                                {{participantOption.email}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -48,32 +85,123 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-control-label" for="field_emailSubject">Subject</label>
-                        <input type="text" class="form-control" name="emailSubject" id="field_emailSubject" [(ngModel)]="study.emailSubject" required
+                        <input type="text" class="form-control" name="emailSubject" id="field_emailSubject"
+                               [(ngModel)]="study.emailSubject" required
                         />
-                        <div [hidden]="!(editForm.controls.emailSubject?.dirty && editForm.controls.emailSubject?.invalid)">
-                            <small class="form-text text-danger" [hidden]="!editForm.controls.emailSubject?.errors?.required">
+                        <div
+                            [hidden]="!(editForm.controls.emailSubject?.dirty && editForm.controls.emailSubject?.invalid)">
+                            <small class="form-text text-danger"
+                                   [hidden]="!editForm.controls.emailSubject?.errors?.required">
                                 This field is required.
                             </small>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" for="field_emailBody">Body</label>
-                        <textarea class="form-control email-body" name="emailBody" id="field_emailBody" [(ngModel)]="study.emailBody"></textarea>
+                        <textarea class="form-control email-body" name="emailBody" id="field_emailBody"
+                                  [(ngModel)]="study.emailBody"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeTab('studyTab')">
-                        <span class="fa fa-arrow-left"></span>&nbsp;
-                        <span>Previous</span>
-                    </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="clear()">
-                        <span class="fa fa-ban"></span>&nbsp;
-                        <span>Cancel</span>
-                    </button>
-                    <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-                        <span class="fa fa-save"></span>&nbsp;
-                        <span>Save</span>
-                    </button>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                            <label class="control-label" for="templateList">Applying the template:</label>
+                                <select [ngModel]="selectedTemplate" (ngModelChange)="onTemplateChange($event)" name="templateList">
+                                    <option [ngValue]="i" *ngFor="let i of templates">{{i.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="button" class="btn btn-warning col-lg-3" data-dismiss="modal" (click)="changeTab('emailTemplateTab')">
+                                <span class="fa fa-file-text"></span>&nbsp;
+                                <span>Manage Templates</span>
+                            </button>
+                            <div class="col-lg-3"></div>
+                            <button type="button" class="btn btn-primary col-lg-2" data-dismiss="modal" (click)="changeTab('studyTab')">
+                                <span class="fa fa-arrow-left"></span>&nbsp;
+                                <span>Previous</span>
+                            </button>
+                            <button type="button" class="btn btn-danger col-lg-2" data-dismiss="modal" (click)="clear()">
+                                <span class="fa fa-ban"></span>&nbsp;
+                                <span>Cancel</span>
+                            </button>
+                            <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary col-lg-2">
+                                <span class="fa fa-check-square"></span>&nbsp;
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="emailTemplateTab" title="Manage Email Templates">
+            <ng-template ngbTabContent>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myEmailLabel">Manage Email Templates</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_emailSubject">Subject</label>
+                        <input type="text" class="form-control" name="emailSubject" id="field_emailSubject" [(ngModel)]="manageTemplateSubject" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" for="field_emailBody">Body</label>
+                        <textarea class="form-control email-body" name="emailBody" id="field_emailBody" [(ngModel)]="manageTemplateBody"></textarea>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-10">
+                                <div class="row">
+                                    <input type="text" class="form-control col-lg-6" [(ngModel)]="saveTemplateName" name="saveTemplateName" placeholder="To save the template, enter a name here."
+                                    maxlength="20"/>
+                                    <button type="button" class="btn btn-primary col-lg-3" data-dismiss="modal" (click)="saveTemplate()">
+                                        <span class="fa fa-save"></span>
+                                        <span>Save Template</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="control-label" for="templateList">Applying the template:</label>
+                                <select [ngModel]="selectedManageTemplate" (ngModelChange)="onManageTemplateChange($event)" name="templateList">
+                                    <option [ngValue]="i" *ngFor="let i of templates">{{i.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-text text-danger" id="statusMessage">
+                                    <!--leave blank for message set by component-->
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <button type="button" class="btn btn-danger col-lg-5" data-dismiss="modal" (click)="deleteTemplate()">
+                                        <span class="fa fa-times"></span>
+                                        <span>Delete Template</span>
+                                    </button>
+                                    <div class="col-lg-1"></div>
+                                    <button type="button" class="btn btn-warning col-lg-5" data-dismiss="modal" (click)="updateTemplate()">
+                                        <span class="fa fa-refresh"></span>
+                                        <span>Update Template</span>
+                                    </button>
+                                    <div class="col-lg-1"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4"></div>
+                            <button type="button" class="btn btn-primary col-lg-2" data-dismiss="modal" (click)="changeTab('emailTab')">
+                                <span class="fa fa-arrow-left"></span>
+                                <span>Back</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </ng-template>
         </ngb-tab>

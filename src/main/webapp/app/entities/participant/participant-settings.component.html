@@ -1,0 +1,63 @@
+<div class="row">
+    <div *ngIf="participantAccount" class="col-md-8 offset-md-2">
+        <h2>Participant Settings for: [<b>{{participantAccount.email}}</b>]</h2>
+        
+        <div class="alert alert-success" *ngIf="success">
+            <strong>Participant Settings saved!</strong>
+        </div>
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <form name="form" role="form" (ngSubmit)="save()" #settingsForm="ngForm" novalidate>
+
+            <div class="form-group">
+                <label class="form-control-label" for="occupation">Occupation</label>
+                <input type="text" class="form-control" id="occupation" name="occupation" placeholder="Your occupation"
+                       [(ngModel)]="participantAccount.occupation" minlength=1 maxlength=50 #firstNameInput="ngModel" required>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="location">Location</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="Your location"
+                       [(ngModel)]="participantAccount.location" minlength=1 maxlength=50 #firstNameInput="ngModel" required>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="programmingLanguage">Main Programming Language</label>
+                <input type="text" class="form-control" id="programmingLanguage" name="programmingLanguage" placeholder="Your main programming language"
+                       [(ngModel)]="participantAccount.programmingLanguage" minlength=1 maxlength=50 #firstNameInput="ngModel" required>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="optedIn">Opt Into Future Studies?</label>
+                <div>
+                    <label>Yes</label>
+                    <input class="radio-selection" type="radio" name="optedIn" [(ngModel)]="participantAccount.optedIn" [value]="true">
+                    <label>No</label>
+                    <input class="radio-selection" type="radio" name="optedIn" [(ngModel)]="participantAccount.optedIn" [value]="false">
+                </div>
+            </div>
+            <div id="opted-in-form" *ngIf="participantAccount.optedIn === true">
+                <div class="form-group">
+                    <label class="form-control-label" for="numberOfInvitationsRequested">Number of Invitations Requested</label>
+                    <input type="number" class="form-control" id="numberOfInvitationsRequested" name="numberOfInvitationsRequested" placeholder="Input Number"
+                           [(ngModel)]="participantAccount.numberOfInvitationsRequested" min=0 #firstNameInput="ngModel" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="optedIn">Incentives</label>
+                    <div>
+                        <label>One-off Payment</label>
+                        <input class="radio-selection" type="radio" name="incentiveChoice" [(ngModel)]="participantAccount.incentiveChoice" [value]="'ONE_OFF'">
+                        <label>Randomly Allocated</label>
+                        <input class="radio-selection" type="radio" name="incentiveChoice" [(ngModel)]="participantAccount.incentiveChoice" [value]="'RANDOM'">
+                        <label>Other</label>
+                        <input class="radio-selection" type="radio" name="incentiveChoice" [(ngModel)]="participantAccount.incentiveChoice" [value]="'OTHER'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" for="incentiveDetails">Details of the Incentives</label>
+                        <input type="text" class="form-control" id="incentiveDetails" name="incentiveDetails" placeholder="Incentive Details: Money and Other"
+                               [(ngModel)]="participantAccount.incentiveDetails" #firstNameInput="ngModel" required>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" [disabled]="settingsForm.form.invalid" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>

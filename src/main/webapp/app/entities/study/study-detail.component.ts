@@ -11,11 +11,15 @@ import { StudyService } from './study.service';
     templateUrl: './study-detail.component.html'
 })
 export class StudyDetailComponent implements OnInit, OnDestroy {
-
+    
     study: Study;
+    status = Status;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
-    status = Status;
+    private presetSend: boolean=false;
+    private currentTimeStamp: string;
+    private currentTimeZone: string;
+
 
     constructor(
         private eventManager: JhiEventManager,
@@ -25,11 +29,26 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     ) {
     }
 
+    onButtonClicked(currentStatus:boolean){
+        if (this.presetSend === currentStatus){
+            this.presetSend = !this.presetSend;
+        }
+    }
+
     ngOnInit() {
         this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInStudies();
+        this.currentTimeStamp = StudyService.getCurrentDateTime();
+        this.currentTimeZone = this.getTimeZone();
+    }
+
+    // credit for function: https://stackoverflow.com/questions/1091372/getting-the-clients-timezone-in-javascript
+    // User: Mr_Green
+    getTimeZone(): string {
+        let offset = new Date().getTimezoneOffset(), o = Math.abs(offset);
+        return (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + ":" + ("00" + (o % 60)).slice(-2);
     }
 
     load(id) {
@@ -47,16 +66,22 @@ export class StudyDetailComponent implements OnInit, OnDestroy {
     }
 
     previousState() {
-        window.history.back();
+        history.back();
     }
+
     // Changes the status of the study to active.
     beginStudy() {
         this.study.status = Status.ACTIVE;
-        this.studyService.update(this.study).subscribe();
+        this.updateStudy();
     }
+
     // Changes the status of the study to Completed.
     closeStudy() {
         this.study.status = Status.COMPLETED;
+        this.updateStudy();
+    }
+
+    updateStudy(){
         this.studyService.update(this.study).subscribe();
     }
 

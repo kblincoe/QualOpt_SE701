@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.*;
 /**
  * Spring Data JPA repository for the Email entity.
  */
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 @Repository
 public interface EmailRepository extends JpaRepository<Email,Long> {
     
