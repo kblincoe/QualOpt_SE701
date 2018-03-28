@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changeTab('emailTab')">
+                    <button type="button" class="btn btn-primary" [disabled]="editForm.form.invalid || isSaving" data-dismiss="modal" (click)="changeTab('emailTab')">
                         <span>Next</span>
                         <span class="fa fa-arrow-right"></span>&nbsp;
                     </button>
