@@ -15,7 +15,9 @@ entity Participant {
     location String,
 	programmingLanguage String,
     numberOfContributions Integer,
-    numberOfRepositories Integer
+    numberOfRepositories Integer,
+    followers Integer,
+    following Integer
 }
 
 relationship ManyToOne {

@@ -29,7 +29,7 @@ public class GitHubResource {
     public GitHubResource(ParticipantRepository participantRepository) {
         this.participantRepository = participantRepository;
     }
-     
+
      /**
      * POST /gitHubQuery : Create a new GitHub User Search and populate the Participant repository
      *                       with representations of the results
@@ -66,10 +66,10 @@ public class GitHubResource {
      * Helper method to connect to the GitHub API and subsequently send the user search request. Uses
      * the kohsuke.github maven repository in order to provide an object model for the different GitHub
      * resources. Please refer to http://github-api.kohsuke.org/apidocs/index.html for more information.
-     * 
+     *
      * TODO: Add a timeout in this method/surrounding this method to make the call more robust in case of network failure
      * TODO: Add ability to connect using logged in credentials to increase API calls per hour
-     * 
+     *
      * @param gitHubAPIRequest the infomration from the API form that the user submitted
      * @throws IOException if connection unable to be established
      * @throws GHException if request was rejected by the API
@@ -85,8 +85,8 @@ public class GitHubResource {
 
         GHUserSearchBuilder search = github.searchUsers();
         buildUserSearch(search, gitHubAPIRequest);
-     
-        // Code for allowing for modifiable pagination; change this if it starts to page the search 
+
+        // Code for allowing for modifiable pagination; change this if it starts to page the search
         // results for some reason.
         // search.withPageSize(pageSize);
 
@@ -119,13 +119,13 @@ public class GitHubResource {
      /**
      * Helper method to keep track of the estimated rate limit. Uses and returns int instead of querying
      * the API every time to check the rate limit (too many network calls).
-     * 
+     *
      * @param currentRateLimit cached int value representing the allotted API calls remaining
      * @throws GHRateLimitReachedException custom exception thrown if API call limit reached for this hour.
      */
     private int checkRateLimit(int currentRateLimit) throws GHRateLimitReachedException {
         // Want to be conservative so even if the counter says that the rate limit isn't 0, we want
-        // to terminate early in order to avoid getting stuck waiting for a API request when out of allocated calls. 
+        // to terminate early in order to avoid getting stuck waiting for a API request when out of allocated calls.
         if(currentRateLimit <= 5){
             throw new GHRateLimitReachedException("Rate Limit nearly reached! Prematurely aborting the request");
         }
@@ -135,7 +135,7 @@ public class GitHubResource {
     /**
      * Helper method to add the correct information to the GHUserSearchBuilder object, which
      * is responsible for maintaining the URL used to query GitHub.
-     * 
+     *
      * @param search the GHUserSearchBuilder used to construct the query string
      * @param gitHubAPIRequest the infomration from the API form that the user submitted
      */
@@ -181,12 +181,12 @@ public class GitHubResource {
      * Helper method to convert a GitHub user representation to a Participant.
      * Encapsulates any changes to the Participant class - simply add extra function calls
      * on the convertedParticipant object within this function
-     * 
-     * TODO: IMPROVE THE CONTRIBUTION COUNT CHECK - currently does far too many calls as a result of REST limitations 
+     *
+     * TODO: IMPROVE THE CONTRIBUTION COUNT CHECK - currently does far too many calls as a result of REST limitations
      *       solution = switch to GraphQL?
      * TODO: Currently just setting fake email address for safety. To change this to produce participants with real emails:
      *      convertedParticipant.email(ghUser.getEmail()) - but check the kohsuke.github javadocs for most up to date implementation.
-     * 
+     *
      * @param ghUser the current user to build a particpat out of
      * @param gitHubAPIRequest the infomration from the API form that the user submitted
      * @param currentRateLimit cached int value representing the allotted API calls remaining
@@ -198,14 +198,17 @@ public class GitHubResource {
         // Set all the basic fields possible
         convertedParticipant
             .email(ghUser.getLogin()+"@fake.email.co.nz")
+            .name(ghUser.getName())
             .occupation(ghUser.getCompany())
             .location(ghUser.getLocation())
-            .numberOfRepositories(ghUser.getPublicRepoCount());
-        
+            .numberOfRepositories(ghUser.getPublicRepoCount())
+            .followers(ghUser.getFollowersCount())
+            .following(ghUser.getFollowingCount());
+
         // Currently, will set the page size and do a single REST request to get a number of repositories
         // and set the programming language to the first language its able to find.
         PagedIterable<GHRepository> allRepos = ghUser.listRepositories();
-        int numberOfReposToCheck = 10; // Arbitrary number to check - defines the number of repos obtained per page! 
+        int numberOfReposToCheck = 10; // Arbitrary number to check - defines the number of repos obtained per page!
         PagedIterator<GHRepository> repoIterator = allRepos.withPageSize(numberOfReposToCheck).iterator();
         String firstProgrammingLanguageFound = null;
         for(int i = 0; i < numberOfReposToCheck; i++){
@@ -220,7 +223,7 @@ public class GitHubResource {
                 break;
             }
         }
-        
+
         // User must explicitly specify they want Contribution Count on form, else this is skipped.
         if(gitHubAPIRequest.getRequestedContributionCount()){
             log.debug("BEGINNING CONTRIBUTION COUNT - EXTREMELY NETWORK INTENSIVE!!!");
@@ -228,7 +231,7 @@ public class GitHubResource {
             int contributionCounter = 0;
 
             // This is the area with unfortunate consequences - the REST API only exposes repositories, meaning
-            // you must iterate through each of the repos that a user has to get their total contribution count, 
+            // you must iterate through each of the repos that a user has to get their total contribution count,
             // and you then must find them as a contributor in each repository. This is EXTREMELY inefficient -
             // an unfortunate consequence of using a pure REST API architecture.
             // TODO: Could submit a feature request/query to the maintainer of the GitHub API maven repoistory being used OR switch to GraphQL
@@ -236,7 +239,7 @@ public class GitHubResource {
                 // Check rate limit EACH time we try a new repo
                 currentRateLimit = checkRateLimit(currentRateLimit);
 
-                // Large page sizes (1000 contributors per page, but each contributor is very small) have been used, 
+                // Large page sizes (1000 contributors per page, but each contributor is very small) have been used,
                 // to avoid having to page a single request for contributors over and over
                 PagedIterable<GHRepository.Contributor> contributors = repo.listContributors().withPageSize(1000);
                 List<GHRepository.Contributor> contributorsList = contributors.withPageSize(1000).asList();

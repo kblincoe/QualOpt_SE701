@@ -33,6 +33,9 @@ public class Participant implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "occupation")
     private String occupation;
 
@@ -47,6 +50,12 @@ public class Participant implements Serializable {
 
     @Column(name = "number_of_repositories")
     private Integer numberOfRepositories;
+
+    @Column(name = "followers")
+    private Integer followers;
+
+    @Column(name = "following")
+    private Integer following;
 
     @Column(name = "has_opted_in")
     private boolean hasOptedIn = true;
@@ -83,6 +92,18 @@ public class Participant implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Participant name(String name) {
+        this.name = name;
+        return this;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getOccupation() {
@@ -148,6 +169,32 @@ public class Participant implements Serializable {
 
     public void setNumberOfRepositories(Integer numberOfRepositories) {
         this.numberOfRepositories = numberOfRepositories;
+    }
+
+    public Integer getFollowers() {
+        return followers;
+    }
+
+    public Participant followers(Integer followers) {
+        this.followers = followers;
+        return this;
+    }
+
+    public void setFollowers(Integer followers) {
+        this.followers = followers;
+    }
+
+    public Integer getFollowing() {
+        return following;
+    }
+
+    public Participant following(Integer following) {
+        this.following = following;
+        return this;
+    }
+
+    public void setFollowing(Integer following) {
+        this.following = following;
     }
 
     public Set<Study> getStudies() {
@@ -231,11 +278,14 @@ public class Participant implements Serializable {
         return "Participant{" +
             "id=" + getId() +
             ", email='" + getEmail() + "'" +
+            ", name='" + getName() + "'" +
             ", occupation='" + getOccupation() + "'" +
             ", location='" + getLocation() + "'" +
             ", programmingLanguage='" + getProgrammingLanguage() + "'" +
             ", numberOfContributions='" + getNumberOfContributions() + "'" +
             ", numberOfRepositories='" + getNumberOfRepositories() + "'" +
+            ", followers='" + getFollowers() + "'" +
+            ", following='" + getFollowing() + "'" +
             ", optedIn='" + getOptedIn() + "'" +
             ", numberOfInvitationsRequested='" + getNumberOfInvitationsRequested() + "'" +
             ", incentiveChoice='" + getIncentiveChoice() + "'" +

@@ -18,6 +18,10 @@
             ]
         },
         {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "occupation",
             "fieldType": "String"
         },
@@ -35,6 +39,14 @@
         },
         {
             "fieldName": "numberOfRepositories",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "followers",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "following",
             "fieldType": "Integer"
         }
     ],

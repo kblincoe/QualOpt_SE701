@@ -24,6 +24,11 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   [(ngModel)]="participant.name"  />
+        </div>
+        <div class="form-group">
             <label class="form-control-label" for="field_occupation">Occupation</label>
             <input type="text" class="form-control" name="occupation" id="field_occupation"
                 [(ngModel)]="participant.occupation"  />
@@ -47,6 +52,16 @@
             <label class="form-control-label" for="field_numberOfRepositories">Number Of Repositories</label>
             <input type="number" class="form-control" name="numberOfRepositories" id="field_numberOfRepositories"
                 [(ngModel)]="participant.numberOfRepositories"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_followers">Number Of Followers</label>
+            <input type="number" class="form-control" name="followers" id="field_followers"
+                   [(ngModel)]="participant.followers"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_following">Number Of Following</label>
+            <input type="number" class="form-control" name="following" id="field_following"
+                   [(ngModel)]="participant.following"  />
         </div>
 
     </div>

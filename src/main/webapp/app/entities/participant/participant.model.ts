@@ -4,11 +4,14 @@ export class Participant implements BaseEntity {
     constructor(
         public id?: number,
         public email?: string,
+        public name?: string,
         public occupation?: string,
         public location?: string,
         public programmingLanguage?: string,
         public numberOfContributions?: number,
         public numberOfRepositories?: number,
+        public followers?: number,
+        public following?: number,
         public studies?: BaseEntity[],
         public optedIn?: boolean,
     ) {
