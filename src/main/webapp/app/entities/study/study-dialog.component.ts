@@ -385,11 +385,12 @@ export class StudyDialogComponent implements OnInit {
 export class StudyPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
+  
     constructor(
         private route: ActivatedRoute,
         private studyPopupService: StudyPopupService
     ) { }
-
+  
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if (params['id']) {
