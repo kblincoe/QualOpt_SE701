@@ -2,8 +2,9 @@ package org.project36.qualopt.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import org.project36.qualopt.domain.Participant;
-
+import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.repository.ParticipantRepository;
+import org.project36.qualopt.repository.StudyRepository;
 import org.project36.qualopt.web.rest.util.HeaderUtil;
 import org.project36.qualopt.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -36,9 +37,11 @@ public class ParticipantResource {
     private static final String ENTITY_NAME = "participant";
 
     private final ParticipantRepository participantRepository;
+    private final StudyRepository studyRepository;
 
-    public ParticipantResource(ParticipantRepository participantRepository) {
+    public ParticipantResource(ParticipantRepository participantRepository, StudyRepository studyRepository) {
         this.participantRepository = participantRepository;
+        this.studyRepository = studyRepository;
     }
 
     /**
@@ -113,6 +116,20 @@ public class ParticipantResource {
     }
 
     /**
+     * GET  /participants/email/:email : get the participant via their "email".
+     *
+     * @param email the email of the participant to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the participant, or with status 404 (Not Found)
+     */
+    @GetMapping("/participants/email/{email}")
+    @Timed
+    public ResponseEntity<Participant> getParticipant(@PathVariable String email) {
+        log.debug("REST request to get Participant : {}", email);
+        Participant participant = participantRepository.findOneByEmail(email);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(participant));
+    }
+
+    /**
      * DELETE  /participants/:id : delete the "id" participant.
      *
      * @param id the id of the participant to delete
@@ -124,5 +141,32 @@ public class ParticipantResource {
         log.debug("REST request to delete Participant : {}", id);
         participantRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * PUT  /participants/optout/:studyId : optout of a certain study via "studyId".
+     *
+     * @param email the email of the participant to retrieve and update
+     * @param studyId the id of the study you want to retrieve and update
+     * @return the ResponseEntity with status 200 (OK) and with body containing the participant that has been updated
+     */
+    @PutMapping("/participants/optout/{studyId}")
+    @Timed
+    public ResponseEntity<Participant> deleteParticipantStudy(@Valid @RequestBody String email, @PathVariable Long studyId) {
+        log.debug("REST request for Participant : {} to optout of study : {}" , email, studyId);
+
+        //Getting both the study and participant objects
+        Participant participant = participantRepository.findOneByEmail(email);
+        Study study = studyRepository.findOneWithEagerRelationships(studyId);
+
+        //Removing the relationships and then saving
+        study.removeParticipant(participant);
+        participant.removeStudy(study);
+        Participant result = participantRepository.save(participant);
+        studyRepository.save(study);
+
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, participant.getId().toString()))
+                .body(result);
     }
 }

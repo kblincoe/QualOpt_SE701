@@ -5,6 +5,7 @@ import org.project36.qualopt.domain.Authority;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.AuthorityRepository;
 import org.project36.qualopt.repository.UserRepository;
+import org.project36.qualopt.repository.ParticipantRepository;
 import org.project36.qualopt.service.MailService;
 
 import org.junit.Before;
@@ -40,6 +41,9 @@ public class SocialServiceIntTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ParticipantRepository participantRepository;
+
     @Mock
     private MailService mockMailService;
 
@@ -59,7 +63,7 @@ public class SocialServiceIntTest {
         when(mockUsersConnectionRepository.createConnectionRepository(anyString())).thenReturn(mockConnectionRepository);
 
         socialService = new SocialService(mockUsersConnectionRepository, authorityRepository,
-                passwordEncoder, userRepository, mockMailService);
+                passwordEncoder, userRepository, mockMailService, participantRepository);
     }
 
     @Test
