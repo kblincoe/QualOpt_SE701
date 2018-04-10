@@ -180,12 +180,10 @@ export class StudyDialogComponent implements OnInit {
         });
 
         this.isSaving = true;
-        if (this.study.id !== undefined) {
-            this.subscribeToSaveResponse(
-                this.studyService.update(this.study));
+        if (this.isNew()) {
+            this.subscribeToSaveResponse(this.studyService.create(this.study));
         } else {
-            this.subscribeToSaveResponse(
-                this.studyService.create(this.study));
+            this.subscribeToSaveResponse(this.studyService.update(this.study));
         }
     }
 
@@ -333,13 +331,7 @@ export class StudyDialogComponent implements OnInit {
         return option;
     }
 
-    getTitle() {
-        if (this.study.id != null) {
-            return 'Edit Study';
-        } else {
-            return 'Create Study';
-        }
-    }
+    getTitle = () => (this.isNew() ? "Create Study" : "Edit Study");
 
     filterOptedInParticipants() {
         if (!this.participants) {
@@ -348,6 +340,11 @@ export class StudyDialogComponent implements OnInit {
             return this.participants.filter((participant) => participant.optedIn === true);
         }
     }
+
+    /**
+     * Checks whether the popup dialog is creating a new study or updating an existing one
+     */
+    isNew = () => this.study.id == null;
 }
 
 @Component({
