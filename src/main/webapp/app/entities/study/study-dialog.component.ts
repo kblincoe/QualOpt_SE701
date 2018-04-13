@@ -3,19 +3,19 @@ import {ActivatedRoute} from '@angular/router';
 import {Response} from '@angular/http';
 import {NgForm} from '@angular/forms';
 
-import {Observable} from 'rxjs/Rx';
-import {NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager, JhiAlertService, JhiDataUtils} from 'ng-jhipster';
+import { Observable } from 'rxjs/Rx';
+import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager, JhiAlertService, JhiDataUtils, JhiParseLinks } from 'ng-jhipster';
 
-import {EmailTemplate} from './emailTemplate/emailTemplate.model'
-import {EmailTemplateService} from './emailTemplate/emailTemplate.service'
+import { EmailTemplate } from './emailTemplate/emailTemplate.model'
+import { EmailTemplateService } from './emailTemplate/emailTemplate.service'
 
-import {Study} from './study.model';
-import {StudyPopupService} from './study-popup.service';
-import {StudyService} from './study.service';
-import {User, UserService, ResponseWrapper, Principal, Account} from '../../shared';
-import {Participant, ParticipantService} from '../participant';
-import {Document} from '../document';
+import { Study } from './study.model';
+import { StudyPopupService } from './study-popup.service';
+import { StudyService } from './study.service';
+import { User, UserService, Principal, ResponseWrapper, Account, ITEMS_PER_PAGE } from '../../shared';
+import { Participant, ParticipantService, ParticipantComponent } from '../participant';
+import { Document } from '../document';
 
 @Component({
     selector: 'jhi-study-dialog',
@@ -44,17 +44,33 @@ export class StudyDialogComponent implements OnInit {
     account: Account;
     currentUser: User;
 
+    participantFilter: ParticipantComponent;
+    filter: Participant = new Participant;
+    selectedParticipants: Map<number, boolean>;
     @ViewChild('editForm') editForm: NgForm;
 
-    constructor(public activeModal: NgbActiveModal,
-                private dataUtils: JhiDataUtils,
-                private alertService: JhiAlertService,
-                private studyService: StudyService,
-                private emailTemplateService: EmailTemplateService,
-                private userService: UserService,
-                private participantService: ParticipantService,
-                private eventManager: JhiEventManager,
-                private principal: Principal,) {
+    constructor(
+        public activeModal: NgbActiveModal,
+        private dataUtils: JhiDataUtils,
+        private alertService: JhiAlertService,
+        private studyService: StudyService,
+        private emailTemplateService: EmailTemplateService,
+        private userService: UserService,
+        private participantService: ParticipantService,
+        private eventManager: JhiEventManager,
+        private parseLinks: JhiParseLinks,
+        private principal: Principal
+    ) {
+        this.participantFilter = new ParticipantComponent(this.participantService, this.alertService, this.eventManager, this.parseLinks, this.principal);
+        this.participantFilter.participants = [];
+        this.participantFilter.itemsPerPage = ITEMS_PER_PAGE;
+        this.participantFilter.page = 0;
+        this.participantFilter.links = {
+            last: 0
+        };
+        this.participantFilter.predicate = 'id';
+        this.participantFilter.reverse = true;
+        this.selectedParticipants = new Map<number, boolean>();
     }
 
     ngOnInit() {
@@ -114,8 +130,8 @@ export class StudyDialogComponent implements OnInit {
     }
 
     fileSelected(event: EventTarget) {
-        let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
-        let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+        let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
+        let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
 
         let file = target.files[0];
         let fileReader = new FileReader();
@@ -174,10 +190,15 @@ export class StudyDialogComponent implements OnInit {
     };
 
     save() {
-        // Remove participants who aren't selected
-        this.study.participants = this.study.participants.filter(participant => {
-            return participant['checked'];
-        });
+        // On form submission, the set of selected participants is added to the set of participants associated with the study
+        this.participants = [];
+        for (let key in this.selectedParticipants) {
+            let value = this.selectedParticipants[key];
+            if (value == true) {
+                this.participants.push(this.participantFilter.participants[parseInt(key) - 1]);
+            }
+        }
+        this.study.participants = this.participants;
 
         this.isSaving = true;
         if (this.study.id !== undefined) {
@@ -273,7 +294,7 @@ export class StudyDialogComponent implements OnInit {
     }
 
     deleteTemplate() {
-        //Do not attempt to delete non-existing template or the "none" template.
+        // Do not attempt to delete non-existing template or the "none" template.
         if (this.selectedManageTemplate.id < 1 || this.selectedManageTemplate.id === undefined) {
             this.updateTemplateOperationStatusMessage("Cannot delete default or non-existing template.");
             return;
@@ -285,13 +306,20 @@ export class StudyDialogComponent implements OnInit {
         });
     }
 
+    // Used to load participants table in modal
+    onTabChange(event){
+        if (event.nextId === "participantsTab"){
+            this.participantFilter.reset();
+        }
+    }
+
     private subscribeToSaveResponse(result: Observable<Study>) {
         result.subscribe((res: Study) =>
             this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
     private onSaveSuccess(result: Study) {
-        this.eventManager.broadcast({name: 'studyListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'studyListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -357,11 +385,12 @@ export class StudyDialogComponent implements OnInit {
 export class StudyPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
-
-    constructor(private route: ActivatedRoute,
-                private studyPopupService: StudyPopupService) {
-    }
-
+  
+    constructor(
+        private route: ActivatedRoute,
+        private studyPopupService: StudyPopupService
+    ) { }
+  
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if (params['id']) {

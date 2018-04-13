@@ -16,8 +16,10 @@ import {
     StudyConfirmPopupComponent,
     studyRoute,
     studyPopupRoute,
-    StudyInfoComponent
+    StudyInfoComponent,
+    StudyPipe
 } from './';
+import { ParticipantPipe } from '../participant/participant.pipe';
 
 const ENTITY_STATES = [
     ...studyRoute,
@@ -39,7 +41,8 @@ const ENTITY_STATES = [
         StudyDeletePopupComponent,
         StudyConfirmDialogComponent,
         StudyConfirmPopupComponent,
-        StudyInfoComponent
+        StudyInfoComponent,
+        StudyPipe
     ],
     entryComponents: [
         StudyComponent,
