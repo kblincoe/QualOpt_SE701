@@ -94,7 +94,7 @@ public class StudyServiceIntTest {
      */
     @Test
     public void testSendInvitationEmail() throws Exception {
-        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy());
+        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy(),0);
         verify(javaMailSender).send((MimeMessage) messageCaptor.capture());
         MimeMessage message = (MimeMessage) messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");
@@ -134,7 +134,7 @@ public class StudyServiceIntTest {
         mailboxFolder.add(mockGmailServiceMessage("participant3@hmail.com"));
         ImmutableSet<Participant> participants = ImmutableSet.of(new Participant().email("participant1@email.com"),
             new Participant().email("participant2@gmail.com"), new Participant().email("participant3@hmail.com"));
-        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy().participants(participants));
+        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy().participants(participants),0);
         assertThat(bouncedMail.size()).isEqualTo(3);
         assertThat(bouncedMail).isEqualTo(participants.stream().map(Participant::getEmail).collect(Collectors.toSet()));
     }
@@ -150,7 +150,7 @@ public class StudyServiceIntTest {
         mailboxFolder.add(mockGmailServiceMessage("other@email.com"));
         ImmutableSet<Participant> participants = ImmutableSet.of(new Participant().email("participant2@gmail.com"),
             new Participant().email("participant1@email.com"));
-        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy().participants(participants));
+        Set<String> bouncedMail = studyService.sendInvitationEmail(mockStudy().participants(participants),0);
         assertThat(bouncedMail.size()).isEqualTo(2);
         assertThat(bouncedMail).isEqualTo(participants.stream().map(Participant::getEmail).collect(Collectors.toSet()));
     }

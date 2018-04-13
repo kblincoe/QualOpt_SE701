@@ -1,5 +1,6 @@
 package org.project36.qualopt.service;
 
+import org.project36.qualopt.domain.EmailScheduler;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.CharEncoding;
@@ -14,11 +15,25 @@ import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.quartz.SchedulerFactory;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Trigger;
+import org.quartz.DateBuilder.IntervalUnit;
+
+import static org.quartz.DateBuilder.futureDate;
+import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.JobBuilder.newJob;
 
 import static org.project36.qualopt.config.MailConfiguration.USER_EMAIL;
 import static org.project36.qualopt.config.MailConfiguration.USER_PASSWORD;
@@ -56,7 +71,7 @@ public class StudyService {
      * Attempts to send a study invitation out to all participants as a single email (i.e. with multiple recipients).
      * Then returns a Set of any addresses that bounced back.
      */
-    public ImmutableSet<String> sendInvitationEmail(Study study) {
+    public ImmutableSet<String> sendInvitationEmail(Study study, int delay) {
         log.debug("Sending invitation email for study '{}'.", study.getName());
         String subject = study.getEmailSubject() == null ? "" : study.getEmailSubject();
         String content = study.getEmailBody() == null ? "" : study.getEmailBody();
@@ -80,12 +95,23 @@ public class StudyService {
                 .toArray(Address[]::new));
             message.setSubject(subject, CharEncoding.UTF_8);
             message.setText(content, CharEncoding.UTF_8);
-            javaMailSender.send(message);
-            log.debug("Sent invitation email for study '{}'.", study.getName());
-            ImmutableSet<String> bouncedAddresses = readAndCheckForBouncedMail();
-            bouncedAddresses.forEach(address -> log.debug("Bounced: '{}'", address));
-            // Only care about bounced emails from the participants of this study
-            return Sets.intersection(participantAddresses, bouncedAddresses).immutableCopy();
+            if (delay > 0){
+                try {
+                    scheduleEmailJob(message, delay);
+                } catch (SchedulerException se){
+                    log.error("Failed to schedule email", se);
+                    se.printStackTrace();
+                }
+                return ImmutableSet.of();
+            } else {
+                javaMailSender.send(message);
+                log.debug("Sent invitation email for study '{}'.", study.getName());
+                ImmutableSet<String> bouncedAddresses = readAndCheckForBouncedMail();
+                bouncedAddresses.forEach(address -> log.debug("Bounced: '{}'", address));
+                // Only care about bounced emails from the participants of this study
+                return Sets.intersection(participantAddresses, bouncedAddresses).immutableCopy();
+            }
+
         } catch (MessagingException e) {
             log.error("Failed to send invitation email.", e);
             return ImmutableSet.of();
@@ -179,5 +205,32 @@ public class StudyService {
             }
         }
         return Optional.empty();
+    }
+    /**
+     * Method is used to create a schedule for a job: invitation email to be registered
+     * with the the Quartz Scheduler.
+     */
+    private void scheduleEmailJob(MimeMessage message, int delay) throws SchedulerException {
+        
+        SchedulerFactory schedFact = new StdSchedulerFactory();
+        Scheduler sched = schedFact.getScheduler();
+
+        sched.start();
+        JobDataMap messageMap = new JobDataMap();
+        messageMap.put("message", message);
+
+        JobDetail job = newJob(EmailScheduler.class)
+            .withIdentity("myJob", "group1")
+            .usingJobData(messageMap)
+            .build();
+
+        // Trigger the job to run after a certain delay
+        Trigger trigger = newTrigger().withIdentity("myTrigger", "group1")
+            .startAt(futureDate(delay,IntervalUnit.SECOND))
+            .forJob(job)
+            .build();
+
+        // Tell quartz to schedule the job using our trigger
+        sched.scheduleJob(job, trigger);
     }
 }

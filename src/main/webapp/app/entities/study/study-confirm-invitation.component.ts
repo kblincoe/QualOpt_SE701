@@ -20,7 +20,6 @@ const swal: SweetAlert = _swal as any;
 export class StudyConfirmDialogComponent {
 
     study: Study;
-
     constructor(
         private studyService: StudyService,
         private eventManager: JhiEventManager,

@@ -3,6 +3,8 @@ package org.project36.qualopt.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+
+import org.project36.qualopt.domain.Invitation;
 import org.project36.qualopt.domain.Study;
 import org.project36.qualopt.domain.User;
 import org.project36.qualopt.repository.StudyRepository;
@@ -185,12 +187,15 @@ public class StudyResource {
     @PostMapping(path = "/studies/send",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity<Object> sendStudy(@Valid @RequestBody Study study) throws URISyntaxException {
-        log.debug("REST request to send Study : {}", study);
+    public ResponseEntity<Object> sendStudy(@Valid @RequestBody Invitation inv) throws URISyntaxException {
+        Study study = inv.getStudy();
+        int delay = inv.getDelay()/1000;
+        log.debug("REST request to send Study : {}"+ study + " with delay: "+ delay);
+
         if (study == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Set<String> bouncedMail = studyService.sendInvitationEmail(study);
+        Set<String> bouncedMail = studyService.sendInvitationEmail(study,delay);
         return ResponseEntity
             .created(new URI("/api/studies/send"))
             .header("Sent: " + study.getName())
