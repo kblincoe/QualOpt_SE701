@@ -46,15 +46,8 @@ spring:
         favicon:
             enabled: false
     thymeleaf:
-        mode: HTML
-    social:
-        # Google API Keys created under the email: wmol664@aucklanduni.ac.nz and product name: QualOpt
-        # see https://developers.google.com/+/web/signin/server-side-flow#step_1_create_a_client_id_and_client_secret
-        google:
-            client-id: 409706338424-gpgeh591k6jku12eu0o31abscosngoal.apps.googleusercontent.com
-            client-secret: 4mXwrXbgZ9qKM7EQyrwLaXKP
-
-
+        mode: XHTML
+#    social: # Set social API keys in environment. see SocialConfiguration.java
         # jhipster-needle-add-social-configuration
 
 # security:
