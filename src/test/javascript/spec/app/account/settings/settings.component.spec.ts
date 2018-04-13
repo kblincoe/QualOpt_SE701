@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Rx';
 import { QualOptTestModule } from '../../../test.module';
-import { Principal, AccountService } from '../../../../../../main/webapp/app/shared';
+import {Principal, AccountService, LoginModalService} from '../../../../../../main/webapp/app/shared';
 import { SettingsComponent } from '../../../../../../main/webapp/app/account/settings/settings.component';
 import { MockAccountService } from '../../../helpers/mock-account.service';
 import { MockPrincipal } from '../../../helpers/mock-principal.service';
+import {LoginService} from '../../../../../../main/webapp/app/shared/login/login.service';
+import { AuthServerProvider } from '../../../../../../main/webapp/app/shared/auth/auth-session.service';
+import { PasswordService } from '../../../../../../main/webapp/app/account/password/password.service';
 
 describe('Component Tests', () => {
 
@@ -24,6 +27,9 @@ describe('Component Tests', () => {
                         provide: Principal,
                         useClass: MockPrincipal
                     },
+                    AuthServerProvider,
+                    PasswordService,
+                    LoginService,
                     {
                         provide: AccountService,
                         useClass: MockAccountService
@@ -63,7 +69,7 @@ describe('Component Tests', () => {
             expect(comp.settingsAccount).toEqual(accountValues);
         });
 
-        it('should notify of success upon successful save', () => {
+        it('should notify of passwordSuccess upon successful save', () => {
             // GIVEN
             const accountValues = {
                 firstName: 'John',
@@ -79,7 +85,7 @@ describe('Component Tests', () => {
             expect(comp.success).toBe('OK');
         });
 
-        it('should notify of error upon failed save', () => {
+        it('should notify of passwordError upon failed save', () => {
             // GIVEN
             mockAuth.saveSpy.and.returnValue(Observable.throw('ERROR'));
 

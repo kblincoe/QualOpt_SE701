@@ -52,7 +52,7 @@ export class JhiLoginModalComponent implements AfterViewInit {
             rememberMe: this.rememberMe
         }).then(() => {
             this.authenticationError = false;
-            this.activeModal.dismiss('login success');
+            this.activeModal.dismiss('login passwordSuccess');
             if (this.router.url === '/register' || (/activate/.test(this.router.url)) ||
                 this.router.url === '/finishReset' || this.router.url === '/requestReset') {
                 this.router.navigate(['']);

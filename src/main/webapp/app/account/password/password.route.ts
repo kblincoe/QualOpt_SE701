@@ -1,11 +1,11 @@
 import { Route } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
-import { PasswordComponent } from './password.component';
+import { SettingsComponent } from '../settings/settings.component';
 
 export const passwordRoute: Route = {
     path: 'password',
-    component: PasswordComponent,
+    component: SettingsComponent,
     data: {
         authorities: ['ROLE_USER', 'ROLE_PARTICIPANT'],
         pageTitle: 'Password'

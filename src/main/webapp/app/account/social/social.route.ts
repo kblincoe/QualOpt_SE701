@@ -4,7 +4,7 @@ import { UserRouteAccessService } from '../../shared';
 import { SocialRegisterComponent } from './social-register.component';
 
 export const socialRegisterRoute: Route = {
-    path: 'social-register/:provider?{success:boolean}',
+    path: 'social-register/:provider?{passwordSuccess:boolean}',
     component: SocialRegisterComponent,
     data: {
         authorities: [],

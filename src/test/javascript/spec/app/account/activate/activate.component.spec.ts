@@ -50,7 +50,7 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should set set success to OK upon successful activation',
+        it('should set set passwordSuccess to OK upon successful activation',
             inject([ActivateService],
                 fakeAsync((service: ActivateService) => {
                     spyOn(service, 'get').and.returnValue(Observable.of({}));
@@ -64,7 +64,7 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should set set error to ERROR upon activation failure',
+        it('should set set passwordError to ERROR upon activation failure',
             inject([ActivateService],
                 fakeAsync((service: ActivateService) => {
                     spyOn(service, 'get').and.returnValue(Observable.throw('ERROR'));

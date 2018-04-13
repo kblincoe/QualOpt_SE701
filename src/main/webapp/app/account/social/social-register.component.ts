@@ -26,7 +26,7 @@ export class SocialRegisterComponent implements OnInit  {
             this.success = queryParams['success'];
         });
         this.route.params.subscribe((params) => {
-            this.provider = params['provider?{success:boolean}'];
+            this.provider = params['provider?{passwordSuccess:boolean}'];
         });
         this.error = !this.success;
         this.providerLabel = this.provider.charAt(0).toUpperCase() + this.provider.slice(1);

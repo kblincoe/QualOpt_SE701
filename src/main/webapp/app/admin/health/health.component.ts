@@ -29,7 +29,7 @@ export class JhiHealthCheckComponent implements OnInit {
 
     getBadgeClass(statusState) {
         if (statusState === 'UP') {
-            return 'badge-success';
+            return 'badge-passwordSuccess';
         } else {
             return 'badge-danger';
         }

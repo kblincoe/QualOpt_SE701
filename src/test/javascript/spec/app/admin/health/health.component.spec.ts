@@ -214,7 +214,7 @@ describe('Component Tests', () => {
             expect(service.transformHealthData(data)).toEqual(expected);
         });
 
-        it('should flatten health data with subsystems at level 1, main system has additional error', () => {
+        it('should flatten health data with subsystems at level 1, main system has additional passwordError', () => {
             const data = {
                 'status': 'UP',
                 'db': {
