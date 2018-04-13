@@ -158,9 +158,10 @@ public class StudyResource {
     @DeleteMapping("/studies/{id}")
     @Timed
     public ResponseEntity<Void> deleteStudy(@PathVariable Long id) {
+        String name = this.getStudy(id).getBody().getName();
         log.debug("REST request to delete Study : {}", id);
         studyRepository.deleteById(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, name)).build();
     }
 
     public String getCurrentUserLogin() {
